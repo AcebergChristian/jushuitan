@@ -1,0 +1,14 @@
+# python
+__pycache__/
+*.pyc
+venv/
+.env
+
+
+# web
+node_modules/
+dist/
+.env.local
+.env.dev
+.env.test
+.env.prod
