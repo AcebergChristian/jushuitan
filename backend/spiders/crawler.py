@@ -1,13 +1,17 @@
-"""
-聚水潭和拼多多数据爬虫服务
-使用Playwright进行网页自动化操作
-"""
-import asyncio
-from typing import Dict, List, Optional
-from playwright.async_api import async_playwright
-from dataclasses import dataclass
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.action_chains import ActionChains
+import time
+import json
+from dataclasses import dataclass
+from typing import List, Optional
 
 @dataclass
 class ProductInfo:
@@ -43,600 +47,303 @@ class ProductInfo:
     image_url: Optional[str] = None
     platform: str = ""  # 平台标识：jushuitan 或 pinduoduo
 
+class SeleniumCrawler:
+    def __init__(self):
+        # 配置Chrome选项
+        chrome_options = Options()
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        # 如果不需要显示浏览器，取消下面一行的注释
+        # chrome_options.add_argument("--headless")
+        
+        service = Service(ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service, options=chrome_options)
+        self.wait = WebDriverWait(self.driver, 20)
 
-class JushuitanSpider:
-    """聚水潭平台爬虫"""
-    
-    def __init__(self, username: str, password: str):
-        self.username = username
-        self.password = password
-        self.browser = None
+    def login(self):
+        """登录聚水潭系统"""
+        self.driver.get("https://sc.scm121.com/login")
         
-    async def init_browser(self):
-        """初始化浏览器"""
-        playwright = await async_playwright().start()
-        self.browser = await playwright.chromium.launch(headless=False)
+        # 这里需要根据实际登录页面填写用户名和密码
+        username_input = self.wait.until(EC.presence_of_element_located((By.ID, "username")))
+        password_input = self.driver.find_element(By.ID, "password")
+        checkbox = self.driver.find_element(By.CSS_SELECTOR, "#real-root > section > main > div > div > div > form > div.antd-pro-pages-account-styles-index-container > div.antd-pro-pages-account-components-agreement-checked-index-remember > label > span.ant-checkbox > input")
+        login_button = self.driver.find_element(By.CSS_SELECTOR, "#real-root > section > main > div > div > div > form > div.antd-pro-pages-account-login-style-submit > button")
         
-    async def login(self):
-        """登录聚水潭"""
-        if not self.browser:
-            await self.init_browser()
-            
-        page = await self.browser.new_page()
-        await page.goto("https://account.scm121.com/user/login")  # 实际URL可能不同
+        # 填入您的登录凭据
+        username_input.send_keys("17607992526")
+        password_input.send_keys("Aa12345600.")
+        checkbox.click()
+        login_button.click()
         
-        # 输入用户名和密码
-        await page.fill("#username", self.username)
-        await page.fill("#password", self.password)
-        
-        # 点击checkout按钮
-        await page.click("#real-root > section > main > div > div > div > form > div.antd-pro-pages-account-styles-index-container > div.antd-pro-pages-account-components-agreement-checked-index-remember > label > span.ant-checkbox > input")
-        
+        # 等待登录完成
+        self.wait.until(EC.url_changes("https://sc.scm121.com/login"))
+        time.sleep(3)  # 额外等待页面完全加载
 
-        # 点击登录按钮
-        await page.click("#real-root > section > main > div > div > div > form > div.antd-pro-pages-account-login-style-submit > button")
-        
-        # 等待登录成功
-        await page.wait_for_url("**/dashboard**")
-        
-        return page
-    
-    async def get_products(self) -> List[ProductInfo]:
+    def get_products(self) -> List[ProductInfo]:
         """获取商品列表"""
-        page = await self.login()
+        # 导航到商品页面
+        self.driver.get("https://sc.scm121.com/tradeManage/tower/distribute")
+        time.sleep(5)  # 等待页面加载
         
-        # 导航到商品页面（示例）
-        await page.goto("https://sc.scm121.com/tradeManage/tower/distribute")
-        
-        # 先等待页面加载完成
-        await page.wait_for_load_state('networkidle')
-        
-        # 等待特定时间让JavaScript渲染完成
-        await page.wait_for_timeout(5000)
-        
-        # 查找并切换到可能包含商品数据的 iframe
-        # 通过 iframe 的 ID 或 name
+        # 切换到iframe（如果存在）
         try:
-            # 等待 iframe 元素出现
-            iframe_locator = page.locator("#tradeManage1")          # 或 page.frame_locator("#tradeManage1") 也可以
-            await iframe_locator.wait_for(state="visible", timeout=20000)
-
-            # 获取 iframe 的 element handle
-            iframe_element = await iframe_locator.element_handle()
-
-            # 从 element handle 获取真正的 Frame 对象
-            frame = await iframe_element.content_frame()
-            
-            # 用于存储所有收集到的行数据
-            collected_rows = []
-            seen_row_keys = set()
-            
-            # 执行增量滚动
-            max_attempts = 15
-            consecutive_empty_attempts = 0
-            attempts = 0
-            
-            # 首先获取初始数据量
-            initial_data_check = await frame.evaluate("""() => {
-                const tbodySelector = '#channelOrder-table-wrap > div:nth-child(3) > div.react-contextmenu-wrapper > div > div > div > div.art-table > div.art-table-body.art-horizontal-scroll-container > table > tbody';
-                const tbody = document.querySelector(tbodySelector);
+            iframe = self.wait.until(EC.presence_of_element_located((By.ID, "tradeManage1")))
+            self.driver.switch_to.frame(iframe)
+            print("已切换到iframe")
+        except:
+            print("未找到iframe，继续在主页面操作")
+        
+        # 找到表格主体
+        tbody_selector = '#channelOrder-table-wrap > div:nth-child(3) > div.react-contextmenu-wrapper > div > div > div > div.art-table > div.art-table-body.art-horizontal-scroll-container > table > tbody'
+        
+        # 等待表格加载
+        tbody = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, tbody_selector)))
+        
+        # 找到滚动容器
+        scroll_containers = [
+            self.driver.find_element(By.CSS_SELECTOR, ".art-table-body"),
+            self.driver.find_element(By.CSS_SELECTOR, ".art-horizontal-scroll-container"),
+            self.driver.find_element(By.CSS_SELECTOR, "#channelOrder-table-wrap .art-table-body")
+        ]
+        
+        scroll_container = None
+        for container in scroll_containers:
+            try:
+                if container.size['height'] < container.get_property('scrollHeight'):
+                    scroll_container = container
+                    break
+            except:
+                continue
+        
+        if not scroll_container:
+            # 尝试通过JavaScript找到滚动容器
+            scroll_container = self.driver.execute_script("""
+                const selectors = [
+                    '.art-table-body',
+                    '.art-horizontal-scroll-container',
+                    '#channelOrder-table-wrap .art-table-body'
+                ];
                 
-                if (!tbody) {
-                    console.error("tbody not found initially");
-                    return {has_tbody: false, row_count: 0};
+                for (let selector of selectors) {
+                    const element = document.querySelector(selector);
+                    if (element && element.scrollHeight > element.clientHeight) {
+                        return element;
+                    }
                 }
                 
-                const rows = tbody.querySelectorAll('tr');
-                console.log("初始行数:", rows.length);
-                return {has_tbody: true, row_count: rows.length};
-            }""")
-            
-            print(f"初始数据检查 - 有tbody: {initial_data_check['has_tbody']}, 行数: {initial_data_check['row_count']}")
-            
-            while attempts < max_attempts and consecutive_empty_attempts < 3:
-                attempts += 1
-                
-                # 调用JS函数执行一次滚动并获取新行
-                scroll_result = await frame.evaluate("""() => {
-                    const tbodySelector = '#channelOrder-table-wrap > div:nth-child(3) > div.react-contextmenu-wrapper > div > div > div > div.art-table > div.art-table-body.art-horizontal-scroll-container > table > tbody';
-                    const tbody = document.querySelector(tbodySelector);
-                    
-                    if (!tbody) {
-                        console.error("tbody not found");
-                        return {status: "no_tbody", new_rows: [], total_rows: 0};
-                    }
-
-                    // 尝试多种可能的滚动容器
-                    let scrollContainers = [
-                        tbody.closest('.art-table-body'),
-                        tbody.closest('.art-horizontal-scroll-container'),
-                        document.querySelector('.art-table-body'),
-                        document.querySelector('.art-table-body .virtual-list'),
-                        document.querySelector('.art-table-body .virtual-table'),
-                        document.querySelector('#channelOrder-table-wrap .art-table-body'),
-                        document.body
-                    ];
-                    
-                    let scrollContainer = null;
-                    for(let container of scrollContainers) {
-                        if(container && container.scrollHeight > container.clientHeight) {
-                            scrollContainer = container;
-                            break;
+                // 如果以上都没找到，尝试tbody的父元素
+                const tbody = document.querySelector(arguments[0]);
+                if (tbody) {
+                    let parent = tbody.parentElement;
+                    while (parent && parent !== document.body) {
+                        if (parent.scrollHeight > parent.clientHeight) {
+                            return parent;
                         }
+                        parent = parent.parentElement;
                     }
-                    
-                    // 如果没找到合适的滚动容器，尝试直接使用tbody的父级
-                    if(!scrollContainer) {
-                        scrollContainer = tbody.parentElement;
-                        if(scrollContainer.scrollHeight <= scrollContainer.clientHeight) {
-                            scrollContainer = tbody.parentElement.parentElement;
-                        }
-                    }
-
-                    if (!scrollContainer) {
-                        console.log("未找到有效的滚动容器");
-                        // 尝试获取当前所有行
-                        const rows = tbody.querySelectorAll('tr');
-                        const current_rows = [];
-                        
-                        rows.forEach((row, index) => {
-                            const rowKey = row.getAttribute('data-row-key') || 
-                                        row.getAttribute('data-rowindex') || 
-                                        row.getAttribute('data-id') || 
-                                        `row_${index}`;
-                            
-                            current_rows.push({
-                                key: rowKey,
-                                html: row.outerHTML,
-                                rowIndex: index
-                            });
-                        });
-                        
-                        return {
-                            status: "no_scroll_container",
-                            new_rows: current_rows,
-                            total_rows: current_rows.length,
-                            scroll_position: 0,
-                            max_scroll: 0,
-                            client_height: 0
-                        };
-                    }
-                    
-                    // 记录滚动前的状态
-                    const oldScrollTop = scrollContainer.scrollTop;
-                    const maxScrollTop = scrollContainer.scrollHeight - scrollContainer.clientHeight;
-                    const oldRowCount = tbody.querySelectorAll('tr').length;
-                    
-                    console.log("滚动容器类型:", scrollContainer.tagName || scrollContainer.className);
-                    console.log("滚动前scrollTop:", oldScrollTop);
-                    console.log("最大可滚动距离:", maxScrollTop);
-                    console.log("客户端高度:", scrollContainer.clientHeight);
-                    console.log("滚动前行数:", oldRowCount);
-                    
-                    // 执行滚动 - 尝试滚动一部分距离
-                    const scrollStep = Math.min(800, maxScrollTop - oldScrollTop); // 每次滚动不超过剩余距离
-                    if(scrollStep > 0) {
-                        scrollContainer.scrollTop = oldScrollTop + scrollStep;
-                    } else {
-                        // 已经到达底部
-                        scrollContainer.scrollTop = maxScrollTop;
-                    }
-                    
-                    // 等待滚动完成和新内容加载
-                    return new Promise(resolve => {
-                        setTimeout(() => {
-                            const newScrollTop = scrollContainer.scrollTop;
-                            const newRowCount = tbody.querySelectorAll('tr').length;
-                            const atBottom = Math.abs(scrollContainer.scrollHeight - scrollContainer.scrollTop - scrollContainer.clientHeight) < 50;
-                            
-                            console.log("滚动后scrollTop:", newScrollTop);
-                            console.log("滚动后行数:", newRowCount);
-                            console.log("是否到达底部:", atBottom);
-                            
-                            // 收集当前可见的所有行
-                            const rows = tbody.querySelectorAll('tr');
-                            const current_rows = [];
-                            
-                            rows.forEach((row, index) => {
-                                // 获取行的唯一标识
-                                const rowKey = row.getAttribute('data-row-key') || 
-                                            row.getAttribute('data-rowindex') || 
-                                            row.getAttribute('data-id') || 
-                                            `row_${index}`;
-                                
-                                current_rows.push({
-                                    key: rowKey,
-                                    html: row.outerHTML,
-                                    rowIndex: index
-                                });
-                            });
-                            
-                            resolve({
-                                status: "scrolled",
-                                new_rows: current_rows,
-                                total_rows: current_rows.length,
-                                scroll_position: newScrollTop,
-                                old_scroll_position: oldScrollTop,
-                                row_count_before: oldRowCount,
-                                row_count_after: newRowCount,
-                                at_bottom: atBottom,
-                                max_scroll: maxScrollTop,
-                                client_height: scrollContainer.clientHeight
-                            });
-                        }, 1500); // 增加等待时间到1.5秒确保内容加载
-                    });
-                }""")
-                
-                print(f'滚动结果: 第{attempts}次滚动 | 状态: {scroll_result.get("status", "unknown")} | 滚动前行数: {scroll_result.get("row_count_before", 0)} | 滚动后行数: {scroll_result.get("row_count_after", 0)} | 当前总数: {scroll_result.get("total_rows", 0)}')
-                print(f'滚动位置: {scroll_result.get("old_scroll_position", 0)} -> {scroll_result.get("scroll_position", 0)} | 最大滚动: {scroll_result.get("max_scroll", 0)} | 客户端高度: {scroll_result.get("client_height", 0)}')
-                
-                # 处理滚动结果
-                if scroll_result and isinstance(scroll_result, dict):
-                    new_rows = scroll_result.get('new_rows', [])
-                    
-                    # 检查是否有tbody
-                    if scroll_result.get('status') == 'no_tbody':
-                        print("未找到tbody元素，请检查选择器路径")
-                        break
-                    
-                    # 过滤出新的行
-                    new_unique_rows = []
-                    for row_data in new_rows:
-                        row_key = row_data.get('key')
-                        if row_key and row_key not in seen_row_keys:
-                            new_unique_rows.append(row_data)
-                            seen_row_keys.add(row_key)
-                    
-                    # 添加新行到总集合
-                    if new_unique_rows:
-                        collected_rows.extend(new_unique_rows)
-                        consecutive_empty_attempts = 0  # 重置连续空尝试计数
-                        print(f"发现 {len(new_unique_rows)} 个新行，总计 {len(collected_rows)} 行")
-                    else:
-                        consecutive_empty_attempts += 1
-                        print(f"未发现新行，连续空尝试: {consecutive_empty_attempts}")
-                    
-                    # 检查是否已到达底部
-                    if scroll_result.get('at_bottom', False):
-                        print("已到达底部，停止滚动")
-                        break
-                else:
-                    consecutive_empty_attempts += 1
-                    print(f"滚动结果异常，连续空尝试: {consecutive_empty_attempts}")
-                
-                # 等待一段时间再进行下次滚动
-                await page.wait_for_timeout(1500)
-            
-            print(f'最终收集到 {len(collected_rows)} 行数据')
-            
-            # 处理收集到的数据
-            if collected_rows:
-                print(f"总共收集到 {len(collected_rows)} 行HTML数据")
-                
-                # 解析收集到的行数据
-                parsed_products = []
-                
-                for row_data in collected_rows:
-                    try:
-                        # 在frame中执行解析
-                        parsed_data = await frame.evaluate("""(rowHtml) => {
-                            // 创建临时div来解析HTML
-                            const tempDiv = document.createElement('div');
-                            tempDiv.innerHTML = rowHtml;
-                            const row = tempDiv.querySelector('tr');
-                            
-                            if (!row) return null;
-                            
-                            const cells = row.querySelectorAll('td');
-                            const cellData = [];
-                            
-                            cells.forEach(cell => {
-                                cellData.push(cell.textContent.trim());
-                            });
-                            
-                            return {
-                                cell_count: cellData.length,
-                                cells: cellData
-                            };
-                        }""", row_data['html'])
-                        
-                        if parsed_data and parsed_data['cell_count'] >= 4:
-                            # 根据实际列的含义分配值，而不是假设固定顺序
-                            # 表格列索引 1-33 对应以下字段：
-                            # 索引1: 订单号 (order_number)
-                            # 索引2: 线上订单号 (online_order_number)
-                            # 索引3: 店铺名称 (shop_name)
-                            # 索引4: 标签 (label)
-                            # 索引5: 商品信息 (name/goods info)
-                            # 索引6: 买家昵称&收件人 (buyer_nickname)
-                            # 索引7: 供应商 (supplier)
-                            # 索引8: 采购金额 (purchase_amount)
-                            # 索引9: 状态 (status)
-                            # 索引10: 快递公司 (shipping_company)
-                            # 索引11: 解决方案 (solution)
-                            # 索引13: 分销商推单时间 (distributor_push_time)
-                            # 索引20: 客户下单数量 (customer_quantity)
-                            # 索引21: 客户下单金额 (customer_amount)
-                            # 索引23: 重量 (weight)
-                            # 索引24: 实际称重重量 (actual_weight)
-                            # 索引27: 买家留言 (buyer_message)
-                            # 索引28: 卖家备注/旗帜 (seller_remark)
-                            # 索引29: 线下备注 (offline_remark)
-                            # 索引30: 下单时间 (placing_time)
-                            # 索引31: 付款时间 (payment_time)
-                            # 索引32: 发货时间 (shipping_time)
-                            # 索引33: 分销商 (distributor)
-                            # 索引34: 发货仓库 (shipping_warehouse)
-                            
-                            order_number = cell_texts[1] if len(cell_texts) > 1 else ""
-                            online_order_number = cell_texts[2] if len(cell_texts) > 2 else ""
-                            shop_name = cell_texts[3] if len(cell_texts) > 3 else ""
-                            label = cell_texts[4] if len(cell_texts) > 4 else ""
-                            name_candidate = cell_texts[5] if len(cell_texts) > 5 else ""
-                            buyer_nickname = cell_texts[6] if len(cell_texts) > 6 else ""
-                            supplier = cell_texts[7] if len(cell_texts) > 7 else ""
-                            purchase_amount_candidate = cell_texts[8] if len(cell_texts) > 8 else ""
-                            status = cell_texts[9] if len(cell_texts) > 9 else ""
-                            shipping_company = cell_texts[10] if len(cell_texts) > 10 else ""
-                            solution = cell_texts[11] if len(cell_texts) > 11 else ""
-                            distributor_push_time = cell_texts[12] if len(cell_texts) > 12 else ""  # 注意这里索引可能有变化
-                            customer_quantity_candidate = cell_texts[19] if len(cell_texts) > 19 else ""  # 索引20对应数组索引19
-                            customer_amount_candidate = cell_texts[20] if len(cell_texts) > 20 else ""  # 索引21对应数组索引20
-                            weight_candidate = cell_texts[22] if len(cell_texts) > 22 else ""  # 索引23对应数组索引22
-                            actual_weight_candidate = cell_texts[23] if len(cell_texts) > 23 else ""  # 索引24对应数组索引23
-                            buyer_message = cell_texts[26] if len(cell_texts) > 26 else ""  # 索引27对应数组索引26
-                            seller_remark = cell_texts[27] if len(cell_texts) > 27 else ""  # 索引28对应数组索引27
-                            offline_remark = cell_texts[28] if len(cell_texts) > 28 else ""  # 索引29对应数组索引28
-                            placing_time = cell_texts[29] if len(cell_texts) > 29 else ""  # 索引30对应数组索引29
-                            payment_time = cell_texts[30] if len(cell_texts) > 30 else ""  # 索引31对应数组索引30
-                            shipping_time = cell_texts[31] if len(cell_texts) > 31 else ""  # 索引32对应数组索引31
-                            distributor = cell_texts[32] if len(cell_texts) > 32 else ""  # 索引33对应数组索引32
-                            shipping_warehouse = cell_texts[33] if len(cell_texts) > 33 else ""  # 索引34对应数组索引33
-                            
-                            # 智能解析价格：从文本中提取数字部分（这里我们使用采购金额作为价格参考）
-                            import re
-                            purchase_amount_match = re.search(r'[\d,]+\.?\d*', purchase_amount_candidate.replace(',', ''))
-                            purchase_amount = float(purchase_amount_match.group()) if purchase_amount_match else 0.0
-                            
-                            # 智能解析客户下单金额
-                            customer_amount_match = re.search(r'[\d,]+\.?\d*', customer_amount_candidate.replace(',', ''))
-                            customer_amount = float(customer_amount_match.group()) if customer_amount_match else 0.0
-                            
-                            # 智能解析客户下单数量
-                            customer_quantity_match = re.search(r'\d+', customer_quantity_candidate)
-                            customer_quantity = int(customer_quantity_match.group()) if customer_quantity_match else 0
-                            
-                            # 智能解析重量
-                            weight_match = re.search(r'[\d.]+', weight_candidate)
-                            weight = float(weight_match.group()) if weight_match else 0.0
-                            
-                            # 智能解析实际重量
-                            actual_weight_match = re.search(r'[\d.]+', actual_weight_candidate)
-                            actual_weight = float(actual_weight_match.group()) if actual_weight_match else 0.0
-                            
-                            # 解析商品名称和ID（从商品信息列中进一步解析）
-                            # 假设商品信息格式为 "商品ID-商品名称" 或类似格式
-                            goods_id = ""
-                            name = name_candidate
-                            
-                            # 如果需要从商品信息中分离ID和名称，可以添加解析逻辑
-                            if '-' in name_candidate:
-                                parts = name_candidate.split('-', 1)  # 分割成最多两部分
-                                if len(parts) == 2:
-                                    goods_id = parts[0].strip()
-                                    name = parts[1].strip()
-                            
-                            # 创建商品对象
-                            product = ProductInfo(
-                                goods_id=goods_id,
-                                name=name,
-                                price=purchase_amount,  # 使用采购金额作为价格
-                                stock=customer_quantity,  # 使用客户下单数量作为库存参考
-                                order_number=order_number,
-                                online_order_number=online_order_number,
-                                shop_name=shop_name,
-                                label=label,
-                                buyer_nickname=buyer_nickname,
-                                supplier=supplier,
-                                purchase_amount=purchase_amount,
-                                status=status,
-                                shipping_company=shipping_company,
-                                solution=solution,
-                                distributor_push_time=distributor_push_time,
-                                customer_quantity=customer_quantity,
-                                customer_amount=customer_amount,
-                                weight=weight,
-                                actual_weight=actual_weight,
-                                buyer_message=buyer_message,
-                                seller_remark=seller_remark,
-                                offline_remark=offline_remark,
-                                placing_time=placing_time,
-                                payment_time=payment_time,
-                                shipping_time=shipping_time,
-                                distributor=distributor,
-                                shipping_warehouse=shipping_warehouse,
-                                platform="jushuitan"
-                            )
-                            products.append(product)
-                            
-                    except Exception as parse_error:
-                        print(f"解析行数据时出错: {parse_error}")
-                        continue
-                
-                print(f"成功解析 {len(parsed_products)} 个商品")
-                product_rows = parsed_products
-            else:
-                print("未收集到有效数据")
-                product_rows = []
-                
-        except Exception as e:
-            print(f"访问 iframe 失败: {e}")
-            # 如果无法访问 iframe，继续在主页面查找
-            product_rows = []
+                }
+                return null;
+            """, tbody_selector)
         
-        print('product_rows-------->', len(product_rows))
+        if not scroll_container:
+            print("未找到滚动容器")
+            # 尝试获取当前页面上的所有行
+            rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
+            print(f"找到 {len(rows)} 行数据（无滚动）")
+        else:
+            print("开始滚动加载更多数据...")
+            
+            # 滚动加载所有数据
+            last_height = self.driver.execute_script("return arguments[0].scrollHeight", scroll_container)
+            consecutive_no_new = 0
+            max_consecutive_no_new = 3
+            max_scrolls = 20
+            
 
-
-        products = []
-        for row in product_rows:
-            try:
-                # 提取商品信息 - 使用更灵活的选择器
-                cells = await row.locator("td").all()
+            data_rows = []
+            for i in range(max_scrolls):
+                if consecutive_no_new >= max_consecutive_no_new:
+                    print("连续多次未发现新数据，停止滚动")
+                    break
                 
-                if len(cells) >= 4:  # 确保有足够的列
-                    # 获取单元格文本内容
-                    cell_texts = []
-                    for cell in cells:
-                        text = await cell.text_content()
-                        cell_texts.append(text.strip())
+                # 获取滚动容器的当前状态
+                current_scroll_top = self.driver.execute_script("return arguments[0].scrollTop", scroll_container)
+                scroll_height = self.driver.execute_script("return arguments[0].scrollHeight", scroll_container)
+                client_height = self.driver.execute_script("return arguments[0].clientHeight", scroll_container)
+                
+                # 计算滚动步长（大致相当于5行数据的高度）
+                # 先获取当前可见的行数来估算每行高度
+                current_visible_rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
+                if len(current_visible_rows) > 0:
+                    # 估算每行高度，使用第一行来计算
+                    try:
+                        first_row = current_visible_rows[0]
+                        row_height = self.driver.execute_script("""
+                            var rect = arguments[0].getBoundingClientRect();
+                            return rect.height;
+                        """, first_row)
+                        step_height = int(row_height * 5)  # 每次滚动大约5行的高度
+                    except:
+                        step_height = 200  # 默认步长
+                else:
+                    step_height = 200  # 默认步长
+                
+                # 滚动指定的距离
+                new_scroll_top = min(current_scroll_top + step_height, scroll_height - client_height)
+                
+                # 如果已经到达底部，跳出循环
+                if current_scroll_top >= scroll_height - client_height - 10:  # 10是容差
+                    print("已到达底部")
+                    break
+                
+                # 执行滚动
+                self.driver.execute_script("arguments[0].scrollTop = arguments[1];", scroll_container, new_scroll_top)
+                
+                time.sleep(2)  # 等待新数据加载
+                
+                # 检查新的滚动高度和位置
+                updated_scroll_top = self.driver.execute_script("return arguments[0].scrollTop", scroll_container)
+                updated_scroll_height = self.driver.execute_script("return arguments[0].scrollHeight", scroll_container)
+                
+                if updated_scroll_top == current_scroll_top:
+                    consecutive_no_new += 1
+                    print(f"滚动 {i+1}: 没有新数据加载 (连续 {consecutive_no_new} 次)")
+                else:
+                    consecutive_no_new = 0
+                    print(f"滚动 {i+1}: 位置从 {current_scroll_top} 移动到 {updated_scroll_top}, 总高度 {updated_scroll_height}")
+
+
+                data_rows.extend(self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr"))
+
+        
+        # 获取所有行数据
+        print(f"总共找到 {len(data_rows)} 行数据")
+
+        # 去重
+        data_rows = list(set(data_rows))
+        # 去重后数据
+        print(f"去重后 {len(data_rows)} 行数据")
+        
+        products = []
+        # 重新获取所有的行，以确保元素引用是最新的
+        all_current_rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
+        
+        for row in all_current_rows:
+            try:
+                # 获取行中的所有单元格
+                cells = row.find_elements(By.TAG_NAME, "td")
+                
+                if len(cells) >= 5:  # 确保有足够的列
+                    cell_texts = [cell.text.strip() for cell in cells]
                     
-                    # 根据实际列的含义分配值，而不是假设固定顺序
-                    # 一般情况下，表格列可能是：商品ID、商品名称、价格、库存等
-                    goods_id = cell_texts[0] if len(cell_texts) > 0 else ""
-                    name = cell_texts[1] if len(cell_texts) > 1 else ""
-                    price_candidate = cell_texts[2] if len(cell_texts) > 2 else ""
-                    stock_candidate = cell_texts[3] if len(cell_texts) > 3 else ""
+                    # 根据表格列的定义映射数据
+                    # 索引1-33 对应不同字段，跳过索引0
+                    order_number = cell_texts[1] if len(cell_texts) > 1 else ""
+                    online_order_number = cell_texts[2] if len(cell_texts) > 2 else ""
+                    shop_name = cell_texts[3] if len(cell_texts) > 3 else ""
+                    label = cell_texts[4] if len(cell_texts) > 4 else ""
+                    name_candidate = cell_texts[5] if len(cell_texts) > 5 else ""
+                    buyer_nickname = cell_texts[6] if len(cell_texts) > 6 else ""
+                    supplier = cell_texts[7] if len(cell_texts) > 7 else ""
+                    purchase_amount_candidate = cell_texts[8] if len(cell_texts) > 8 else ""
+                    status = cell_texts[9] if len(cell_texts) > 9 else ""
+                    shipping_company = cell_texts[10] if len(cell_texts) > 10 else ""
+                    solution = cell_texts[11] if len(cell_texts) > 11 else ""
+                    distributor_push_time = cell_texts[12] if len(cell_texts) > 12 else ""
+                    customer_quantity_candidate = cell_texts[20] if len(cell_texts) > 20 else ""  # 索引21
+                    customer_amount_candidate = cell_texts[21] if len(cell_texts) > 21 else ""   # 索引22
+                    weight_candidate = cell_texts[23] if len(cell_texts) > 23 else ""           # 索引24
+                    actual_weight_candidate = cell_texts[24] if len(cell_texts) > 24 else ""    # 索引25
+                    buyer_message = cell_texts[27] if len(cell_texts) > 27 else ""             # 索引28
+                    seller_remark = cell_texts[28] if len(cell_texts) > 28 else ""             # 索引29
+                    offline_remark = cell_texts[29] if len(cell_texts) > 29 else ""            # 索引30
+                    placing_time = cell_texts[30] if len(cell_texts) > 30 else ""              # 索引31
+                    payment_time = cell_texts[31] if len(cell_texts) > 31 else ""              # 索引32
+                    shipping_time = cell_texts[32] if len(cell_texts) > 32 else ""             # 索引33
+                    distributor = cell_texts[33] if len(cell_texts) > 33 else ""               # 索引34
+                    shipping_warehouse = cell_texts[34] if len(cell_texts) > 34 else ""        # 索引35
                     
-                    # 智能解析价格：从文本中提取数字部分
+                    # 解析数值
                     import re
-                    price_match = re.search(r'[\d,]+\.?\d*', price_candidate.replace(',', ''))
-                    price = float(price_match.group()) if price_match else 0.0
+                    purchase_amount_match = re.search(r'[\d,]+\.?\d*', purchase_amount_candidate.replace(',', ''))
+                    purchase_amount = float(purchase_amount_match.group()) if purchase_amount_match else 0.0
                     
-                    # 智能解析库存：提取数字部分
-                    stock_match = re.search(r'\d+', stock_candidate)
-                    stock = int(stock_match.group()) if stock_match else 0
+                    customer_amount_match = re.search(r'[\d,]+\.?\d*', customer_amount_candidate.replace(',', ''))
+                    customer_amount = float(customer_amount_match.group()) if customer_amount_match else 0.0
                     
-                    # 创建商品对象
+                    customer_quantity_match = re.search(r'\d+', customer_quantity_candidate)
+                    customer_quantity = int(customer_quantity_match.group()) if customer_quantity_match else 0
+                    
+                    weight_match = re.search(r'[\d.]+', weight_candidate)
+                    weight = float(weight_match.group()) if weight_match else 0.0
+                    
+                    actual_weight_match = re.search(r'[\d.]+', actual_weight_candidate)
+                    actual_weight = float(actual_weight_match.group()) if actual_weight_match else 0.0
+                    
+                    # 解析商品名称和ID
+                    goods_id = ""
+                    name = name_candidate
+                    
+                    if '-' in name_candidate:
+                        parts = name_candidate.split('-', 1)
+                        if len(parts) == 2:
+                            goods_id = parts[0].strip()
+                            name = parts[1].strip()
+                    
+                    # 创建产品对象
                     product = ProductInfo(
                         goods_id=goods_id,
                         name=name,
-                        price=price,
-                        stock=stock,
+                        price=purchase_amount,
+                        stock=customer_quantity,
+                        order_number=order_number,
+                        online_order_number=online_order_number,
+                        shop_name=shop_name,
+                        label=label,
+                        buyer_nickname=buyer_nickname,
+                        supplier=supplier,
+                        purchase_amount=purchase_amount,
+                        status=status,
+                        shipping_company=shipping_company,
+                        solution=solution,
+                        distributor_push_time=distributor_push_time,
+                        customer_quantity=customer_quantity,
+                        customer_amount=customer_amount,
+                        weight=weight,
+                        actual_weight=actual_weight,
+                        buyer_message=buyer_message,
+                        seller_remark=seller_remark,
+                        offline_remark=offline_remark,
+                        placing_time=placing_time,
+                        payment_time=payment_time,
+                        shipping_time=shipping_time,
+                        distributor=distributor,
+                        shipping_warehouse=shipping_warehouse,
                         platform="jushuitan"
                     )
+                    
                     products.append(product)
+                    
             except Exception as e:
-                print(f"解析商品数据时出错: {e}")
-                # 输出错误详情以便调试
-                print(f"错误发生在处理行时，行内容可能为: {await row.text_content() if 'row' in locals() else 'unknown'}")
+                print(f"解析行数据时出错: {e}")
                 continue
         
-        await page.close()
+        print(f"成功解析 {len(products)} 个商品")
         return products
 
+    def close(self):
+        """关闭浏览器"""
+        self.driver.quit()
 
-class PddSpider:
-    """拼多多平台爬虫"""
-    
-    def __init__(self, username: str, password: str):
-        self.username = username
-        self.password = password
-        self.browser = None
-        
-    async def init_browser(self):
-        """初始化浏览器"""
-        playwright = await async_playwright().start()
-        self.browser = await playwright.chromium.launch(headless=True)
-        
-    async def login(self):
-        """登录拼多多商家后台"""
-        if not self.browser:
-            await self.init_browser()
-            
-        page = await self.browser.new_page()
-        await page.goto("https://mms.pinduoduo.com/login")  # 实际URL可能不同
-        
-        # 输入用户名和密码
-        await page.fill("#username-input", self.username)
-        await page.fill("#password-input", self.password)
-        
-        # 点击登录按钮
-        await page.click("#login-button")
-        
-        # 等待登录成功
-        await page.wait_for_url("**/home**")
-        
-        return page
-    
-    async def get_products(self) -> List[ProductInfo]:
-        """获取商品列表"""
-        page = await self.login()
-        
-        # 导航到商品页面（示例）
-        await page.goto("https://mms.pinduoduo.com/goods/list")
-        
-        # 获取商品列表（示例选择器，实际可能不同）
-        product_elements = await page.locator(".goods-item").all()
-        
-        products = []
-        for element in product_elements:
-            # 提取商品信息（示例选择器，实际可能不同）
-            goods_id = await element.locator(".goods-id").text_content()
-            name = await element.locator(".goods-name").text_content()
-            price_str = await element.locator(".goods-price").text_content()
-            price = float(price_str.replace("¥", "").strip())
-            stock_str = await element.locator(".goods-stock").text_content()
-            stock = int(stock_str) if stock_str.isdigit() else 0
-            
-            product = ProductInfo(
-                goods_id=goods_id.strip(),
-                name=name.strip(),
-                price=price,
-                stock=stock,
-                platform="pinduoduo"
-            )
-            products.append(product)
-        
-        await page.close()
-        return products
-
-
-async def crawl_all_platforms(jushuitan_creds: Dict, pdd_creds: Dict) -> Dict[str, List[ProductInfo]]:
-    """爬取所有平台的数据"""
-    results = {}
-    
-    # 爬取聚水潭数据
-    if jushuitan_creds:
-        jushuitan_spider = JushuitanSpider(jushuitan_creds['username'], jushuitan_creds['password'])
-        results['jushuitan'] = await jushuitan_spider.get_products()
-    
-    # 爬取拼多多数据
-    # if pdd_creds:
-    #     pdd_spider = PddSpider(pdd_creds['username'], pdd_creds['password'])
-    #     results['pinduoduo'] = await pdd_spider.get_products()
-    
-    return results
-
-
+# 使用示例
 if __name__ == "__main__":
-    """测试爬虫功能"""
-    import os
-    
-    # 从环境变量获取凭据，或者使用测试值
-    jushuitan_username = os.getenv("JUSHUITAN_USERNAME", "your_jushuitan_username")
-    jushuitan_password = os.getenv("JUSHUITAN_PASSWORD", "your_jushuitan_password")
-    pdd_username = os.getenv("PDD_USERNAME", "your_pdd_username")
-    pdd_password = os.getenv("PDD_PASSWORD", "your_pdd_password")
-    
-    async def main():
-        jushuitan_creds = {
-            'username': '17607992526',
-            'password': 'Aa12345600.'
-        }
-        
-        pdd_creds = {
-            'username': pdd_username,
-            'password': pdd_password
-        }
-        
-        # 爬取所有平台数据
-        results = await crawl_all_platforms(jushuitan_creds, pdd_creds)
-        
-        # 打印结果
-        for platform, products in results.items():
-            print(f"\n{platform} 平台商品数量: {len(products)}")
-            for product in products[:5]:  # 只显示前5个商品作为示例
-                print(f"- 商品名称: {product.name}, 价格: {product.price}, 库存: {product.stock}")
-    
-    # 运行异步主函数
-    asyncio.run(main())
+    crawler = SeleniumCrawler()
+    try:
+        crawler.login()
+        products = crawler.get_products()
+        print(f"jushuitan 平台商品数量: {len(products)}")
+        for product in products[:5]:  # 显示前5个商品
+            print(f"商品ID: {product.goods_id}, 名称: {product.name}, 价格: {product.price}, 库存: {product.stock}")
+    finally:
+        crawler.close()
