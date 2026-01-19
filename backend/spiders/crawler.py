@@ -12,6 +12,8 @@ import time
 import json
 from dataclasses import dataclass
 from typing import List, Optional
+import re
+
 
 @dataclass
 class ProductInfo:
@@ -79,6 +81,88 @@ class SeleniumCrawler:
         # 等待登录完成
         self.wait.until(EC.url_changes("https://sc.scm121.com/login"))
         time.sleep(3)  # 额外等待页面完全加载
+
+    def get_yesterday(self):
+        """获取昨天的00点到今天的00点的数据"""
+        from datetime import datetime, timedelta
+        
+        # 获取昨天的日期
+        yesterday_start = datetime.combine(datetime.now().date() - timedelta(days=1), datetime.min.time())
+        today_start = datetime.combine(datetime.now().date(), datetime.min.time())
+        
+        # 格式化为字符串（根据API需要的格式调整）
+        start_time = yesterday_start.strftime('%Y-%m-%d %H:%M:%S')
+        end_time = today_start.strftime('%Y-%m-%d %H:%M:%S')
+        
+        return start_time, end_time
+
+    def get_total_count(self):
+        # channelOrder-table-wrap > div:nth-child(3) > div.antd-pro-components-antd-base-table-index-stickyFootBar > div.antd-pro-components-antd-base-table-index-rt > ul > li.ant-pagination-total-text
+        # 正则提取这个selector里的数字
+        total_count_selector = '#channelOrder-table-wrap > div:nth-child(3) > div.antd-pro-components-antd-base-table-index-stickyFootBar > div.antd-pro-components-antd-base-table-index-rt > ul > li.ant-pagination-total-text'
+        total_count_element = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, total_count_selector)))
+        total_count_text = total_count_element.text
+        
+        import re
+        # 使用正则表达式提取文本中的数字
+        match = re.search(r'(\d+)', total_count_text)
+        if match:
+            total_count = int(match.group(1))
+        else:
+            total_count = 0  # 如果没有找到数字，则默认为0
+        
+        # 计算总页数，每页50条记录
+        items_per_page = 50
+        if total_count == 0:
+            total_pages = 1  # 当总数为0时，显示1页
+        elif total_count <= items_per_page:
+            total_pages = 1  # 当总数小于等于每页数量时，显示1页
+        else:
+            total_pages = (total_count + items_per_page - 1) // items_per_page  # 向上取整
+        
+        return total_count, total_pages
+
+
+
+    def to_jushuitan_task(self):
+        # 执行聚水潭任务
+
+        # ********* 1. 导航到商品页面 *********
+        self.driver.get("https://sc.scm121.com/tradeManage/tower/distribute")
+        time.sleep(5)  # 等待页面加载
+
+        # ********* 2.获取前一日的时间，并设置到时间选择器中 *********
+        starttime_ele = "#supplierManageQuery_time > span > div.antd-pro-components-query-widgets-select-component-index-right > div > span > div.ant-picker.antd-pro-components-query-widgets-range-date-picker-v2-index-leftPicker > div > input"
+        endtime_ele = "#supplierManageQuery_time > span > div.antd-pro-components-query-widgets-select-component-index-right > div > span > div.ant-picker.antd-pro-components-query-widgets-range-date-picker-v2-index-rightPicker > div > input"
+        start_time, end_time = self.get_yesterday()
+        start_time_input = self.driver.find_element(By.CSS_SELECTOR, starttime_ele)
+        end_time_input = self.driver.find_element(By.CSS_SELECTOR, endtime_ele)
+        start_time_input.clear()
+        end_time_input.clear()
+        start_time_input.send_keys(start_time)
+        end_time_input.send_keys(end_time)
+        
+        serch_btn = "#supplierManageQuery_queryFilter > div:nth-child(3) > div > div:nth-child(2) > div > div.ant-space.ant-space-horizontal.ant-space-align-center.antd-pro-components-query-filter-with-config-index-right > div:nth-child(1) > button" # 点击查询按钮
+        query_button = self.driver.find_element(By.CSS_SELECTOR, serch_btn)
+        query_button.click()
+
+        # ********* 3. 获取商品列表 *********
+        
+
+
+
+
+        # 3. 切换到iframe（如果存在）
+        try:
+            iframe = self.wait.until(EC.presence_of_element_located((By.ID, "tradeManage1")))
+            self.driver.switch_to.frame(iframe)
+            print("已切换到iframe")
+        except:
+            print("未找到iframe，继续在主页面操作")
+
+
+        
+
 
     def get_products(self) -> List[ProductInfo]:
         """获取商品列表"""
@@ -233,6 +317,13 @@ class SeleniumCrawler:
             try:
                 # 获取行中的所有单元格
                 cells = row.find_elements(By.TAG_NAME, "td")
+
+                cell_texts = [cell.text for cell in cells]
+                
+                print('cells========>', cell_texts[1] if len(cell_texts) > 1 else "",
+                cell_texts[2] if len(cell_texts) > 2 else "",
+                cell_texts[3] if len(cell_texts) > 3 else "",
+                )
                 
                 if len(cells) >= 5:  # 确保有足够的列
                     cell_texts = [cell.text.strip() for cell in cells]
