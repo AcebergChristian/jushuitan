@@ -16,9 +16,28 @@ import time
 import json
 from dataclasses import dataclass
 from typing import List, Optional
-import re   
-
+import re
+import hashlib
 from datetime import datetime, timedelta
+import sys
+import os
+
+
+# 添加项目根目录到系统路径
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
+try:
+    from backend.utils.datatodb import DataToDB
+except ImportError:
+    # 如果直接导入失败，尝试另一种方式
+    import importlib.util
+    datatodb_path = os.path.join(project_root, 'utils', 'datatodb.py')  # 修正路径，不需要重复backend
+    spec = importlib.util.spec_from_file_location("datatodb", datatodb_path)
+    datatodb_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(datatodb_module)
+    DataToDB = datatodb_module.DataToDB
+
 
 @dataclass
 class ProductInfo:
@@ -217,109 +236,35 @@ class SeleniumCrawler:
         
         return scroll_container
 
-    def scroll_and_collect_data(self, tbody_selector, max_scrolls=20):
-        """滚动并收集数据"""
-        scroll_container = self.get_scroll_container(tbody_selector)
-        
-        if not scroll_container:
-            print("未找到滚动容器")
-            # 尝试获取当前页面上的所有行
-            rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
-            print(f"找到 {len(rows)} 行数据（无滚动）")
-            return rows
-        
-        print("开始滚动加载更多数据...")
-        
-        # 滚动加载所有数据
-        last_height = self.driver.execute_script("return arguments[0].scrollHeight", scroll_container)
-        consecutive_no_new = 0
-        max_consecutive_no_new = 3
-        
-        data_rows = []
-        for i in range(max_scrolls):
-            if consecutive_no_new >= max_consecutive_no_new:
-                print("连续多次未发现新数据，停止滚动")
-                break
-            
-            # 获取滚动容器的当前状态
-            current_scroll_top = self.driver.execute_script("return arguments[0].scrollTop", scroll_container)
-            scroll_height = self.driver.execute_script("return arguments[0].scrollHeight", scroll_container)
-            client_height = self.driver.execute_script("return arguments[0].clientHeight", scroll_container)
-            
-            # 计算滚动步长（大致相当于5行数据的高度）
-            # 先获取当前可见的行数来估算每行高度
-            current_visible_rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
-            if len(current_visible_rows) > 0:
-                # 估算每行高度，使用第一行来计算
-                try:
-                    first_row = current_visible_rows[0]
-                    row_height = self.driver.execute_script("""
-                        var rect = arguments[0].getBoundingClientRect();
-                        return rect.height;
-                    """, first_row)
-                    step_height = int(row_height * 5)  # 每次滚动大约5行的高度
-                except:
-                    step_height = 200  # 默认步长
-            else:
-                step_height = 200  # 默认步长
-            
-            # 滚动指定的距离
-            new_scroll_top = min(current_scroll_top + step_height, scroll_height - client_height)
-            
-            # 如果已经到达底部，跳出循环
-            if current_scroll_top >= scroll_height - client_height - 10:  # 10是容差
-                print("已到达底部")
-                break
-            
-            # 执行滚动
-            self.driver.execute_script("arguments[0].scrollTop = arguments[1];", scroll_container, new_scroll_top)
-            
-            time.sleep(2)  # 等待新数据加载
-            
-            # 检查新的滚动高度和位置
-            updated_scroll_top = self.driver.execute_script("return arguments[0].scrollTop", scroll_container)
-            updated_scroll_height = self.driver.execute_script("return arguments[0].scrollHeight", scroll_container)
-            
-            if updated_scroll_top == current_scroll_top:
-                consecutive_no_new += 1
-                print(f"滚动 {i+1}: 没有新数据加载 (连续 {consecutive_no_new} 次)")
-            else:
-                consecutive_no_new = 0
-                print(f"滚动 {i+1}: 位置从 {current_scroll_top} 移动到 {updated_scroll_top}, 总高度 {updated_scroll_height}")
 
-            data_rows.extend(self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr"))
-
-        return data_rows
-
-
-    def scroll_and_parse_data(self, tbody_selector, max_scrolls=30):
+    # 滚动获取tr数据并解析到list
+    def scroll_and_parse_data(self, tbody_selector, max_scrolls=200):
         scroll_container = self.get_scroll_container(tbody_selector)
         if not scroll_container:
-            print("未找到滚动容器")
             return []
 
-        print("开始滚动 + 实时解析数据...")
-
-        parsed_products = {}
+        parsed = {}
+        STEP = 300  # 小步长，接近一行高度
         last_scroll_top = -1
 
-        for i in range(max_scrolls):
-            # 1️⃣ 获取当前可见行
-            try:
-                rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
-            except StaleElementReferenceException:
-                continue
+        for _ in range(max_scrolls):
+            rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
 
             for row in rows:
                 try:
                     cells = row.find_elements(By.TAG_NAME, "td")
                     product = self.parse_product_data(cells)
-                    if product and product.order_number:
-                        parsed_products[product.order_number] = product
-                except StaleElementReferenceException:
+                    if not product:
+                        continue
+
+                    # 🔥 行级唯一 key（不依赖业务字段）
+                    row_text = "|".join(c.text for c in cells)
+                    row_key = hashlib.md5(row_text.encode("utf-8")).hexdigest()
+                    parsed[row_key] = product
+
+                except Exception:
                     continue
 
-            # 2️⃣ 计算是否到底
             scroll_top = self.driver.execute_script(
                 "return arguments[0].scrollTop", scroll_container
             )
@@ -331,22 +276,20 @@ class SeleniumCrawler:
             )
 
             if scroll_top >= scroll_height - client_height - 5:
-                print("已滚动到表格底部")
                 break
 
-            # 3️⃣ 滚动一步
-            self.driver.execute_script(
-                "arguments[0].scrollTop = arguments[0].scrollTop + arguments[0].clientHeight",
-                scroll_container
-            )
-            time.sleep(1.2)
-
-            # 4️⃣ 防死循环
             if scroll_top == last_scroll_top:
                 break
             last_scroll_top = scroll_top
 
-        return list(parsed_products.values())
+            self.driver.execute_script(
+                "arguments[0].scrollTop = arguments[0].scrollTop + arguments[1];",
+                scroll_container,
+                STEP
+            )
+            time.sleep(0.3)
+
+        return list(parsed.values())
 
     def navigate_to_page(self):
         """导航到目标页面"""
@@ -551,6 +494,15 @@ class SeleniumCrawler:
         time.sleep(5)
         self.switch_to_iframe()
         
+        # 点击"已取消"按钮（这里需要根据实际页面结构调整选择器
+        try:
+            cancelled_btn = self.driver.find_element(By.CSS_SELECTOR, self.cancelled_btn)
+            # 这里需要替换为实际的选择器
+            cancelled_btn.click()
+            time.sleep(2)
+        except:
+            print("未找到'已取消'按钮，跳过此步骤")
+
         # 获取前一日的时间，并设置到时间选择器中
         start_time, end_time = self.get_yesterday()
         self.set_date_range(start_time, end_time)
@@ -587,13 +539,25 @@ class SeleniumCrawler:
 
 # 使用示例
 if __name__ == "__main__":
+    time1 = time.time()
     crawler = SeleniumCrawler()
     try:
         crawler.login()
         products, regular_total, return_total = crawler.get_products()
         print(f"jushuitan 平台商品数量: {regular_total}, 被取消商品数量: {return_total}")
-        # print(f"jushuitan 平台商品列表: {products}")  # 显示前5个商品
+        db_manager = DataToDB()
+    
 
+        # 插入数据库
+        db_manager = DataToDB()
+        db_manager.insert_jushuitan_data(products)
+
+        print("数据插入完成", time.time() - time1)
+    
+    except Exception as e:
+        print(f"发生错误: {e}")
 
     finally:
         crawler.close()
+
+
