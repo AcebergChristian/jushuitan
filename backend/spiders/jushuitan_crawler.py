@@ -533,6 +533,9 @@ class SeleniumCrawler:
 
         return all_products, len(regular_products), len(return_products)
 
+
+
+
     def close(self):
         """关闭浏览器"""
         self.driver.quit()

@@ -21,6 +21,7 @@ import hashlib
 from datetime import datetime, timedelta
 import sys
 import os
+import requests
 
 
 # 添加项目根目录到系统路径
@@ -567,22 +568,76 @@ class SeleniumCrawler:
         return all_products, len(products), 0
 
 
+    def request(self):
+
+        url = "https://yingxiao.pinduoduo.com/mms-gateway/venus/api/goods/promotion/v1/list"
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 ...",
+            "Content-Type": "application/json",
+            "Referer": "https://yingxiao.pinduoduo.com/goods/promotion/list",
+            # 必须带上登录后的 Cookie
+            "Cookie": "eyJ0IjoiSFhuNXNjQjhrNDlqNXVKajY3QVJEaVNDU1UySS94czk1NER6cUZRUmFVODEzUS9CMzFkS3c3TG5RdGhuV0p5ZSIsInYiOjEsInMiOjIzLCJtIjoyNjM1NjQ3ODksInUiOjE3MzcwNTUyMn0"
+        }
+
+        payload = {
+            "crawlerInfo": "0asWtqlygjngygv9Q0cBoh5SHqZ2YXWVBZJZrXiFzd2ZURZaekBBqrlc-JDVA8A1mOwNfwEePw9syPBws947T-1n42BeYqfJowgtszKdex_bON2by8AEWosF3MkCtQElqio6hP5Q6rhD9BMbCeSSSckEewczPglYLJ2YfBTYB7eTmUTEfuAiP7Jc5EJ3VrTHu9EiJoMgoxyP89ha0ZuJWvTydd_eJtpzCGO3njASOo0fOabTK_zxNWabCVgc51RIXZ7bH-rN9ZWQGr2chnGC6vOa4P6k_Vo8P-XnsSRvJRkW_N7bBSkm5wTH35Xn9R-OcJVX6aH8xRkVpoomQP42Xn9A80Gu_IWnvPe-NiO2FCVaCIxhmI3TdrwMHvOaYac4GlgYbawMEKnKIW6GlhWsl7g0Gz1vY2qzGn7KmIVgcnLI3-iX20pl0lZFHp5qNluJC3FIMSoNtLro_K6ufQgtuSS082CoppWaS3CffZsr2EHVPvEx1H5kL1hTtA6qWZVbNZwZsbMI5KXFFAgl_g3_EpXMc-BjGsm5K1e96EJK0U4eVtX4ENcDUenzmMFt0httvZWoNCHwY7ArmsfjyMFFVgscpM19zIXa-S7KpXV2ha_rezL30b3_q1TxMH5ZcDo5h6YIZsSt3Dnyy_H_Lw-3rWLyb1MAsRnG58iGZLNicRkgNCPU1Xl3kN1d-7s2bG_AtOLJ2rBEzJ_urJ_PhBW3FaKl4RhhMbzMYWPoRD8Ep7WPaJ2hPTy9D8JbaP",
+            "clientType": 1,
+            "blockType": 3,
+            "beginDate": "2026-01-20",
+            "endDate": "2026-01-20",
+            "pageNumber": 1,
+            "pageSize": 50,
+            "sortBy": 9999,
+            "orderBy": 9999,
+            "filter": {},
+            "scenesMode": 1
+        }
+
+        response = requests.post(url, json=payload, headers=headers,
+            cookies={
+                "_a42": "386ba908-471c-4b9d-af6d-4a6bdb864a66",
+                "_bee": "hLBIWqdPbG9KmuR61y1cMuEu1YCxYQ7b",
+                "_f77" : "6e928cbe-c1ca-443d-b1f0-b17187327621",
+                "_nano_fp" : "Xpmjl0CJlpXJlpTbXo_FIMEr7tOdempOVQeEZl1q",
+                "api_uid" : "Ck9MdGlvHC1LLQBZQjvSAg==",
+                "rckk" : "hLBIWqdPbG9KmuR61y1cMuEu1YCxYQ7b",
+                "ru1k" : "6e928cbe-c1ca-443d-b1f0-b17187327621",
+                "ru2k" : "386ba908-471c-4b9d-af6d-4a6bdb864a66",
+                "SUB_PASS_ID" : "eyJ0IjoiRmp6SjJQbEg0YWgzQWZYNG9Dbkd6c3MxaERWUkl6N1NSU21kYUNLc29xcUJTV0NnWVRrT0xLbHpZU1YvWTh0VyIsInYiOjEsInMiOjcsIm0iOjI2MzU2NDc4OSwidSI6MTczNzA1NTIyfQ",
+                "SUB_SYSTEM_ID" : "7",
+                "windows_app_shop_token_23" : "eyJ0IjoiSFhuNXNjQjhrNDlqNXVKajY3QVJEaVNDU1UySS94czk1NER6cUZRUmFVODEzUS9CMzFkS3c3TG5RdGhuV0p5ZSIsInYiOjEsInMiOjIzLCJtIjoyNjM1NjQ3ODksInUiOjE3MzcwNTUyMn0"
+                
+            }
+            )
+
+        print(response.status_code)
+        print(response.text)
+
+
+
+
     def close(self):
         """关闭浏览器"""
         self.driver.quit()
+
 
 
 # 使用示例
 if __name__ == "__main__":
     crawler = SeleniumCrawler()
     try:
-        crawler.login()
-        products, regular_total, return_total = crawler.get_products()
-        print(f"pinduoduo 平台推广商品数量: {regular_total}, 被取消商品数量: {return_total}")
+        crawler.request()
+        # crawler.login()
+        # products, regular_total, return_total = crawler.get_products()
+        # print(f"pinduoduo 平台推广商品数量: {regular_total}, 被取消商品数量: {return_total}")
         
-        # 插入数据库
-        db_manager = DataToDB()
-        db_manager.insert_jushuitan_data(products)
+        # # 插入数据库
+        # db_manager = DataToDB()
+        # db_manager.insert_jushuitan_data(products)
+    
+    except Exception as e:
+        print(f"发生错误: {e}")
 
     finally:
         crawler.close()
