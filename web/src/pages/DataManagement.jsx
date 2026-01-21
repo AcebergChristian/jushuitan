@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import { 
   MagnifyingGlassIcon, 
-  FunnelIcon, 
+  FunnelIcon,
   ArrowDownTrayIcon, 
   PlusIcon,
   EyeIcon,
@@ -31,13 +31,6 @@ const DataManagement = () => {
     { id: 'ORD-001258', customer: '钱七', date: '2024-01-13', amount: 1899, status: 'cancelled', platform: '聚水潭' },
   ];
 
-  const customerData = [
-    { id: 1, name: '张三', email: 'zhangsan@example.com', phone: '138****8888', orders: 24, totalSpent: 45680, status: 'active' },
-    { id: 2, name: '李四', email: 'lisi@example.com', phone: '139****9999', orders: 12, totalSpent: 23450, status: 'active' },
-    { id: 3, name: '王五', email: 'wangwu@example.com', phone: '137****7777', orders: 8, totalSpent: 15600, status: 'inactive' },
-    { id: 4, name: '赵六', email: 'zhaoliu@example.com', phone: '136****6666', orders: 36, totalSpent: 78900, status: 'vip' },
-    { id: 5, name: '钱七', email: 'qianqi@example.com', phone: '135****5555', orders: 5, totalSpent: 8700, status: 'active' },
-  ];
 
   const filteredProductData = productData.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -49,10 +42,6 @@ const DataManagement = () => {
     item.customer.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredCustomerData = customerData.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
@@ -143,7 +132,7 @@ const DataManagement = () => {
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">数据管理</h1>
-          <p className="mt-2 text-gray-600">管理您的商品、订单和客户数据</p>
+          <p className="mt-2 text-gray-600">聚水潭数据 | 拼多多数据</p>
         </div>
 
         {/* 搜索和筛选工具栏 */}
@@ -168,14 +157,18 @@ const DataManagement = () => {
                 <FunnelIcon className="h-5 w-5 mr-2" />
                 筛选
               </button>
-              <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+              <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                <FunnelIcon className="h-5 w-5 mr-2" />
+                取消
+              </button>
+              {/* <button className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
                 <PlusIcon className="h-5 w-5 mr-2" />
                 新建
               </button>
               <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
                 <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
                 导出
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
@@ -187,23 +180,23 @@ const DataManagement = () => {
               className={({ selected }) =>
                 `w-full rounded-lg py-3 text-sm font-medium leading-5
                 ${selected
-                  ? 'bg-white shadow text-blue-700'
+                  ? 'bg-white shadow text-blue-700 outline-none'
                   : 'text-blue-500 hover:bg-white/[0.12] hover:text-blue-700'}`
               }
             >
-              商品数据
+              聚水潭数据
             </Tab>
             <Tab
               className={({ selected }) =>
                 `w-full rounded-lg py-3 text-sm font-medium leading-5
                 ${selected
-                  ? 'bg-white shadow text-blue-700'
+                  ? 'bg-white shadow text-blue-700 outline-none'
                   : 'text-blue-500 hover:bg-white/[0.12] hover:text-blue-700'}`
               }
             >
-              订单数据
+              拼多多数据
             </Tab>
-            <Tab
+            {/* <Tab
               className={({ selected }) =>
                 `w-full rounded-lg py-3 text-sm font-medium leading-5
                 ${selected
@@ -212,7 +205,7 @@ const DataManagement = () => {
               }
             >
               客户数据
-            </Tab>
+            </Tab> */}
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
@@ -231,14 +224,7 @@ const DataManagement = () => {
                 'orders'
               )}
             </Tab.Panel>
-            <Tab.Panel>
-              {renderTable(
-                ['姓名', '邮箱', '电话', '订单数', '消费总额', '状态'],
-                filteredCustomerData,
-                ['name', 'email', 'phone', 'orders', 'totalSpent', 'status'],
-                'customers'
-              )}
-            </Tab.Panel>
+            
           </Tab.Panels>
         </Tab.Group>
       </div>

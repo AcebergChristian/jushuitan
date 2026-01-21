@@ -5,20 +5,21 @@ import Home from './pages/Home';
 import Dash from './components/Dash';
 import DataManagement from './pages/DataManagement';
 import UserManagement from './pages/UserManagement';
+import { isAuthenticated } from './utils/auth';
 
 function App() {
-  const isAuthenticated = !!localStorage.getItem('token'); // 简单的身份验证检查
+  const authStatus = isAuthenticated(); // 使用专门的身份验证函数
 
   return (
     <div className="App">
       <Routes>
         <Route 
           path="/login" 
-          element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />} 
+          element={!authStatus ? <LoginPage /> : <Navigate to="/" />} 
         />
         <Route 
           path="/" 
-          element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+          element={authStatus ? <Home /> : <Navigate to="/login" />}
         >
           <Route index element={<Dash />} />
           <Route path="data-management" element={<DataManagement />} />

@@ -12,20 +12,21 @@ import {
   XMarkIcon,
   CheckCircleIcon
 } from '@heroicons/react/24/outline';
+import { apiRequest } from '../utils/api';
 
 const UserManagement = () => {
-  const [users, setUsers] = useState([
-    { id: 1, name: '张三', email: 'zhangsan@example.com', role: 'admin', department: '技术部', status: 'active', lastLogin: '2024-01-15 14:30' },
-    { id: 2, name: '李四', email: 'lisi@example.com', role: 'manager', department: '销售部', status: 'active', lastLogin: '2024-01-15 10:15' },
-    { id: 3, name: '王五', email: 'wangwu@example.com', role: 'user', department: '运营部', status: 'inactive', lastLogin: '2024-01-10 09:45' },
-    { id: 4, name: '赵六', email: 'zhaoliu@example.com', role: 'manager', department: '财务部', status: 'active', lastLogin: '2024-01-14 16:20' },
-    { id: 5, name: '钱七', email: 'qianqi@example.com', role: 'user', department: '客服部', status: 'active', lastLogin: '2024-01-15 11:30' },
-  ]);
-  
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ name: '', email: '', role: 'user', department: '', status: 'active' });
+  const [newUser, setNewUser] = useState({ 
+    username: '', 
+    email: '', 
+    role: 'sales', 
+    is_active: true,
+    good_id: null 
+  });
 
   const [relations, setRelations] = useState([
     { id: 1, user: '张三', relatedUser: '李四', relationType: '同事', createdDate: '2024-01-01' },
@@ -36,16 +37,42 @@ const UserManagement = () => {
   const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await apiRequest('/users/');
+      if (response && response.ok) {
+        const data = await response.json();
+        setUsers(data);
+      } else if(response) {
+        console.error('获取用户列表失败:', response.statusText);
+      }
+    } catch (error) {
+      console.error('获取用户列表错误:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     if (!isModalOpen) {
       setEditingUser(null);
-      setNewUser({ name: '', email: '', role: 'user', department: '', status: 'active' });
+      setNewUser({ 
+        username: '', 
+        email: '', 
+        role: 'sales', 
+        is_active: true,
+        good_id: null 
+      });
     }
   }, [isModalOpen]);
 
   const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.department.toLowerCase().includes(searchTerm.toLowerCase())
+    user.role?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const filteredRelations = relations.filter(relation =>
@@ -54,20 +81,52 @@ const UserManagement = () => {
     relation.relationType.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleSaveUser = () => {
-    if (editingUser) {
-      // 更新现有用户
-      setUsers(users.map(user => user.id === editingUser.id ? { ...editingUser } : user));
-    } else {
-      // 添加新用户
-      const userToAdd = {
-        ...newUser,
-        id: Math.max(...users.map(u => u.id)) + 1,
-        lastLogin: new Date().toISOString().slice(0, 16).replace('T', ' ')
-      };
-      setUsers([...users, userToAdd]);
+  const handleSaveUser = async () => {
+    try {
+      let response;
+      if (editingUser) {
+        // 更新现有用户
+        response = await apiRequest(`/users/${editingUser.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            username: editingUser.username,
+            email: editingUser.email,
+            is_active: editingUser.is_active,
+            role: editingUser.role,
+            good_id: editingUser.good_id
+          }),
+        });
+      } else {
+        // 添加新用户
+        response = await apiRequest('/users/', {
+          method: 'POST',
+          body: JSON.stringify({
+            username: newUser.username,
+            email: newUser.email,
+            password: 'defaultpassword', // 实际应用中应通过安全方式设置密码
+            is_active: newUser.is_active,
+            role: newUser.role,
+            good_id: newUser.good_id
+          }),
+        });
+      }
+
+      if (response && response.ok) {
+        const savedUser = await response.json();
+        if (editingUser) {
+          setUsers(users.map(user => user.id === editingUser.id ? savedUser : user));
+        } else {
+          setUsers([...users, savedUser]);
+        }
+        setIsModalOpen(false);
+      } else if(response){
+        console.error('保存用户失败:', response.statusText);
+        alert('保存用户失败');
+      }
+    } catch (error) {
+      console.error('保存用户错误:', error);
+      alert('保存用户时发生错误');
     }
-    setIsModalOpen(false);
   };
 
   const handleEditUser = (user) => {
@@ -75,17 +134,31 @@ const UserManagement = () => {
     setIsModalOpen(true);
   };
 
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = async (id) => {
     if (window.confirm('确定要删除这个用户吗？')) {
-      setUsers(users.filter(user => user.id !== id));
+      try {
+        const response = await apiRequest(`/users/${id}`, {
+          method: 'DELETE',
+        });
+        
+        if (response && response.ok) {
+          setUsers(users.filter(user => user.id !== id));
+        } else if(response){
+          console.error('删除用户失败:', response.statusText);
+          alert('删除用户失败');
+        }
+      } catch (error) {
+        console.error('删除用户错误:', error);
+        alert('删除用户时发生错误');
+      }
     }
   };
 
   const getStatusBadgeClass = (status) => {
     switch (status) {
-      case 'active':
+      case true:
         return 'bg-green-100 text-green-800';
-      case 'inactive':
+      case false:
         return 'bg-red-100 text-red-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -98,6 +171,8 @@ const UserManagement = () => {
         return 'bg-purple-100 text-purple-800';
       case 'manager':
         return 'bg-blue-100 text-blue-800';
+      case 'sales':
+        return 'bg-yellow-100 text-yellow-800';
       case 'user':
         return 'bg-gray-100 text-gray-800';
       default:
@@ -110,12 +185,12 @@ const UserManagement = () => {
       <table className="min-w-full divide-y divide-gray-300">
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">姓名</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用户名</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">邮箱</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">角色</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">部门</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关联商品ID</th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">状态</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">最后登录</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建时间</th>
             <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
           </tr>
         </thead>
@@ -123,20 +198,20 @@ const UserManagement = () => {
           {filteredUsers.length > 0 ? (
             filteredUsers.map((user) => (
               <tr key={user.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.name}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.username}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getRoleBadgeClass(user.role)}`}>
-                    {user.role}
+                    {user.role || 'user'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.department}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.good_id || '-'}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(user.status)}`}>
-                    {user.status}
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(user.is_active)}`}>
+                    {user.is_active ? '激活' : '未激活'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.lastLogin}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.created_at}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex justify-end space-x-2">
                     <button 
@@ -155,6 +230,12 @@ const UserManagement = () => {
                 </td>
               </tr>
             ))
+          ) : loading ? (
+            <tr>
+              <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
+                加载中...
+              </td>
+            </tr>
           ) : (
             <tr>
               <td colSpan={7} className="px-6 py-4 text-center text-sm text-gray-500">
@@ -167,53 +248,6 @@ const UserManagement = () => {
     </div>
   );
 
-  const renderRelationsTable = () => (
-    <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 rounded-lg">
-      <table className="min-w-full divide-y divide-gray-300">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">用户</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关联用户</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">关系类型</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">创建日期</th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">操作</th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {filteredRelations.length > 0 ? (
-            filteredRelations.map((relation) => (
-              <tr key={relation.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{relation.user}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{relation.relatedUser}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                    {relation.relationType}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{relation.createdDate}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                  <div className="flex justify-end space-x-2">
-                    <button className="text-blue-600 hover:text-blue-900">
-                      <PencilIcon className="h-5 w-5" />
-                    </button>
-                    <button className="text-red-600 hover:text-red-900">
-                      <TrashIcon className="h-5 w-5" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan={5} className="px-6 py-4 text-center text-sm text-gray-500">
-                暂无用户关联数据
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -330,15 +364,15 @@ const UserManagement = () => {
                   
                   <div className="mt-4 space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">姓名</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">用户名</label>
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        value={editingUser ? editingUser.name : newUser.name}
+                        value={editingUser ? editingUser.username : newUser.username}
                         onChange={(e) => 
                           editingUser 
-                            ? setEditingUser({...editingUser, name: e.target.value}) 
-                            : setNewUser({...newUser, name: e.target.value})
+                            ? setEditingUser({...editingUser, username: e.target.value}) 
+                            : setNewUser({...newUser, username: e.target.value})
                         }
                       />
                     </div>
@@ -369,21 +403,23 @@ const UserManagement = () => {
                         }
                       >
                         <option value="user">普通用户</option>
+                        <option value="sales">销售人员</option>
                         <option value="manager">经理</option>
                         <option value="admin">管理员</option>
                       </select>
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">部门</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">关联商品ID</label>
                       <input
-                        type="text"
+                        type="number"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        value={editingUser ? editingUser.department : newUser.department}
+                        placeholder="可选，留空表示不关联"
+                        value={editingUser ? editingUser.good_id || '' : newUser.good_id || ''}
                         onChange={(e) => 
                           editingUser 
-                            ? setEditingUser({...editingUser, department: e.target.value}) 
-                            : setNewUser({...newUser, department: e.target.value})
+                            ? setEditingUser({...editingUser, good_id: e.target.value ? parseInt(e.target.value) : null}) 
+                            : setNewUser({...newUser, good_id: e.target.value ? parseInt(e.target.value) : null})
                         }
                       />
                     </div>
@@ -392,15 +428,15 @@ const UserManagement = () => {
                       <label className="block text-sm font-medium text-gray-700 mb-1">状态</label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        value={editingUser ? editingUser.status : newUser.status}
+                        value={editingUser ? editingUser.is_active : newUser.is_active}
                         onChange={(e) => 
                           editingUser 
-                            ? setEditingUser({...editingUser, status: e.target.value}) 
-                            : setNewUser({...newUser, status: e.target.value})
+                            ? setEditingUser({...editingUser, is_active: e.target.value === 'true'}) 
+                            : setNewUser({...newUser, is_active: e.target.value === 'true'})
                         }
                       >
-                        <option value="active">激活</option>
-                        <option value="inactive">未激活</option>
+                        <option value="true">激活</option>
+                        <option value="false">未激活</option>
                       </select>
                     </div>
                   </div>

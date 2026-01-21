@@ -23,6 +23,7 @@ const Home = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('userinfo');
     window.location.href = '/login'; // 确保退出后跳转到登录页
   };
 

@@ -1,11 +1,16 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from backend.api import include_routers
-from backend.database import engine
-from backend.models.database import Base
+from backend.api.users import router as users_router
+from backend.api.products import router as products_router
+from backend.api.auth import router as auth_router
+from backend.database import init_db
 
-# 创建数据库表
-Base.metadata.create_all(bind=engine)
+# 初始化数据库，创建所有表
+init_db()
 
 app = FastAPI(title="聚水潭和拼多多数据管理系统", version="1.0.0")
 
@@ -19,7 +24,9 @@ app.add_middleware(
 )
 
 # 包含API路由
-include_routers(app)
+app.include_router(users_router, prefix="/api", tags=["users"])
+app.include_router(products_router, prefix="/api", tags=["products"])
+app.include_router(auth_router, prefix="/api", tags=["auth"])
 
 @app.get("/")
 async def root():

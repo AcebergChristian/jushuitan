@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { loginAndStoreUserInfo } from '../utils/auth';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -6,29 +7,32 @@ const LoginPage = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError('');
     
-    // 模拟登录过程
     try {
-      // 这里应该是API调用，现在模拟成功
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // 使用auth.js中的登录函数
+      const result = await loginAndStoreUserInfo(username, password);
       
-      // 模拟登录成功 - 存储令牌
-      localStorage.setItem('token', 'fake-jwt-token');
-      
-      // 重定向到主页
-      window.location.href = '/';
+      if (result.success) {
+        console.log('Login success:', result.data);
+        // 重定向到主页
+        window.location.href = '/';
+      } else {
+        setError(result.error || '用户名或密码错误');
+      }
     } catch (err) {
-      setError('用户名或密码错误');
+      setError('网络错误，请稍后重试');
       console.error('Login error:', err);
     } finally {
       setLoading(false);
     }
   };
+
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
@@ -48,7 +52,7 @@ const LoginPage = () => {
             <div className="flex">
               <div className="flex-shrink-0">
                 <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 001.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
               </div>
               <div className="ml-3">

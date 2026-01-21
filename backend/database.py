@@ -1,27 +1,18 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from peewee import *
+from contextlib import contextmanager
 import os
+from .models.database import database, create_tables
 
-# 数据库URL - 使用SQLite
-SQLALCHEMY_DATABASE_URL = "sqlite:///./jushuitan_pdd_data.db"
+def init_db():
+    """初始化数据库，创建所有表"""
+    create_tables()
 
-# 创建引擎
-engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, 
-    connect_args={"check_same_thread": False}  # 仅适用于SQLite
-)
-
-# 创建会话
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# 基础类
-Base = declarative_base()
-
+@contextmanager
 def get_db():
-    """获取数据库会话的依赖项"""
-    db = SessionLocal()
+    """获取数据库连接的上下文管理器"""
+    database.connect()
     try:
-        yield db
+        yield database
     finally:
-        db.close()
+        if not database.is_closed():
+            database.close()
