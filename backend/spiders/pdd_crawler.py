@@ -1,221 +1,123 @@
 from ast import Dict
-from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
-
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import StaleElementReferenceException
-
-import time
-import json
-from dataclasses import dataclass
-from typing import List, Optional
-import re
-import hashlib
-from datetime import datetime, timedelta
-import sys
-import os
-import requests
+# from selenium import webdriver
+# from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.chrome.service import Service
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.keys import Keys
+# from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+# from selenium.webdriver.chrome.options import Options
+# from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.common.exceptions import StaleElementReferenceException
+from playwright.sync_api import sync_playwright, TimeoutError as PlaywrightTimeoutError
 
 
-# 添加项目根目录到系统路径
-project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, project_root)
 
-try:
-    from backend.utils.datatodb import DataToDB
-except ImportError:
-    # 如果直接导入失败，尝试另一种方式
-    import importlib.util
-    datatodb_path = os.path.join(project_root, 'utils', 'datatodb.py')  # 修正路径，不需要重复backend
-    spec = importlib.util.spec_from_file_location("datatodb", datatodb_path)
-    datatodb_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(datatodb_module)
-    DataToDB = datatodb_module.DataToDB
-
-
-@dataclass
-class ProductInfo:
-    """商品信息数据类"""
-    goods_id: str
-    name: str
-    price: float
-    stock: int
-    order_number: Optional[str] = None  # 订单号
-    online_order_number: Optional[str] = None  # 线上订单号
-    shop_name: Optional[str] = None  # 店铺名称
-    label: Optional[str] = None  # 标签
-    buyer_nickname: Optional[str] = None  # 买家昵称
-    supplier: Optional[str] = None  # 供应商
-    purchase_amount: Optional[float] = None  # 采购金额
-    status: Optional[str] = None  # 状态
-    shipping_company: Optional[str] = None  # 快递公司
-    solution: Optional[str] = None  # 解决方案
-    distributor_push_time: Optional[str] = None  # 分销商推单时间
-    customer_quantity: Optional[int] = None  # 客户下单数量
-    customer_amount: Optional[float] = None  # 客户下单金额
-    weight: Optional[float] = None  # 重量
-    actual_weight: Optional[float] = None  # 实际称重重量
-    buyer_message: Optional[str] = None  # 买家留言
-    seller_remark: Optional[str] = None  # 卖家备注
-    offline_remark: Optional[str] = None  # 线下备注
-    placing_time: Optional[str] = None  # 下单时间
-    payment_time: Optional[str] = None  # 付款时间
-    shipping_time: Optional[str] = None  # 发货时间
-    distributor: Optional[str] = None  # 分销商
-    shipping_warehouse: Optional[str] = None  # 发货仓库
-    description: Optional[str] = None
-    image_url: Optional[str] = None
-    platform: str = ""  # 平台标识：jushuitan 或 pinduoduo
-    # 拼多多推广相关字段
-    promotion_status: Optional[str] = None  # 推广状态
-    budget_bidding: Optional[str] = None  # 预算及出价
-    total_cost: Optional[float] = None  # 总花费(元)
-    transaction_cost: Optional[float] = None  # 成交花费(元)
-    actual_transaction_cost: Optional[float] = None  # 实际成交花费(元)
-    transaction_amount: Optional[float] = None  # 交易额(元)
-    actual_roi: Optional[float] = None  # 实际投产比
-    exposure: Optional[int] = None  # 曝光量
-    net_transaction_amount: Optional[float] = None  # 净交易额(元)
-    net_actual_roi: Optional[float] = None  # 净实际投产比
-    net_transaction_count: Optional[int] = None  # 净成交笔数
-    cost_per_net_transaction: Optional[float] = None  # 每笔净成交花费(元)
-    net_transaction_ratio: Optional[float] = None  # 净交易额占比
-    settlement_amount: Optional[float] = None  # 结算金额(元)
-    settlement_roi: Optional[float] = None  # 结算投产比
-    settlement_count: Optional[int] = None  # 结算笔数
-    refund_rate: Optional[float] = None  # 退款率
-    refund_order_rate: Optional[float] = None  # 退单率
-    refund_exemption_rate: Optional[float] = None  # 退款豁免率
-    refund_order_exemption_rate: Optional[float] = None  # 退单豁免率
-    transaction_settlement_rate: Optional[float] = None  # 交易额结算率
-    order_settlement_rate: Optional[float] = None  # 订单结算率
-    settlement_order_cost: Optional[float] = None  # 结算订单成本(元)
-    transaction_count: Optional[int] = None  # 成交笔数
-    cost_per_transaction: Optional[float] = None  # 每笔成交花费(元)
-    amount_per_transaction: Optional[float] = None  # 每笔成交金额(元)
-    direct_transaction_amount: Optional[float] = None  # 直接交易额(元)
-    indirect_transaction_amount: Optional[float] = None  # 间接交易额(元)
-    direct_transaction_count: Optional[int] = None  # 直接成交笔数
-    indirect_transaction_count: Optional[int] = None  # 间接成交笔数
-    amount_per_direct_transaction: Optional[float] = None  # 每笔直接成交金额(元)
-    amount_per_indirect_transaction: Optional[float] = None  # 每笔间接成交金额(元)
-    clicks: Optional[int] = None  # 点击量
-    inquiry_cost: Optional[float] = None  # 询单花费(元)
-    inquiries: Optional[int] = None  # 询单量
-    avg_inquiry_cost: Optional[float] = None  # 平均询单成本(元)
-    favorite_cost: Optional[float] = None  # 收藏花费(元)
-    favorites: Optional[int] = None  # 收藏量
-    avg_favorite_cost: Optional[float] = None  # 平均收藏成本(元)
-    follow_cost: Optional[float] = None  # 关注花费(元)
-    follows: Optional[int] = None  # 关注量
-    avg_follow_cost: Optional[float] = None  # 平均关注成本(元)
-
-
-class SeleniumCrawler:
+class PddCrawler:
     def __init__(self):
-        # 配置Chrome选项
-        chrome_options = Options()
-        chrome_options.add_argument("--no-sandbox")
-        chrome_options.add_argument("--disable-dev-shm-usage")
-        # 如果不需要显示浏览器，取消下面一行的注释
-        # chrome_options.add_argument("--headless")
-        
-        service = Service(ChromeDriverManager().install())
-        self.driver = webdriver.Chrome(service=service, options=chrome_options)
-        self.wait = WebDriverWait(self.driver, 20)
+        # 初始化Playwright
+        self.playwright = None
+        self.browser = None
+        self.page = None
+        self.context = None
 
-        ######### 元素初始化 登录之外的 #########
+        ######### 元素选择器 登录之外的 #########
         # 昨日筛选按钮
-        self.yesterday_filter_btn = "#page-container > div > div.ScenesHeader_wrapper__BdcwT > div:nth-child(2) > div > div.DateAreaV2_quickWrapper__fXxpZ > div.DateAreaV2_item__EDE2y.DateAreaV2_isActive__tFhA4"
+        self.yesterday_filter_btn = 'div.DateAreaV2_item__EDE2y.DateAreaV2_isActive__tFhA4'
         
         # 滚动的tbody
-        self.tbody_selector = "#odinTable > div.anq-table-box.anq-table-isEnableScroll.anq-table-summaryFixed > div.anq-table-wrapper.CustomTable_table__yYI2o.GoodsTable_promotionListTable__R6hhv.CustomTable_isFilterPanelRender__Krt_r.CustomTable_hasFixedColumn__rMxS6.CustomTable_compact__xrgek.CustomTable_whiteHeader__DkWx1 > div > div > div > div > div.anq-table-body > div > table > tbody"
+        self.tbody_selector = 'div.anq-table-body'
 
-        # 总数据条数的selector
-        self.total_count_selector = '#odinTable > div.anq-pagination-wrapper.CustomPagination_pagination__mBw_4 > ul > li.anq-pagination-total-text'
+        # 总数据条数的选择器
+        self.total_count_selector = 'li.anq-pagination-total-text'
 
         # 下一页
-        self.nextpage = "#odinTable > div.anq-pagination-wrapper.CustomPagination_pagination__mBw_4 > ul > li.anq-pagination-next > button"
+        self.nextpage = 'li.anq-pagination-next > button'
 
+    def init_browser(self):
+        """初始化浏览器"""
+        self.playwright = sync_playwright().start()
+        # 可选是否显示浏览器窗口
+        self.browser = self.playwright.chromium.launch(headless=False, args=[
+            "--no-sandbox",
+            "--disable-dev-shm-usage"
+        ])
+        self.context = self.browser.new_context(
+            user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+        )
+        self.page = self.context.new_page()
 
     def login(self):
         """登录拼多多推广系统"""
-        self.driver.get("https://mms.pinduoduo.com/login/sso?redirectUrl=https%3A%2F%2Fyingxiao.pinduoduo.com%2Fgoods%2Fpromotion%2Flist%3Fmsfrom%3Dmms_sidenav&platform=yingxiao&accessType=auto")
+        self.init_browser()
+        self.page.goto("https://yingxiao.pinduoduo.com/goods/promotion/list?msfrom=mms_sidenav")
         
-        # 这里需要根据实际登录页面填写用户名和密码
-        # 由于拼多多登录页面结构复杂，可能需要手动登录或者使用其他方式
-        time.sleep(10)
-        print("请手动登录拼多多推广后台，然后按Enter键继续...")
+        # 等待用户手动登录
+        print("请在浏览器中手动登录拼多多推广后台，然后按Enter键继续...")
         input()
-
+        
+        # 保存cookies以便后续请求使用
+        self.cookies = self.page.context.cookies()
 
     def click_yesterday_filter(self):
         """点击昨日筛选按钮"""
         try:
-            yesterday_btn = self.wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, self.yesterday_filter_btn)))
+            # 等待元素可点击
+            yesterday_btn = self.page.wait_for_selector(self.yesterday_filter_btn, state='visible')
             yesterday_btn.click()
             print("已点击昨日筛选按钮")
-            time.sleep(3)  # 等待数据加载
-        except Exception as e:
-            print(f"点击昨日筛选按钮失败: {e}")
-
+            self.page.wait_for_timeout(3000)  # 等待数据加载
+        except PlaywrightTimeoutError:
+            print("点击昨日筛选按钮超时")
 
     def get_scroll_container(self, tbody_selector):
         """获取滚动容器"""
-        scroll_containers = [
-            self.driver.find_element(By.CSS_SELECTOR, ".anq-table-body"),
-            self.driver.find_element(By.CSS_SELECTOR, ".anq-table-wrapper"),
-            self.driver.find_element(By.CSS_SELECTOR, "#odinTable .anq-table-body")
+        # 在Playwright中我们直接操作页面元素
+        # 尝试找到具有滚动特性的容器
+        scroll_selectors = [
+            ".anq-table-body",
+            ".anq-table-wrapper",
+            "#odinTable .anq-table-body"
         ]
         
-        scroll_container = None
-        for container in scroll_containers:
+        for selector in scroll_selectors:
             try:
-                if container.size['height'] < container.get_property('scrollHeight'):
-                    scroll_container = container
-                    break
+                element = self.page.query_selector(selector)
+                if element:
+                    # 检查元素是否可滚动
+                    is_scrollable = self.page.evaluate("""
+                        (element) => {
+                            return element.scrollHeight > element.clientHeight || element.scrollWidth > element.clientWidth;
+                        }
+                    """, element)
+                    if is_scrollable:
+                        return element
             except:
                 continue
         
-        if not scroll_container:
-            # 尝试通过JavaScript找到滚动容器
-            scroll_container = self.driver.execute_script("""
-                const selectors = [
-                    '.anq-table-body',
-                    '.anq-table-wrapper',
-                    '#odinTable .anq-table-body'
-                ];
-                
-                for (let selector of selectors) {
-                    const element = document.querySelector(selector);
-                    if (element && element.scrollHeight > element.clientHeight) {
-                        return element;
-                    }
-                }
-                
-                // 如果以上都没找到，尝试tbody的父元素
-                const tbody = document.querySelector(arguments[0]);
-                if (tbody) {
-                    let parent = tbody.parentElement;
-                    while (parent && parent !== document.body) {
-                        if (parent.scrollHeight > parent.clientHeight) {
-                            return parent;
+        # 如果没找到滚动容器，返回tbody的父元素
+        try:
+            tbody = self.page.query_selector(tbody_selector)
+            if tbody:
+                parent = self.page.evaluate("""
+                    (tbody) => {
+                        let parent = tbody.parentElement;
+                        while (parent && parent !== document.body) {
+                            if (parent.scrollHeight > parent.clientHeight || parent.scrollWidth > parent.clientWidth) {
+                                return parent;
+                            }
+                            parent = parent.parentElement;
                         }
-                        parent = parent.parentElement;
+                        return null;
                     }
-                }
-                return null;
-            """, tbody_selector)
+                """, tbody)
+                if parent:
+                    return parent
+        except:
+            pass
         
-        return scroll_container
-
+        return None
 
     # 滚动获取tr数据并解析到list
     def scroll_and_parse_data(self, tbody_selector, max_scrolls=200):
@@ -228,32 +130,46 @@ class SeleniumCrawler:
         last_scroll_top = -1
 
         for _ in range(max_scrolls):
-            rows = self.driver.find_elements(By.CSS_SELECTOR, f"{tbody_selector} tr")
+            # 获取当前页面的所有行
+            rows = self.page.query_selector_all(f"{tbody_selector} tr")
 
             for row in rows:
                 try:
-                    cells = row.find_elements(By.TAG_NAME, "td")
+                    cells = row.query_selector_all("td")
                     product = self.parse_product_data(cells)
                     if not product:
                         continue
 
                     # 🔥 行级唯一 key（不依赖业务字段）
-                    row_text = "|".join(c.text for c in cells)
+                    row_text = "|".join([cell.inner_text() for cell in cells])
                     row_key = hashlib.md5(row_text.encode("utf-8")).hexdigest()
                     parsed[row_key] = product
 
-                except Exception:
+                except Exception as e:
+                    print(f"解析行数据时出错: {e}")
                     continue
 
-            scroll_top = self.driver.execute_script(
-                "return arguments[0].scrollTop", scroll_container
-            )
-            scroll_height = self.driver.execute_script(
-                "return arguments[0].scrollHeight", scroll_container
-            )
-            client_height = self.driver.execute_script(
-                "return arguments[0].clientHeight", scroll_container
-            )
+            # 获取当前滚动位置
+            scroll_position = self.page.evaluate("""
+                () => {
+                    const container = document.querySelector(arguments[0]);
+                    if (container) {
+                        return {
+                            scrollTop: container.scrollTop,
+                            scrollHeight: container.scrollHeight,
+                            clientHeight: container.clientHeight
+                        };
+                    }
+                    return null;
+                }
+            """, self.tbody_selector)
+
+            if not scroll_position:
+                break
+
+            scroll_top = scroll_position['scrollTop']
+            scroll_height = scroll_position['scrollHeight']
+            client_height = scroll_position['clientHeight']
 
             if scroll_top >= scroll_height - client_height - 5:
                 break
@@ -262,70 +178,74 @@ class SeleniumCrawler:
                 break
             last_scroll_top = scroll_top
 
-            self.driver.execute_script(
-                "arguments[0].scrollTop = arguments[0].scrollTop + arguments[1];",
-                scroll_container,
-                STEP
-            )
-            time.sleep(0.3)
+            # 执行滚动
+            self.page.evaluate(f"""
+                () => {{
+                    const container = document.querySelector('{self.tbody_selector}');
+                    if (container) {{
+                        container.scrollTop = container.scrollTop + {STEP};
+                    }}
+                }}
+            """)
+            self.page.wait_for_timeout(300)
 
         return list(parsed.values())
 
-
     def navigate_to_page(self):
         """导航到目标页面"""
-        self.driver.get("https://yingxiao.pinduoduo.com/goods/promotion/list")
-        time.sleep(5)  # 等待页面加载
-
+        if not self.page:
+            self.init_browser()
+        self.page.goto("https://yingxiao.pinduoduo.com/goods/promotion/list")
+        self.page.wait_for_timeout(5000)  # 等待页面加载
 
     def get_total_count(self):
         """获取总记录数和总页数"""
-        # 正则提取这个selector里的数字
-        total_count_element = self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, self.total_count_selector)))
-        total_count_text = total_count_element.text
-        
-        # 使用正则表达式提取文本中的数字
-        match = re.search(r'(\d+)', total_count_text)
-        if match:
-            total_count = int(match.group(1))
-        else:
-            total_count = 0  # 如果没有找到数字，则默认为0
-        
-        # 计算总页数，每页50条记录
-        items_per_page = 50
-        if total_count == 0:
-            total_pages = 1  # 当总数为0时，显示1页
-        elif total_count <= items_per_page:
-            total_pages = 1  # 当总数小于等于每页数量时，显示1页
-        else:
-            total_pages = (total_count + items_per_page - 1) // items_per_page  # 向上取整
-        
-        return total_count, total_pages
-
+        try:
+            # 等待总数元素出现
+            total_count_element = self.page.wait_for_selector(self.total_count_selector, state='visible')
+            total_count_text = total_count_element.inner_text()
+            
+            # 使用正则表达式提取文本中的数字
+            match = re.search(r'(\d+)', total_count_text)
+            if match:
+                total_count = int(match.group(1))
+            else:
+                total_count = 0  # 如果没有找到数字，则默认为0
+            
+            # 计算总页数，每页50条记录
+            items_per_page = 50
+            if total_count == 0:
+                total_pages = 1  # 当总数为0时，显示1页
+            elif total_count <= items_per_page:
+                total_pages = 1  # 当总数小于等于每页数量时，显示1页
+            else:
+                total_pages = (total_count + items_per_page - 1) // items_per_page  # 向上取整
+            
+            return total_count, total_pages
+        except PlaywrightTimeoutError:
+            print("获取总记录数超时")
+            return 0, 1
 
     def click_next_page(self):
         """点击下一页"""
         try:
-            next_page_btn = self.driver.find_element(By.CSS_SELECTOR, self.nextpage)
-            if next_page_btn.is_enabled():
+            next_page_btn = self.page.query_selector(self.nextpage)
+            if next_page_btn and next_page_btn.is_enabled():
                 next_page_btn.click()
-                time.sleep(3)  # 等待下一页数据加载
+                self.page.wait_for_timeout(3000)  # 等待下一页数据加载
                 
                 # 页面加载后，将tbody滚动到最上面
                 try:
-                    # 获取tbody元素
-                    tbody_element = self.driver.find_element(By.CSS_SELECTOR, self.tbody_selector)
-                    
-                    # 获取对应的滚动容器
-                    scroll_container = self.get_scroll_container(self.tbody_selector)
-                    
-                    if scroll_container:
-                        # 将滚动容器滚动到顶部
-                        self.driver.execute_script("arguments[0].scrollTop = 0;", scroll_container)
-                        print("已将滚动容器滚动到顶部")
-                    else:
-                        print("未找到滚动容器，无法滚动到顶部")
-                        
+                    # 将滚动容器滚动到顶部
+                    self.page.evaluate(f"""
+                        () => {{
+                            const container = document.querySelector('{self.tbody_selector}');
+                            if (container) {{
+                                container.scrollTop = 0;
+                            }}
+                        }}
+                    """)
+                    print("已将滚动容器滚动到顶部")
                 except Exception as scroll_error:
                     print(f"滚动到顶部时出错: {scroll_error}")
                 
@@ -333,10 +253,9 @@ class SeleniumCrawler:
             else:
                 print("已经是最后一页")
                 return False
-        except:
-            print("找不到下一页按钮或已是最后一页")
+        except Exception as e:
+            print(f"点击下一页时出错: {e}")
             return False
-
 
     def get_all_paginated_data(self, tbody_selector):
         all_products = {}
@@ -354,17 +273,16 @@ class SeleniumCrawler:
 
             if page < total_pages:
                 self.click_next_page()
-                time.sleep(2)
+                self.page.wait_for_timeout(2000)
 
         return list(all_products.values())
-
 
     def parse_product_data(self, cell_texts):
         """解析单行产品数据"""
         if len(cell_texts) < 5:  # 确保有足够的列
             return None
             
-        cell_texts = [cell.text.strip() for cell in cell_texts]
+        cell_texts = [cell.inner_text().strip() for cell in cell_texts]
         
         # 根据拼多多推广表格列的定义映射数据
         # 第一列是商品信息（包含商品ID和名称）
@@ -519,37 +437,12 @@ class SeleniumCrawler:
         
         return product
 
-
-    def parse_float_value(self, value_str):
-        """解析浮点数字符串"""
-        if not value_str or value_str == "-":
-            return 0.0
-        try:
-            # 移除逗号并转换为浮点数
-            cleaned_str = value_str.replace(",", "")
-            return float(cleaned_str)
-        except ValueError:
-            return 0.0
-
-
-    def parse_int_value(self, value_str):
-        """解析整数字符串"""
-        if not value_str or value_str == "-":
-            return 0
-        try:
-            # 移除逗号并转换为整数
-            cleaned_str = value_str.replace(",", "")
-            return int(float(cleaned_str))  # 先转为float再转int，以处理小数部分
-        except ValueError:
-            return 0
-
-
     def get_products(self):
         """获取商品列表 - 主入口方法"""
         print("开始获取拼多多推广数据...")
         
         self.navigate_to_page()
-        time.sleep(5)
+        self.page.wait_for_timeout(5000)
         
         # 点击昨日筛选按钮
         self.click_yesterday_filter()
@@ -567,77 +460,14 @@ class SeleniumCrawler:
 
         return all_products, len(products), 0
 
-
-    def request(self):
-
-        url = "https://yingxiao.pinduoduo.com/mms-gateway/venus/api/goods/promotion/v1/list"
-
-        headers = {
-            "User-Agent": "Mozilla/5.0 ...",
-            "Content-Type": "application/json",
-            "Referer": "https://yingxiao.pinduoduo.com/goods/promotion/list",
-            # 必须带上登录后的 Cookie
-            "Cookie": "eyJ0IjoiSFhuNXNjQjhrNDlqNXVKajY3QVJEaVNDU1UySS94czk1NER6cUZRUmFVODEzUS9CMzFkS3c3TG5RdGhuV0p5ZSIsInYiOjEsInMiOjIzLCJtIjoyNjM1NjQ3ODksInUiOjE3MzcwNTUyMn0"
-        }
-
-        payload = {
-            "crawlerInfo": "0asWtqlygjngygv9Q0cBoh5SHqZ2YXWVBZJZrXiFzd2ZURZaekBBqrlc-JDVA8A1mOwNfwEePw9syPBws947T-1n42BeYqfJowgtszKdex_bON2by8AEWosF3MkCtQElqio6hP5Q6rhD9BMbCeSSSckEewczPglYLJ2YfBTYB7eTmUTEfuAiP7Jc5EJ3VrTHu9EiJoMgoxyP89ha0ZuJWvTydd_eJtpzCGO3njASOo0fOabTK_zxNWabCVgc51RIXZ7bH-rN9ZWQGr2chnGC6vOa4P6k_Vo8P-XnsSRvJRkW_N7bBSkm5wTH35Xn9R-OcJVX6aH8xRkVpoomQP42Xn9A80Gu_IWnvPe-NiO2FCVaCIxhmI3TdrwMHvOaYac4GlgYbawMEKnKIW6GlhWsl7g0Gz1vY2qzGn7KmIVgcnLI3-iX20pl0lZFHp5qNluJC3FIMSoNtLro_K6ufQgtuSS082CoppWaS3CffZsr2EHVPvEx1H5kL1hTtA6qWZVbNZwZsbMI5KXFFAgl_g3_EpXMc-BjGsm5K1e96EJK0U4eVtX4ENcDUenzmMFt0httvZWoNCHwY7ArmsfjyMFFVgscpM19zIXa-S7KpXV2ha_rezL30b3_q1TxMH5ZcDo5h6YIZsSt3Dnyy_H_Lw-3rWLyb1MAsRnG58iGZLNicRkgNCPU1Xl3kN1d-7s2bG_AtOLJ2rBEzJ_urJ_PhBW3FaKl4RhhMbzMYWPoRD8Ep7WPaJ2hPTy9D8JbaP",
-            "clientType": 1,
-            "blockType": 3,
-            "beginDate": "2026-01-20",
-            "endDate": "2026-01-20",
-            "pageNumber": 1,
-            "pageSize": 50,
-            "sortBy": 9999,
-            "orderBy": 9999,
-            "filter": {},
-            "scenesMode": 1
-        }
-
-        response = requests.post(url, json=payload, headers=headers,
-            cookies={
-                "_a42": "386ba908-471c-4b9d-af6d-4a6bdb864a66",
-                "_bee": "hLBIWqdPbG9KmuR61y1cMuEu1YCxYQ7b",
-                "_f77" : "6e928cbe-c1ca-443d-b1f0-b17187327621",
-                "_nano_fp" : "Xpmjl0CJlpXJlpTbXo_FIMEr7tOdempOVQeEZl1q",
-                "api_uid" : "Ck9MdGlvHC1LLQBZQjvSAg==",
-                "rckk" : "hLBIWqdPbG9KmuR61y1cMuEu1YCxYQ7b",
-                "ru1k" : "6e928cbe-c1ca-443d-b1f0-b17187327621",
-                "ru2k" : "386ba908-471c-4b9d-af6d-4a6bdb864a66",
-                "SUB_PASS_ID" : "eyJ0IjoiRmp6SjJQbEg0YWgzQWZYNG9Dbkd6c3MxaERWUkl6N1NSU21kYUNLc29xcUJTV0NnWVRrT0xLbHpZU1YvWTh0VyIsInYiOjEsInMiOjcsIm0iOjI2MzU2NDc4OSwidSI6MTczNzA1NTIyfQ",
-                "SUB_SYSTEM_ID" : "7",
-                "windows_app_shop_token_23" : "eyJ0IjoiSFhuNXNjQjhrNDlqNXVKajY3QVJEaVNDU1UySS94czk1NER6cUZRUmFVODEzUS9CMzFkS3c3TG5RdGhuV0p5ZSIsInYiOjEsInMiOjIzLCJtIjoyNjM1NjQ3ODksInUiOjE3MzcwNTUyMn0"
-                
-            }
-            )
-
-        print(response.status_code)
-        print(response.text)
-
-
-
-
     def close(self):
         """关闭浏览器"""
-        self.driver.quit()
+        if self.browser:
+            self.browser.close()
+        if self.playwright:
+            self.playwright.stop()
 
 
-
-# 使用示例
-if __name__ == "__main__":
-    crawler = SeleniumCrawler()
-    try:
-        crawler.request()
-        # crawler.login()
-        # products, regular_total, return_total = crawler.get_products()
-        # print(f"pinduoduo 平台推广商品数量: {regular_total}, 被取消商品数量: {return_total}")
-        
-        # # 插入数据库
-        # db_manager = DataToDB()
-        # db_manager.insert_jushuitan_data(products)
-    
-    except Exception as e:
-        print(f"发生错误: {e}")
-
-    finally:
-        crawler.close()
+if __name__ == '__main__':
+    crawler = PddCrawler()
+    crawler.get_products()
