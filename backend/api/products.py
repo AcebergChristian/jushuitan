@@ -12,7 +12,7 @@ router = APIRouter()
 
 # 聚水潭数据相关路由
 @router.get("/jushuitan_products/")
-def read_jushuitan_products(skip: int = 0, limit: int = 100):
+def read_jushuitan_products(skip: int = 0, limit: int = 100, search: str = ""):
     """获取聚水潭商品数据列表"""
     db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
     if not os.path.exists(db_path):
@@ -21,7 +21,25 @@ def read_jushuitan_products(skip: int = 0, limit: int = 100):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
-    cursor.execute('SELECT * FROM jushuitan_products WHERE is_del = 0 LIMIT ? OFFSET ?', (limit, skip))
+    # 查询总数
+    if search:
+        cursor.execute('''SELECT COUNT(*) FROM jushuitan_products 
+                         WHERE is_del = 0 
+                         AND disInnerOrderGoodsViewList LIKE ?''', (f'%{search}%',))
+    else:
+        cursor.execute('SELECT COUNT(*) FROM jushuitan_products WHERE is_del = 0')
+    
+    total_count = cursor.fetchone()[0]
+    
+    # 查询数据
+    if search:
+        cursor.execute('''SELECT * FROM jushuitan_products 
+                         WHERE is_del = 0 
+                         AND disInnerOrderGoodsViewList LIKE ? 
+                         LIMIT ? OFFSET ?''', (f'%{search}%', limit, skip))
+    else:
+        cursor.execute('SELECT * FROM jushuitan_products WHERE is_del = 0 LIMIT ? OFFSET ?', (limit, skip))
+    
     records = cursor.fetchall()
     
     # 获取列名
@@ -36,7 +54,14 @@ def read_jushuitan_products(skip: int = 0, limit: int = 100):
         result.append(record_dict)
     
     conn.close()
-    return result
+    
+    # 返回包含数据和总数的对象
+    return {
+        "data": result,
+        "total": total_count,
+        "skip": skip,
+        "limit": limit
+    }
 
 @router.get("/jushuitan_products/{record_id}")
 def read_jushuitan_product(record_id: int):
@@ -93,7 +118,178 @@ def read_jushuitan_products_by_type(data_type: str, skip: int = 0, limit: int = 
     conn.close()
     return result
 
-# 拼多多数据相关路由
+
+# 点击获取同步数据进表里
+@router.post("/sync_jushuitan_data")
+def sync_jushuitan_data():
+    """同步聚水潭数据到数据库，根据oid字段处理重复数据"""
+    from ..spiders.jushuitan_api import get_jushuitan_orders
+    from datetime import datetime
+    
+    # 获取聚水潭API数据
+    api_response = get_jushuitan_orders()
+    if not api_response or 'data' not in api_response:
+        raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
+    
+    new_data_list = api_response.get('data', [])
+    
+    if not new_data_list:
+        return {"message": "没有获取到新的聚水潭数据"}
+    
+    # 使用Peewee ORM进行数据库操作
+    from ..models.database import JushuitanProduct
+    
+    # 遍历新数据，按日期分组
+    data_by_date = {}
+    for item in new_data_list:
+        order_time = item.get('orderTime', '')
+        # 提取日期部分 (格式如: "2026-01-01 10:30:00")
+        date_part = order_time.split(' ')[0] if order_time else 'unknown'
+        
+        if date_part not in data_by_date:
+            data_by_date[date_part] = []
+        data_by_date[date_part].append(item)
+    
+    processed_count = 0
+    
+    with get_db() as db:
+        for date_str, items_for_date in data_by_date.items():
+            # 获取当天的所有oid
+            oids_for_date = [item['oid'] for item in items_for_date if item.get('oid')]
+            
+            if oids_for_date:
+                # 查找数据库中相同oid的记录
+                existing_records = JushuitanProduct.select().where(
+                    JushuitanProduct.oid.in_(oids_for_date)
+                )
+                
+                # 删除现有的记录
+                for record in existing_records:
+                    record.delete_instance()
+                
+                # 插入新的记录
+                for item in items_for_date:
+                    # 创建新记录
+                    JushuitanProduct.create(
+                        oid=item.get('oid'),
+                        isSuccess=item.get('isSuccess'),
+                        msg=item.get('msg'),
+                        purchaseAmt=item.get('purchaseAmt'),
+                        totalAmt=item.get('totalAmt'),
+                        discountAmt=item.get('discountAmt'),
+                        commission=item.get('commission'),
+                        freight=item.get('freight'),
+                        payAmount=item.get('payAmount'),
+                        paidAmount=item.get('paidAmount'),
+                        totalPurchasePriceGoods=item.get('totalPurchasePriceGoods'),
+                        smallProgramFreight=item.get('smallProgramFreight'),
+                        totalTransactionPurchasePrice=item.get('totalTransactionPurchasePrice'),
+                        smallProgramCommission=item.get('smallProgramCommission'),
+                        smallProgramPaidAmount=item.get('smallProgramPaidAmount'),
+                        freightCalcRule=item.get('freightCalcRule'),
+                        oaId=item.get('oaId'),
+                        soId=item.get('soId'),
+                        rawSoId=item.get('rawSoId'),
+                        mergeSoIds=item.get('mergeSoIds'),
+                        soIdList=str(item.get('soIdList', [])),
+                        supplierCoId=item.get('supplierCoId'),
+                        supplierName=item.get('supplierName'),
+                        channelCoId=item.get('channelCoId'),
+                        channelName=item.get('channelName'),
+                        shopId=item.get('shopId'),
+                        shopType=item.get('shopType'),
+                        shopName=item.get('shopName'),
+                        disInnerOrderGoodsViewList=str(item.get('disInnerOrderGoodsViewList', [])),
+                        orderTime=item.get('orderTime'),
+                        payTime=item.get('payTime'),
+                        deliveryDate=item.get('deliveryDate'),
+                        expressCode=item.get('expressCode'),
+                        expressCompany=item.get('expressCompany'),
+                        trackNo=item.get('trackNo'),
+                        orderStatus=item.get('orderStatus'),
+                        errorMsg=item.get('errorMsg'),
+                        errorDesc=item.get('errorDesc'),
+                        labels=str(item.get('labels', [])),
+                        buyerMessage=item.get('buyerMessage'),
+                        remark=item.get('remark'),
+                        sellerFlag=item.get('sellerFlag'),
+                        updated=item.get('updated'),
+                        clientPaidAmt=item.get('clientPaidAmt'),
+                        goodsQty=item.get('goodsQty'),
+                        goodsAmt=item.get('goodsAmt'),
+                        freeAmount=item.get('freeAmount'),
+                        orderType=item.get('orderType'),
+                        isSplit=item.get('isSplit', False),
+                        isMerge=item.get('isMerge', False),
+                        planDeliveryDate=item.get('planDeliveryDate'),
+                        deliverTimeLeft=item.get('deliverTimeLeft'),
+                        printCount=item.get('printCount'),
+                        ioId=item.get('ioId'),
+                        receiverState=item.get('receiverState'),
+                        receiverCity=item.get('receiverCity'),
+                        receiverDistrict=item.get('receiverDistrict'),
+                        weight=item.get('weight'),
+                        realWeight=item.get('realWeight'),
+                        wmsCoId=item.get('wmsCoId'),
+                        wmsCoName=item.get('wmsCoName'),
+                        drpAmount=item.get('drpAmount'),
+                        shopSite=item.get('shopSite'),
+                        isDeliveryPrinted=item.get('isDeliveryPrinted'),
+                        fullReceiveData=item.get('fullReceiveData'),
+                        fuzzFullReceiverInfo=item.get('fuzzFullReceiverInfo'),
+                        shopBuyerId=item.get('shopBuyerId'),
+                        logisticsNos=item.get('logisticsNos'),
+                        openId=item.get('openId'),
+                        printedList=item.get('printedList'),
+                        note=item.get('note'),
+                        receiverTown=item.get('receiverTown'),
+                        solution=item.get('solution'),
+                        orderFrom=item.get('orderFrom'),
+                        linkOid=item.get('linkOid'),
+                        channelOid=item.get('channelOid'),
+                        isSupplierInitiatedReissueOrExchange=item.get('isSupplierInitiatedReissueOrExchange'),
+                        confirmDate=item.get('confirmDate'),
+                        topDrpCoIdFrom=item.get('topDrpCoIdFrom'),
+                        topDrpOrderId=item.get('topDrpOrderId'),
+                        orderIdentity=item.get('orderIdentity'),
+                        originalSoId=item.get('originalSoId'),
+                        isVirtualShipment=item.get('isVirtualShipment', False),
+                        relationshipBySoIdMd5=item.get('relationshipBySoIdMd5'),
+                        online=item.get('online', False),
+                        data_type='regular' if item.get('orderStatus') not in ['Cancelled', 'Refunded', 'Closed'] else 'cancel',
+                        is_del=False
+                    )
+                    processed_count += 1
+    
+    return {
+        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条记录",
+        "processed_count": processed_count
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# ********* 拼多多数据相关路由 *********
 @router.get("/pdd_products/")
 def read_pdd_products(skip: int = 0, limit: int = 100):
     """获取拼多多商品数据列表"""
@@ -121,55 +317,11 @@ def read_pdd_products(skip: int = 0, limit: int = 100):
     conn.close()
     return result
 
-# 产品相关路由
-@router.get("/products/", response_model=List[schemas.Product])
-def read_products(skip: int = 0, limit: int = 100):
-    """获取产品列表"""
-    with get_db() as db:
-        products = product_service.get_products(db, skip=skip, limit=limit)
-        return list(products)
 
-@router.get("/products/{product_id}", response_model=schemas.Product)
-def read_product(product_id: int):
-    """根据ID获取产品"""
-    with get_db() as db:
-        product = product_service.get_product_by_goods_id(db, str(product_id))  # 注意：这里假设用ID作为goods_id
-        if product is None:
-            raise HTTPException(status_code=404, detail="产品不存在")
-        return product
 
-@router.post("/products/", response_model=schemas.Product)
-def create_product(product: schemas.ProductCreate):
-    """创建新产品"""
-    with get_db() as db:
-        db_product = product_service.get_product_by_goods_id(db, product.goods_id)
-        if db_product:
-            raise HTTPException(status_code=400, detail="商品ID已存在")
-        return product_service.create_product(
-            db=db, 
-            goods_id=product.goods_id, 
-            name=product.name, 
-            price=product.price, 
-            platform=product.platform
-        )
 
-@router.put("/products/{product_id}", response_model=schemas.Product)
-def update_product(product_id: int, product: schemas.ProductUpdate):
-    """更新产品信息"""
-    with get_db() as db:
-        updated_product = product_service.update_product(db, product_id=product_id, **product.dict(exclude_unset=True))
-        if updated_product is None:
-            raise HTTPException(status_code=404, detail="产品不存在")
-        return updated_product
 
-@router.delete("/products/{product_id}")
-def delete_product(product_id: int):
-    """删除产品"""
-    with get_db() as db:
-        result = product_service.delete_product(db, product_id=product_id)
-        if not result:
-            raise HTTPException(status_code=404, detail="产品不存在")
-        return {"message": "产品删除成功"}
+
 
 # 店铺相关路由
 @router.get("/stores/", response_model=List[schemas.Store])
@@ -178,44 +330,3 @@ def read_stores(skip: int = 0, limit: int = 100):
     with get_db() as db:
         stores = product_service.get_stores(db, skip=skip, limit=limit)
         return list(stores)
-
-@router.get("/stores/{store_id}", response_model=schemas.Store)
-def read_store(store_id: str):
-    """根据ID获取店铺"""
-    with get_db() as db:
-        store = product_service.get_store_by_store_id(db, store_id)
-        if store is None:
-            raise HTTPException(status_code=404, detail="店铺不存在")
-        return store
-
-@router.post("/stores/", response_model=schemas.Store)
-def create_store(store: schemas.StoreCreate):
-    """创建新店铺"""
-    with get_db() as db:
-        db_store = product_service.get_store_by_store_id(db, store.store_id)
-        if db_store:
-            raise HTTPException(status_code=400, detail="店铺ID已存在")
-        return product_service.create_store(
-            db=db, 
-            name=store.name, 
-            platform=store.platform, 
-            store_id=store.store_id
-        )
-
-@router.put("/stores/{store_id}", response_model=schemas.Store)
-def update_store(store_id: str, store: schemas.StoreUpdate):
-    """更新店铺信息"""
-    with get_db() as db:
-        updated_store = product_service.update_store(db, store_id=store_id, **store.dict(exclude_unset=True))
-        if updated_store is None:
-            raise HTTPException(status_code=404, detail="店铺不存在")
-        return updated_store
-
-@router.delete("/stores/{store_id}")
-def delete_store(store_id: str):
-    """删除店铺"""
-    with get_db() as db:
-        result = product_service.delete_store(db, store_id=store_id)
-        if not result:
-            raise HTTPException(status_code=404, detail="店铺不存在")
-        return {"message": "店铺删除成功"}

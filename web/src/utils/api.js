@@ -22,14 +22,24 @@ export const apiRequest = async (endpoint, options = {}) => {
 
   const response = await fetch(url, config);
 
-  // 如果是401错误（未授权），则跳转到登录页
-  if (response.status === 401) {
+  if (!response.ok) {
     localStorage.removeItem('token');
-    window.location.href = '/login';
-    return null;
-  }
+    localStorage.removeItem('userinfo');
 
+    // 如果响应状态不是200-299，则抛出错误
+    const errorData = await response.json();
+    throw new Error(errorData.message || '请求失败');
+  }
   return response;
+  // 如果是401错误（未授权），则跳转到登录页
+  // if (response.status === 401) {
+  //   localStorage.removeItem('token');
+  //   localStorage.removeItem('userinfo');
+  //   window.location.href = '/login';
+  //   return null;
+  // }
+
+  // return response;
 };
 
 // 登录函数 - 注意：登录不需要/api前缀，因为它已经在后端定义为根路径

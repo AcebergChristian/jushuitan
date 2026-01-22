@@ -50,7 +50,7 @@ export const loginAndStoreUserInfo = async (username, password) => {
       const data = await response.json();
       // 存储token
       localStorage.setItem('token', data.access_token);
-      localStorage.setItem('userinfo', JSON.stringify(data.userinfo));
+      localStorage.setItem('userinfo', data.userinfo);
       
       return { success: true, data };
     } else {

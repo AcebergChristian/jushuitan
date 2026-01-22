@@ -85,10 +85,10 @@ def get_jushuitan_orders():
 
 
 # 如果直接运行此脚本，则执行查询
-if __name__ == "__main__":
-    result = get_jushuitan_orders()
-    if result:
-        data = result.get("data", [])
-        print(f'data========> {len(data)}',  data[0])
-    else:
-        print('未能获取到聚水潭订单数据')
+# if __name__ == "__main__":
+#     result = get_jushuitan_orders()
+#     if result:
+#         data = result.get("data", [])
+#         print(f'data========> {len(data)}',  data[0])
+#     else:
+#         print('未能获取到聚水潭订单数据')

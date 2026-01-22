@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { 
   HomeIcon, 
@@ -12,12 +12,23 @@ import {
 const Home = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const location = useLocation();
+  const [userinfo, setUserinfo] =  useState(null);
 
   const navigation = [
-    { name: '仪表板', href: '/', icon: HomeIcon },
-    { name: '数据管理', href: '/data-management', icon: TableCellsIcon },
-    { name: '用户管理', href: '/user-management', icon: UserGroupIcon },
+    { key: 'dashboard', name: '仪表板', href: '/', icon: HomeIcon },
+    { key: 'data-management', name: '数据管理', href: '/data-management', icon: TableCellsIcon },
+    { key: 'user-management', name: '用户管理', href: '/user-management', icon: UserGroupIcon }
   ];
+
+  useEffect(() => {
+    const localuserinfo = JSON.parse(localStorage.getItem('userinfo'));
+    setUserinfo(localuserinfo)
+  },[])
+  const hasAdminRole = () => {
+    return userinfo && userinfo.role === 'admin';
+  };
+
+
 
   const isActive = (path) => location.pathname === path;
 
@@ -32,14 +43,14 @@ const Home = () => {
       {/* 移动端侧边栏覆盖层 */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 z-40 lg:hidden bg-black bg-opacity-50"
+          className="inset-0 z-40 lg:hidden bg-black bg-opacity-50"
           onClick={() => setSidebarOpen(false)}
         ></div>
       )}
 
       {/* 侧边栏 */}
       <div 
-        className={`fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${
+        className={`inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         } transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-y-0 lg:h-screen`}
       >
@@ -58,25 +69,32 @@ const Home = () => {
         </div>
 
         <nav className="mt-5 px-2 space-y-1">
-          {navigation.map((item) => (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={`${
-                isActive(item.href)
-                  ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
-                  : 'text-gray-700 hover:bg-gray-100'
-              } group flex items-center px-4 py-3 text-sm font-medium rounded-lg transition duration-150`}
-              onClick={() => setSidebarOpen(false)}
-            >
-              <item.icon
+          {navigation.map((item) => {
+            // 检查是否为用户管理项且当前用户不是管理员
+            if (item.key === 'user-management' && !hasAdminRole()) {
+              return null; // 不渲染此项目
+            }
+            return (
+
+              <Link
+                key={item.key}
+                to={item.href}
                 className={`${
-                  isActive(item.href) ? 'text-blue-600' : 'text-gray-500'
-                } mr-3 h-5 w-5 flex-shrink-0`}
-              />
-              {item.name}
-            </Link>
-          ))}
+                  isActive(item.href)
+                    ? 'bg-blue-50 text-blue-700 border-l-4 border-blue-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                } group flex items-center px-4 py-3 text-sm font-medium  transition duration-150`}
+                onClick={() => setSidebarOpen(false)}
+              >
+                <item.icon
+                  className={`${
+                    isActive(item.href) ? 'text-blue-600' : 'text-gray-500'
+                  } mr-3 h-5 w-5 flex-shrink-0`}
+                />
+                {item.name}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
@@ -93,7 +111,7 @@ const Home = () => {
       {/* 主内容区 */}
       <div className=" flex flex-col flex-1">
         {/* 顶部导航栏 */}
-        <header className="sticky top-0 z-10 bg-white shadow-sm">
+        <header className="top-0 z-10 bg-white shadow-sm">
           <div className="flex items-center justify-between px-4 py-3">
             <div className="flex items-center">
               <button
@@ -121,7 +139,7 @@ const Home = () => {
         </header>
 
         {/* 页面内容 */}
-        <main className="flex-1">
+        <main className="flex-1 overflow-y-auto" style={{ maxHeight: 'calc(100vh - 64px)' }}>
           <Outlet />
         </main>
       </div>

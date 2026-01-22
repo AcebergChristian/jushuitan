@@ -9,6 +9,8 @@ import { isAuthenticated } from './utils/auth';
 
 function App() {
   const authStatus = isAuthenticated(); // 使用专门的身份验证函数
+  const userinfo = JSON.parse(localStorage.getItem('userinfo'));
+
 
   return (
     <div className="App">
@@ -23,7 +25,7 @@ function App() {
         >
           <Route index element={<Dash />} />
           <Route path="data-management" element={<DataManagement />} />
-          <Route path="user-management" element={<UserManagement />} />
+          {userinfo && userinfo.role === 'admin' && <Route path="user-management" element={<UserManagement />} />}
         </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

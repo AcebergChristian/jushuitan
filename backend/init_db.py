@@ -22,7 +22,7 @@ def init_default_user():
     
     with get_db() as db:
         # 检查是否已存在admin用户
-        admin_user = user_service.get_user_by_username(db, "admin")
+        admin_user = user_service.get_user_by_username(db, "aceberg")
         if admin_user:
             print("管理员用户已存在，跳过创建")
             print(f"用户名: admin")
@@ -30,12 +30,19 @@ def init_default_user():
         else:
             print("创建默认管理员用户...")
             # 创建默认管理员用户
+            # admin_user = user_service.create_user(
+            #     db=db,
+            #     username="admin",
+            #     email="admin@example.com",
+            #     password="admin", 
+            #     role="admin"  # 添加这个参数
+            # )
             admin_user = user_service.create_user(
                 db=db,
-                username="admin",
-                email="admin@example.com",
-                password="admin", 
-                role="admin"  # 添加这个参数
+                username="aceberg",
+                email="aceberg@example.com",
+                password="aceberg", 
+                role="sales"  # 添加这个参数
             )
             print(f"默认管理员用户已创建:")
             print(f"  用户名: {admin_user.username}")
