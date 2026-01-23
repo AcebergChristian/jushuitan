@@ -182,10 +182,12 @@ const GoodManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">¥{(item.net_profit || 0).toFixed(2)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{(item.net_profit_rate || 0).toFixed(2)}%</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.created_at ? new Date(item.created_at).toLocaleDateString() : '-'}
+                  {item.created_at}
+                  {/* {item.created_at ? new Date(item.created_at).toLocaleDateString() : '-'} */}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {item.updated_at ? new Date(item.updated_at).toLocaleDateString() : '-'}
+                  {item.updated_at}
+                  {/* {item.updated_at ? new Date(item.updated_at).toLocaleDateString() : '-'} */}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex justify-end space-x-2">
@@ -514,7 +516,7 @@ const GoodManagement = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">商品管理</h1>
           <p className="mt-2 text-gray-600">管理商品信息及财务数据</p>

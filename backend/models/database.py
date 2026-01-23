@@ -165,6 +165,7 @@ class Goods(BaseModel):
     goods_name = CharField(null=True)  # 商品名称
     store_id = CharField(null=True)  # 店铺ID
     store_name = CharField(null=True)  # 店铺名称
+    order_id = CharField(null=True)  # 订单ID
     payment_amount = FloatField(null=True)  # 付款金额
     sales_amount = FloatField(null=True)  # 销售金额
     sales_cost = FloatField(null=True)  # 销售成本

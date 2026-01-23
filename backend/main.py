@@ -23,6 +23,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 # 包含API路由
 app.include_router(users_router, prefix="/api", tags=["users"])
 app.include_router(products_router, prefix="/api", tags=["products"])
@@ -35,3 +36,4 @@ async def root():
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+    
