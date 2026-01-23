@@ -4,6 +4,7 @@ import {
   HomeIcon, 
   TableCellsIcon, 
   UserGroupIcon, 
+  ShoppingBagIcon,
   ArrowLeftOnRectangleIcon,
   Bars3Icon,
   XMarkIcon 
@@ -17,7 +18,8 @@ const Home = () => {
   const navigation = [
     { key: 'dashboard', name: '仪表板', href: '/', icon: HomeIcon },
     { key: 'data-management', name: '数据管理', href: '/data-management', icon: TableCellsIcon },
-    { key: 'user-management', name: '用户管理', href: '/user-management', icon: UserGroupIcon }
+    { key: 'good-management', name: '商品管理', href: '/good-management', icon: ShoppingBagIcon },
+    { key: 'user-management', name: '用户管理', href: '/user-management', icon: UserGroupIcon },
   ];
 
   useEffect(() => {
@@ -56,7 +58,9 @@ const Home = () => {
       >
         <div className="flex items-center justify-between p-4 border-b border-gray-200">
           <div className="flex items-center">
-            <div className="h-8 w-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg"></div>
+            <div className="flex items-center justify-center h-8 w-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg">
+              <img src="https://assets.sursung.com/prod/gylsc/static/channelLogo.ae1c123a.svg" alt="Logo" className="h-6 w-6" />
+            </div>
             <span className="ml-2 text-xl font-bold text-gray-900">聚水潭系统</span>
           </div>
           <button

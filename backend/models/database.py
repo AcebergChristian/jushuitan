@@ -156,7 +156,40 @@ class Store(BaseModel):
     class Meta:
         table_name = 'stores'
 
+
+
+# 商品表：包含所需的所有字段
+class Goods(BaseModel):
+    id = AutoField(primary_key=True)
+    goods_id = CharField(null=True)  # 商品ID
+    goods_name = CharField(null=True)  # 商品名称
+    store_id = CharField(null=True)  # 店铺ID
+    store_name = CharField(null=True)  # 店铺名称
+    payment_amount = FloatField(null=True)  # 付款金额
+    sales_amount = FloatField(null=True)  # 销售金额
+    sales_cost = FloatField(null=True)  # 销售成本
+    gross_profit_1_occurred = FloatField(null=True)  # 毛一利润(发生)
+    gross_profit_1_rate = FloatField(null=True)  # 毛一利润率
+    advertising_expenses = FloatField(null=True)  # 广告费
+    advertising_ratio = FloatField(null=True)  # 广告占比
+    gross_profit_3 = FloatField(null=True)  # 毛三利润
+    gross_profit_3_rate = FloatField(null=True)  # 毛三利润率
+    gross_profit_4 = FloatField(null=True)  # 毛四利润
+    gross_profit_4_rate = FloatField(null=True)  # 毛四利润率
+    net_profit = FloatField(null=True)  # 净利润
+    net_profit_rate = FloatField(null=True)  # 净利率
+    is_del = BooleanField(default=False)  # 逻辑删除标志
+    creator = CharField(null=True)  # 创建人
+    created_at = DateTimeField(default=datetime.now)  # 创建时间
+    updated_at = DateTimeField(default=datetime.now)  # 更新时间
+
+    class Meta:
+        table_name = 'goods'
+
+
+
+
 # 创建所有表
 def create_tables():
     with database:
-        database.create_tables([User, JushuitanProduct, Product, Store])
+        database.create_tables([User, JushuitanProduct, Product, Store, Goods])

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
-import { 
-  MagnifyingGlassIcon, 
+import {
+  MagnifyingGlassIcon,
   FunnelIcon,
-  ArrowDownTrayIcon, 
+  ArrowDownTrayIcon,
   PlusIcon,
   EyeIcon,
   PencilIcon,
@@ -22,7 +22,7 @@ const DataManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [totalItems, setTotalItems] = useState(0);
-  
+
   // 添加筛选状态
   const [filters, setFilters] = useState({});
 
@@ -37,60 +37,60 @@ const DataManagement = () => {
     }, 3000);
   };
 
-  
+
   // 获取聚水潭数据
   const fetchJushuitanData = async (page = 1, size = 10, search = '') => {
-  setLoading(true);
-  try {
-    const skip = (page - 1) * size;
-    const limit = size;
-    
-    let url = `/jushuitan_products/?skip=${skip}&limit=${limit}`;
-    if (search) {
-      // 不使用encodeURIComponent，直接传递搜索词
-      url += `&search=${search}`;
-    }
-    
-    if (productType === 'cancelled') {
-      // 获取已取消的数据
-      // 注意：这里需要后端也要提供类似的接口
-      url = `/jushuitan_products/type/cancel?skip=${skip}&limit=${limit}`;
+    setLoading(true);
+    try {
+      const skip = (page - 1) * size;
+      const limit = size;
+
+      let url = `/jushuitan_products/?skip=${skip}&limit=${limit}`;
       if (search) {
+        // 不使用encodeURIComponent，直接传递搜索词
         url += `&search=${search}`;
       }
-    }
-    
-    const response = await apiRequest(url);
-    
-    if (response.ok) {
-      const responseData = await response.json();
-      // 适配后端返回的新格式 {data: [...], total: count, ...}
-      setJushuitanData(responseData.data || responseData); // 如果后端没有包装在data字段中，则直接使用responseData
-      setTotalItems(responseData.total || responseData.length);
-    } else {
-      console.error('获取聚水潭数据失败:', response.statusText);
-      showNotificationFunc('获取聚水潭数据失败', 'error');
-    }
-  } catch (error) {
-    console.error('获取聚水潭数据错误:', error);
-    showNotificationFunc('获取聚水潭数据时发生错误', 'error');
-  } finally {
-    setLoading(false);
-  }
-};
 
-// 同步聚水潭数据
+      if (productType === 'cancelled') {
+        // 获取已取消的数据
+        // 注意：这里需要后端也要提供类似的接口
+        url = `/jushuitan_products/type/cancel?skip=${skip}&limit=${limit}`;
+        if (search) {
+          url += `&search=${search}`;
+        }
+      }
+
+      const response = await apiRequest(url);
+
+      if (response.ok) {
+        const responseData = await response.json();
+        // 适配后端返回的新格式 {data: [...], total: count, ...}
+        setJushuitanData(responseData.data || responseData); // 如果后端没有包装在data字段中，则直接使用responseData
+        setTotalItems(responseData.total || responseData.length);
+      } else {
+        console.error('获取聚水潭数据失败:', response.statusText);
+        showNotificationFunc('获取聚水潭数据失败', 'error');
+      }
+    } catch (error) {
+      console.error('获取聚水潭数据错误:', error);
+      showNotificationFunc('获取聚水潭数据时发生错误', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 同步聚水潭数据
   const syncJushuitanData = async () => {
     setLoading(true);
     try {
       const response = await apiRequest('/sync_jushuitan_data', {
         method: 'POST'
       });
-      
+
       if (response.ok) {
         const result = await response.json();
         showNotificationFunc(result.message || '数据同步成功', 'success');
-        
+
         // 同步完成后重新获取数据，保持当前的分页状态
         fetchJushuitanData(currentPage, pageSize, searchTerm);
       } else {
@@ -138,7 +138,7 @@ const DataManagement = () => {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-    
+
     // 如果搜索框清空，恢复初始数据
     if (!value) {
       if (activePlatformTab === 0) {
@@ -196,7 +196,7 @@ const DataManagement = () => {
         const response = await apiRequest(`/jushuitan_products/${id}`, {
           method: 'DELETE'
         });
-        
+
         if (response.ok) {
           // 重新获取数据
           fetchJushuitanData();
@@ -232,10 +232,10 @@ const DataManagement = () => {
 
     // 获取所有可能的字段名（从第一条记录获取）
     const allKeys = Object.keys(data[0]);
-    
+
     // 移除一些不需要显示的字段（例如 is_del）
     const displayKeys = allKeys.filter(key => key !== 'is_del');
-    
+
     return (
       <div className="shadow ring-1 ring-black ring-opacity-5 rounded-lg">
         <div className="overflow-x-auto">
@@ -256,19 +256,241 @@ const DataManagement = () => {
               {data.map((item, rowIndex) => (
                 <tr key={item.id || rowIndex} className="hover:bg-gray-50">
                   {displayKeys.map((key, colIndex) => (
-                    <td key={colIndex} className="px-3 py-2 whitespace-nowrap text-sm text-gray-900 max-w-xs truncate">
-                      {key === 'status' || key === 'platform' || key === 'isSuccess' || key === 'orderStatus' ? (
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(item[key])}`}>
-                          {item[key] !== null && item[key] !== undefined && item[key] !== '' ? 
-                           String(item[key]) : '-'}
-                        </span>
-                      ) : key === 'price' || key === 'amount' || key === 'totalSpent' || key === 'purchaseAmt' || key === 'totalAmt' || key === 'commission' || key === 'freight' || key === 'payAmount' || key === 'discountAmt' || key === 'paidAmount' || key === 'totalPurchasePriceGoods' || key === 'smallProgramFreight' || key === 'totalTransactionPurchasePrice' || key === 'smallProgramCommission' || key === 'smallProgramPaidAmount' || key === 'clientPaidAmt' || key === 'goodsAmt' || key === 'freeAmount' || key === 'drpAmount' ? (
-                        `¥${item[key] ? parseFloat(item[key]).toLocaleString() : '-'}`
-                      ) : (
-                        // 对于其他字段，如果是null、undefined或空字符串则显示"-", 否则直接显示值
-                        item[key] !== null && item[key] !== undefined && item[key] !== '' ? 
-                        String(item[key]) : '-'
-                      )}
+                    <td key={colIndex} className="px-3 py-2 text-sm text-gray-900 max-w-xs break-words">
+                      {(() => {
+                        const value = item[key];
+
+                        // 处理各种特殊字段
+                        if (key === 'status' || key === 'platform' || key === 'isSuccess' || key === 'orderStatus' || key === 'orderType') {
+                          return (
+                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(value)}`}>
+                              {value !== null && value !== undefined && value !== '' ?
+                                String(value) : '-'}
+                            </span>
+                          );
+                        }
+                        // 处理 disInnerOrderGoodsViewList 特殊字段
+                        else if (key === 'disInnerOrderGoodsViewList') {
+                          if (typeof value === 'string' && value.trim().startsWith('[')) {
+                            try {
+                              // 将Python格式的字符串转换为JSON格式
+                              let processedValue = value
+                                .replace(/'/g, '"')  // 将单引号替换为双引号
+                                .replace(/\bNone\b/g, 'null')  // 将None替换为null
+                                .replace(/\bTrue\b/g, 'true')  // 将True替换为true
+                                .replace(/\bFalse\b/g, 'false'); // 将False替换为false
+
+                              const parsedValue = JSON.parse(processedValue);
+
+                              if (Array.isArray(parsedValue) && parsedValue.length > 0) {
+                                return (
+                                  <div className="space-y-2">
+                                    {parsedValue.map((obj, idx) => (
+                                      <div key={idx} className="border border-gray-200 rounded p-2">
+                                        {obj.supplierName && <div><strong>供应商:</strong> {obj.supplierName}</div>}
+                                        {obj.pic && <div><strong>图片:</strong> <a href={obj.pic} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">查看</a></div>}
+                                        {obj.itemCode && <div><strong>商品编码:</strong> {obj.itemCode}</div>}
+                                        {obj.itemName && <div><strong>商品名称:</strong> <span className="font-bold text-blue-600">{obj.itemName}</span></div>}
+                                        {obj.itemCount !== undefined && obj.itemCount !== null && <div><strong>数量:</strong> {obj.itemCount}</div>}
+                                        {obj.properties && <div><strong>规格:</strong> {obj.properties}</div>}
+                                        {obj.price !== undefined && obj.price !== null && <div><strong>单价:</strong> ¥{obj.price}</div>}
+                                        {obj.totalPrice !== undefined && obj.totalPrice !== null && <div><strong>总价:</strong> ¥{obj.totalPrice}</div>}
+                                      </div>
+                                    ))}
+                                  </div>
+                                );
+                              } else {
+                                return '-';
+                              }
+                            } catch (e) {
+                              return value.length > 50 ? (
+                                <div className="group relative">
+                                  <div className="truncate">{value.substring(0, 50)}...</div>
+                                  <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs p-2 rounded z-10 max-w-xs break-words">
+                                    {value}
+                                  </div>
+                                </div>
+                              ) : value;
+                            }
+                          } else if (Array.isArray(value) && value.length > 0) {
+                            // 如果已经是数组
+                            return (
+                              <div className="space-y-2">
+                                {value.map((obj, idx) => (
+                                  <div key={idx} className="border border-gray-200 rounded p-2">
+                                    {obj.supplierName && <div><strong>供应商:</strong> {obj.supplierName}</div>}
+                                    {obj.pic && <div><strong>图片:</strong> <a href={obj.pic} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">查看</a></div>}
+                                    {obj.itemCode && <div><strong>商品编码:</strong> {obj.itemCode}</div>}
+                                    {obj.itemName && <div><strong>商品名称:</strong> <span className="font-bold text-blue-600">{obj.itemName}</span></div>}
+                                    {obj.itemCount !== undefined && obj.itemCount !== null && <div><strong>数量:</strong> {obj.itemCount}</div>}
+                                    {obj.properties && <div><strong>规格:</strong> {obj.properties}</div>}
+                                    {obj.price !== undefined && obj.price !== null && <div><strong>单价:</strong> ¥{obj.price}</div>}
+                                    {obj.totalPrice !== undefined && obj.totalPrice !== null && <div><strong>总价:</strong> ¥{obj.totalPrice}</div>}
+                                  </div>
+                                ))}
+                              </div>
+                            );
+                          } else {
+                            return '-';
+                          }
+                        }
+                        // 处理金额类字段
+                        else if (['price', 'amount', 'totalSpent', 'purchaseAmt', 'totalAmt', 'commission', 'freight', 'payAmount',
+                          'discountAmt', 'paidAmount', 'totalPurchasePriceGoods', 'smallProgramFreight',
+                          'totalTransactionPurchasePrice', 'smallProgramCommission', 'smallProgramPaidAmount',
+                          'clientPaidAmt', 'goodsAmt', 'freeAmount', 'drpAmount'].includes(key)) {
+                          return value ? `¥${parseFloat(value).toLocaleString()}` : '-';
+                        }
+                        // 处理布尔值字段
+                        else if (typeof value === 'boolean') {
+                          return value ? '是' : '否';
+                        }
+                        // 处理数字字段（非金额）
+                        else if (typeof value === 'number' && !['price', 'amount', 'totalSpent', 'purchaseAmt', 'totalAmt', 'commission', 'freight', 'payAmount',
+                          'discountAmt', 'paidAmount', 'totalPurchasePriceGoods', 'smallProgramFreight',
+                          'totalTransactionPurchasePrice', 'smallProgramCommission', 'smallProgramPaidAmount',
+                          'clientPaidAmt', 'goodsAmt', 'freeAmount', 'drpAmount'].includes(key)) {
+                          return value;
+                        }
+                        // 处理JSON字符串或数组字符串
+                        else if (typeof value === 'string' && (value.trim().startsWith('[') || value.trim().startsWith('{'))) {
+                          try {
+                            let parsedValue;
+                            // 检查是否为Python格式的字符串（包含单引号和None/True/False）
+                            if (value.includes("'") || value.includes("None") || value.includes("True") || value.includes("False")) {
+                              let processedValue = value.replace(/'/g, '"')
+                                .replace(/None/g, 'null')
+                                .replace(/True/g, 'true')
+                                .replace(/False/g, 'false');
+                              parsedValue = JSON.parse(processedValue);
+                            } else {
+                              parsedValue = JSON.parse(value);
+                            }
+
+                            // 如果是数组
+                            if (Array.isArray(parsedValue)) {
+                              if (parsedValue.length === 0) {
+                                return '-';
+                              }
+
+                              // 如果是简单数组（如标签数组），显示为标签
+                              if (parsedValue.length > 0 && typeof parsedValue[0] === 'string') {
+                                return (
+                                  <div className="flex flex-wrap gap-1">
+                                    {parsedValue.map((val, idx) => (
+                                      <span key={idx} className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                        {val}
+                                      </span>
+                                    ))}
+                                  </div>
+                                );
+                              }
+                              // 如果是复杂对象数组，显示第一个对象的部分字段
+                              else if (parsedValue.length > 0 && typeof parsedValue[0] === 'object' && parsedValue[0] !== null) {
+                                return (
+                                  <div className="space-y-1">
+                                    {parsedValue.slice(0, 3).map((obj, idx) => {
+                                      if (obj.itemName) {
+                                        return (
+                                          <div key={idx} className="break-all">
+                                            商品: {obj.itemName} ({obj.itemCount}件)
+                                          </div>
+                                        );
+                                      } else if (obj.receiverName) {
+                                        return (
+                                          <div key={idx} className="break-all">
+                                            收件人: {obj.receiverName}
+                                          </div>
+                                        );
+                                      } else {
+                                        // 提取对象的主要字段
+                                        const fields = [];
+                                        if (obj.itemName) fields.push(`商品: ${obj.itemName}`);
+                                        if (obj.receiverName) fields.push(`收件人: ${obj.receiverName}`);
+                                        if (obj.price) fields.push(`价格: ¥${obj.price}`);
+                                        if (obj.totalPrice) fields.push(`总价: ¥${obj.totalPrice}`);
+                                        if (obj.itemCount) fields.push(`数量: ${obj.itemCount}`);
+
+                                        return (
+                                          <div key={idx} className="break-all">
+                                            {fields.length > 0 ? fields.join(', ') : JSON.stringify(obj)}
+                                          </div>
+                                        );
+                                      }
+                                    })}
+                                    {parsedValue.length > 3 && (
+                                      <div className="text-xs text-gray-500">...还有{parsedValue.length - 3}项</div>
+                                    )}
+                                  </div>
+                                );
+                              }
+                            }
+                            // 如果是对象
+                            else if (typeof parsedValue === 'object' && parsedValue !== null) {
+                              // 特定对象类型的处理
+                              if (parsedValue.ReceiverName || parsedValue.ReceiverPhone || parsedValue.ReceiverAddress) {
+                                return (
+                                  <div className="space-y-1">
+                                    {parsedValue.ReceiverName && <div className="break-all">姓名: {parsedValue.ReceiverName}</div>}
+                                    {parsedValue.ReceiverPhone && <div className="break-all">电话: {parsedValue.ReceiverPhone}</div>}
+                                    {parsedValue.ReceiverAddress && <div className="break-all">地址: {parsedValue.ReceiverAddress}</div>}
+                                  </div>
+                                );
+                              } else if (parsedValue.receiver_name || parsedValue.receiver_phone || parsedValue.receiver_address) {
+                                return (
+                                  <div className="space-y-1">
+                                    {parsedValue.receiver_name && <div className="break-all">姓名: {parsedValue.receiver_name}</div>}
+                                    {parsedValue.receiver_phone && <div className="break-all">电话: {parsedValue.receiver_phone}</div>}
+                                    {parsedValue.receiver_address && <div className="break-all">地址: {parsedValue.receiver_address}</div>}
+                                  </div>
+                                );
+                              } else {
+                                return (
+                                  <div className="break-all">
+                                    {JSON.stringify(parsedValue)}
+                                  </div>
+                                );
+                              }
+                            }
+                          } catch (e) {
+                            // 如果解析失败，按普通字符串显示
+                            return value.length > 50 ? (
+                              <div className="group relative">
+                                <div className="truncate">{value.substring(0, 50)}...</div>
+                                <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs p-2 rounded z-10 max-w-xs break-words">
+                                  {value}
+                                </div>
+                              </div>
+                            ) : value;
+                          }
+                        }
+                        // 处理日期时间字段
+                        else if (key.includes('Time') || key.includes('Date') || key.includes('created_at') || key.includes('updated_at')) {
+                          return value ? new Date(value).toLocaleString() : '-';
+                        }
+                        // 处理普通字符串
+                        else if (typeof value === 'string') {
+                          if (value === '') {
+                            return '-';
+                          }
+                          return value.length > 50 ? (
+                            <div className="group relative">
+                              <div className="truncate">{value.substring(0, 50)}...</div>
+                              <div className="absolute hidden group-hover:block bg-gray-800 text-white text-xs p-2 rounded z-10 max-w-xs break-words">
+                                {value}
+                              </div>
+                            </div>
+                          ) : value;
+                        }
+                        // 处理null, undefined等
+                        else if (value === null || value === undefined) {
+                          return '-';
+                        }
+                        // 其他情况
+                        else {
+                          return String(value);
+                        }
+                      })()}
                     </td>
                   ))}
                   <td className="px-3 py-2 whitespace-nowrap text-right text-sm font-medium sticky right-0 bg-white z-10 shadow-md">
@@ -279,7 +501,7 @@ const DataManagement = () => {
                       <button className="text-green-600 hover:text-green-900">
                         <PencilIcon className="h-5 w-5" />
                       </button>
-                      <button 
+                      <button
                         className="text-red-600 hover:text-red-900"
                         onClick={() => type === 'jushuitan' ? deleteJushuitanRecord(item.id) : null}
                       >
@@ -296,32 +518,41 @@ const DataManagement = () => {
     );
   };
 
+
+
+
+
+
+
+
+
+
+
+
   // 分页栏组件
   const PaginationBar = () => {
     const totalPages = Math.ceil(totalItems / pageSize);
-    
+
     return (
       <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-4">
         <div className="flex flex-1 justify-between sm:hidden">
           <button
             onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
             disabled={currentPage === 1}
-            className={`relative inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
-              currentPage === 1
+            className={`relative inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${currentPage === 1
                 ? 'cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400'
                 : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-            }`}
+              }`}
           >
             上一页
           </button>
           <button
             onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
             disabled={currentPage === totalPages}
-            className={`relative ml-3 inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
-              currentPage === totalPages
+            className={`relative ml-3 inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${currentPage === totalPages
                 ? 'cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400'
                 : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-            }`}
+              }`}
           >
             下一页
           </button>
@@ -337,7 +568,7 @@ const DataManagement = () => {
             </p>
           </div>
           <div>
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 mb-4">
               <label htmlFor="page-size" className="text-sm text-gray-700">每页显示:</label>
               <select
                 id="page-size"
@@ -358,9 +589,8 @@ const DataManagement = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                 disabled={currentPage === 1}
-                className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
-                  currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-                }`}
+                className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+                  }`}
               >
                 <span className="sr-only">上一页</span>
                 <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -390,11 +620,10 @@ const DataManagement = () => {
                     <button
                       key={pageNum}
                       onClick={() => setCurrentPage(pageNum)}
-                      className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                        currentPage === pageNum
+                      className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${currentPage === pageNum
                           ? 'z-10 bg-blue-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'
                           : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-                      } focus:outline-offset-0`}
+                        } focus:outline-offset-0`}
                     >
                       {pageNum}
                     </button>
@@ -406,9 +635,8 @@ const DataManagement = () => {
               <button
                 onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                 disabled={currentPage === totalPages}
-                className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
-                  currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-                }`}
+                className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
+                  }`}
               >
                 <span className="sr-only">下一页</span>
                 <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -425,14 +653,14 @@ const DataManagement = () => {
   // 通知组件
   const Notification = () => {
     if (!showNotification.show) return null;
-    
+
     const bgColor = showNotification.type === 'error' ? 'bg-red-500' : 'bg-green-500';
-    
+
     return (
       <div className="fixed top-4 right-4 z-50">
         <div className={`${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center`}>
           <span>{showNotification.message}</span>
-          <button 
+          <button
             onClick={() => setShowNotification({ show: false, message: '', type: '' })}
             className="ml-4 text-white hover:text-gray-200"
           >
@@ -508,7 +736,7 @@ const DataManagement = () => {
                         <button
                           className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
                           onClick={syncJushuitanData}
-                          >
+                        >
                           <ArrowDownTrayIcon className="h-5 w-5 mr-2" />
                           同步
                         </button>
@@ -526,21 +754,19 @@ const DataManagement = () => {
                       <span className="text-sm font-medium text-gray-700">数据类型:</span>
                       <div className="flex space-x-2">
                         <button
-                          className={`px-4 py-2 text-sm rounded-lg ${
-                            productType === 'regular'
+                          className={`px-4 py-2 text-sm rounded-lg ${productType === 'regular'
                               ? 'bg-blue-600 text-white'
                               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                          }`}
+                            }`}
                           onClick={() => setProductType('regular')}
                         >
                           常规数据
                         </button>
                         <button
-                          className={`px-4 py-2 text-sm rounded-lg ${
-                            productType === 'cancelled'
+                          className={`px-4 py-2 text-sm rounded-lg ${productType === 'cancelled'
                               ? 'bg-blue-600 text-white'
                               : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                          }`}
+                            }`}
                           onClick={() => setProductType('cancelled')}
                         >
                           已取消
@@ -605,7 +831,7 @@ const DataManagement = () => {
           </Tab.Group>
         </div>
       </div>
-      
+
       {/* 通知组件 */}
       <Notification />
     </div>

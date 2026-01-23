@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Dash from './components/Dash';
 import DataManagement from './pages/DataManagement';
 import UserManagement from './pages/UserManagement';
+import GoodManagement from './pages/GoodManagement';
 import { isAuthenticated } from './utils/auth';
 
 function App() {
@@ -25,8 +26,10 @@ function App() {
         >
           <Route index element={<Dash />} />
           <Route path="data-management" element={<DataManagement />} />
+          <Route path="good-management" element={<GoodManagement />} />
           {userinfo && userinfo.role === 'admin' && <Route path="user-management" element={<UserManagement />} />}
         </Route>
+        
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
