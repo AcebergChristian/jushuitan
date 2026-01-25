@@ -1,6 +1,7 @@
 from peewee import *
 from datetime import datetime
 import os
+import json
 
 # 设置数据库连接
 db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
@@ -10,18 +11,30 @@ class BaseModel(Model):
     class Meta:
         database = database
 
+
 class User(BaseModel):
-    id = AutoField(primary_key=True)
-    username = CharField(unique=True, null=False)
-    email = CharField(unique=True, null=False)
-    hashed_password = CharField(null=False)
-    role = CharField(null=True)  # admin | sales
+    username = CharField(unique=True)
+    email = CharField(unique=False)
+    hashed_password = CharField()  # 使用正确的字段名
+    role = CharField(default='user')  # 'admin' or 'user'
     is_active = BooleanField(default=True)
     is_del = BooleanField(default=False)
-    good_id = IntegerField(null=True)  # 外键引用jushuitan_products.id
     created_at = DateTimeField(default=datetime.now)
     updated_at = DateTimeField(default=datetime.now)
+    # 新增关联商品和店铺的字段
+    goods_stores = TextField(default='[]')  # 存储JSON格式的[{good_id:'', store_id:''}, {}, ...]
 
+    def set_goods_stores(self, goods_stores_list):
+        """设置用户关联的商品和店铺列表"""
+        self.goods_stores = json.dumps(goods_stores_list, ensure_ascii=False)
+
+    def get_goods_stores(self):
+        """获取用户关联的商品和店铺列表"""
+        try:
+            return json.loads(self.goods_stores) if self.goods_stores else []
+        except json.JSONDecodeError:
+            return []
+            
     class Meta:
         table_name = 'users'
     

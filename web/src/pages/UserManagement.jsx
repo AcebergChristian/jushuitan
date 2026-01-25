@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Tab, Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import { 
-  MagnifyingGlassIcon, 
-  FunnelIcon, 
-  ArrowDownTrayIcon, 
+import {
+  MagnifyingGlassIcon,
+  FunnelIcon,
+  ArrowDownTrayIcon,
   PlusIcon,
   EyeIcon,
   PencilIcon,
@@ -20,12 +20,13 @@ const UserManagement = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  const [newUser, setNewUser] = useState({ 
-    username: '', 
-    email: '', 
-    role: 'sales', 
+  const [newUser, setNewUser] = useState({
+    username: '',
+    email: '',
+    password: '',
+    role: 'sales',
     is_active: true,
-    good_id: null 
+    goods_stores: []
   });
 
   // 分页相关状态
@@ -37,6 +38,54 @@ const UserManagement = () => {
 
   const [activeTab, setActiveTab] = useState(0);
 
+  const [goodsWithStoresList, setGoodsWithStoresList] = useState([]); // 商品和店铺关联列表，格式为 [{good_id: '', good_name: '', store_id: '', store_name: ''}, ...]
+const [dropdownOpen, setDropdownOpen] = useState(false);
+
+// 修改useEffect，添加点击文档外区域关闭下拉的功能
+useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (!event.target.closest('.relative')) {
+      setDropdownOpen(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+  return () => {
+    document.removeEventListener('mousedown', handleClickOutside);
+  };
+}, []);
+
+
+  // 修改fetchGoodsWithStoresList函数，确保数据获取成功
+const fetchGoodsWithStoresList = async () => {
+  try {
+    const response = await apiRequest('/goods/');
+    if (response.ok) {
+      const data = await response.json();
+      const formattedList = data.data.map(good => ({
+        good_id: good.goods_id,
+        good_name: good.goods_name,
+        store_id: good.store_id,
+        store_name: good.store_name
+      }));
+      setGoodsWithStoresList(formattedList);
+    }
+  } catch (error) {
+    console.error('获取商品店铺关联列表失败:', error);
+  }
+};
+
+  // 组件挂载时候调用
+  useEffect(() => {
+    fetchGoodsWithStoresList();
+  }, []);
+
+
+
+  // handleSearch函数
+  const handleSearch = () => {
+    fetchUsers(1, pageSize, searchTerm); // 搜索时回到第一页
+  };
 
   // 提示消息状态
   const [notification, setNotification] = useState({ show: false, message: '', type: '' });
@@ -49,58 +98,56 @@ const UserManagement = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
-  }, [currentPage, pageSize, searchTerm]);
+    fetchUsers(currentPage, pageSize, searchTerm);
+  }, [currentPage, pageSize]); // 添加searchTerm依赖
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      // 构建查询参数
-      const params = new URLSearchParams({
-        skip: (currentPage - 1) * pageSize,
-        limit: pageSize
-      });
-      if (searchTerm) {
-        params.append('search', searchTerm);
-      }
-      
-      const response = await apiRequest(`/users?${params.toString()}`);
-      if (response && response.ok) {
-        const data = await response.json();
-        // 假设后端返回的是数组，这里简单处理
-        // 如果后端返回包含分页信息的对象，需要相应调整
-        setUsers(Array.isArray(data) ? data : []);
-        // 这里假设后端返回分页信息，暂时模拟总数
-        // 实际上后端可能需要返回 { users: [...], total: count, totalPages: count/pageSize }
-        setTotalItems(data.length); // 这里应该是实际总数，需后端配合
-      } else if(response) {
-        console.error('获取用户列表失败:', response.statusText);
-      }
-    } catch (error) {
-      console.error('获取用户列表错误:', error);
-    } finally {
-      setLoading(false);
+
+  const fetchUsers = async (page = currentPage, size = pageSize, search = searchTerm) => {
+  try {
+    setLoading(true);
+    // 构建查询参数
+    const params = new URLSearchParams({
+      skip: (page - 1) * size,
+      limit: size
+    });
+    if (search) {
+      params.append('search', search);
     }
-  };
+
+    const response = await apiRequest(`/users?${params.toString()}`);
+    if (response.ok) {
+      const data = await response.json();
+      // 确保每个用户的goods_stores字段都是数组
+      const usersWithDefaultGoodsStores = data.data.map(user => ({
+        ...user,
+        goods_stores: user.goods_stores || []  // 确保goods_stores字段存在且为数组
+      }));
+      setUsers(usersWithDefaultGoodsStores);
+      setTotalItems(data.total);
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      showNotification(errorData.detail || '获取用户列表失败', 'error');
+    }
+  } catch (error) {
+    console.error('获取用户列表错误:', error);
+    showNotification('获取用户列表时发生错误', 'error');
+  } finally {
+    setLoading(false);
+  }
+};
 
   useEffect(() => {
     if (!isModalOpen) {
       setEditingUser(null);
-      setNewUser({ 
-        username: '', 
-        email: '', 
-        role: 'sales', 
+      setNewUser({
+        username: '',
+        email: '',
+        role: 'sales',
         is_active: true,
-        good_id: null 
       });
     }
   }, [isModalOpen]);
 
-  const filteredUsers = users.filter(user =>
-    user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    user.role?.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   // 处理分页
   const handlePageChange = (page) => {
@@ -115,60 +162,62 @@ const UserManagement = () => {
   };
 
   const handleSaveUser = async () => {
-    try {
-      let response;
-      if (editingUser) {
-        // 更新现有用户
-        response = await apiRequest(`/users/${editingUser.id}`, {
-          method: 'PUT',
-          body: JSON.stringify({
-            username: editingUser.username,
-            email: editingUser.email,
-            is_active: editingUser.is_active,
-            role: editingUser.role,
-            good_id: editingUser.good_id
-          }),
-        });
-      } else {
-        // 添加新用户
-        response = await apiRequest('/users/', {
-          method: 'POST',
-          body: JSON.stringify({
-            username: newUser.username,
-            email: newUser.email,
-            password: 'defaultpassword', // 实际应用中应通过安全方式设置密码
-            is_active: newUser.is_active,
-            role: newUser.role,
-            good_id: newUser.good_id
-          }),
-        });
-      }
-
-      if (response && response.ok) {
-        const savedUser = await response.json();
-        if (editingUser) {
-          setUsers(users.map(user => user.id === editingUser.id ? savedUser : user));
-        } else {
-          // 重新获取用户列表以反映最新的分页
-          fetchUsers();
-        }
-        setIsModalOpen(false);
-      } else if(response){
-        console.error('保存用户失败:', response);
-        showNotification( response.statusText, 'error');
-        // alert('保存用户失败');
-      }
-    } catch (error) {
-      console.error('保存用户错误:', error);
-      showNotification( error, 'error');
-      // alert('保存用户时发生错误');
+  try {
+    let response;
+    if (editingUser) {
+      // 更新现有用户
+      response = await apiRequest(`/users/${editingUser.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: editingUser.username,
+          email: editingUser.email,
+          is_active: editingUser.is_active,
+          role: editingUser.role,
+          goods_stores: editingUser.goods_stores || [] // 确保传递的是数组
+        })
+      });
+    } else {
+      // 添加新用户
+      response = await apiRequest('/users/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: newUser.username,
+          email: newUser.email,
+          password: newUser.password, // 添加密码字段
+          is_active: newUser.is_active,
+          role: newUser.role,
+          goods_stores: newUser.goods_stores || [] // 确保传递的是数组
+        }),
+      });
     }
-  };
+    
+    if (response.ok) {
+      showNotification('用户保存成功', 'success');
+      setIsModalOpen(false);
+      fetchUsers(currentPage, pageSize, searchTerm);
+    } else {
+      const errorData = await response.json().catch(() => ({}));
+      showNotification(errorData.detail || '用户保存失败', 'error');
+    }
+  } catch (error) {
+    console.error('保存用户错误:', error);
+    showNotification('保存用户时发生错误', 'error');
+  }
+};
 
-  const handleEditUser = (user) => {
-    setEditingUser({ ...user });
-    setIsModalOpen(true);
-  };
+const handleEditUser = (user) => {
+  setEditingUser({
+    ...user,
+    goods_stores: user.goods_stores || []  // 确保goods_stores字段存在且为数组
+  });
+  setIsModalOpen(true);
+};
 
   const handleDeleteUser = async (id) => {
     if (window.confirm('确定要删除这个用户吗？')) {
@@ -176,17 +225,17 @@ const UserManagement = () => {
         const response = await apiRequest(`/users/${id}`, {
           method: 'DELETE',
         });
-        
+
         if (response && response.ok) {
           // 删除后重新获取用户列表
-          fetchUsers();
-        } else if(response){
+          fetchUsers(currentPage, pageSize);
+        } else if (response) {
           console.error('删除用户失败:', response.statusText);
-          showNotification( response.statusText, 'error');
+          showNotification(response.statusText, 'error');
         }
       } catch (error) {
         console.error('删除用户错误:', error);
-        showNotification( error, 'error');
+        showNotification(error, 'error');
       }
     }
   };
@@ -232,8 +281,8 @@ const UserManagement = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {filteredUsers.length > 0 ? (
-            filteredUsers.map((user) => (
+          {users.length > 0 ? (
+            users.map((user) => (
               <tr key={user.id} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.username}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.email}</td>
@@ -242,7 +291,9 @@ const UserManagement = () => {
                     {user.role || 'user'}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.good_id || '-'}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm">
+                  {user.goods_stores.map((goods_store) => goods_store.good_name || '-').join(', ')}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(user.is_active)}`}>
                     {user.is_active ? '激活' : '未激活'}
@@ -251,13 +302,13 @@ const UserManagement = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.created_at}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex justify-end space-x-2">
-                    <button 
+                    <button
                       className="text-blue-600 hover:text-blue-900"
                       onClick={() => handleEditUser(user)}
                     >
                       <PencilIcon className="h-5 w-5" />
                     </button>
-                    <button 
+                    <button
                       className="text-red-600 hover:text-red-900"
                       onClick={() => handleDeleteUser(user.id)}
                     >
@@ -292,22 +343,20 @@ const UserManagement = () => {
         <button
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className={`relative inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
-            currentPage === 1
-              ? 'cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400'
-              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-          }`}
+          className={`relative inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${currentPage === 1
+            ? 'cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400'
+            : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+            }`}
         >
           上一页
         </button>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className={`relative ml-3 inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${
-            currentPage === totalPages
-              ? 'cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400'
-              : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
-          }`}
+          className={`relative ml-3 inline-flex items-center rounded-md border px-4 py-2 text-sm font-medium ${currentPage === totalPages
+            ? 'cursor-not-allowed border-gray-300 bg-gray-100 text-gray-400'
+            : 'border-gray-300 bg-white text-gray-700 hover:bg-gray-50'
+            }`}
         >
           下一页
         </button>
@@ -341,9 +390,8 @@ const UserManagement = () => {
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
-                currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
-              }`}
+              className={`relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${currentPage === 1 ? 'cursor-not-allowed opacity-50' : ''
+                }`}
             >
               <span className="sr-only">上一页</span>
               <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -373,11 +421,10 @@ const UserManagement = () => {
                   <button
                     key={pageNum}
                     onClick={() => handlePageChange(pageNum)}
-                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${
-                      currentPage === pageNum
-                        ? 'z-10 bg-blue-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'
-                        : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
-                    } focus:outline-offset-0`}
+                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${currentPage === pageNum
+                      ? 'z-10 bg-blue-600 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600'
+                      : 'text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50'
+                      } focus:outline-offset-0`}
                   >
                     {pageNum}
                   </button>
@@ -389,9 +436,8 @@ const UserManagement = () => {
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
-                currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
-              }`}
+              className={`relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${currentPage === totalPages ? 'cursor-not-allowed opacity-50' : ''
+                }`}
             >
               <span className="sr-only">下一页</span>
               <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -408,14 +454,14 @@ const UserManagement = () => {
   // 渲染通知组件
   const Notification = () => {
     if (!notification.show) return null;
-    
+
     const bgColor = notification.type === 'error' ? 'bg-red-500' : 'bg-green-500';
-    
+
     return (
       <div className="fixed top-4 right-4 z-50">
         <div className={`${bgColor} text-white px-6 py-4 rounded-lg shadow-lg flex items-center`}>
           <span>{notification.message}</span>
-          <button 
+          <button
             onClick={() => setNotification({ show: false, message: '', type: '' })}
             className="ml-4 text-white hover:text-gray-200"
           >
@@ -445,19 +491,27 @@ const UserManagement = () => {
                 </div>
                 <input
                   type="text"
-                  className="block w-full pl-10 pr-12 py-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                  className="block w-full pl-10 pr-12 py-2.5 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 outline-none"
                   placeholder="搜索用户或关系..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      handleSearch(); // 按回车键也触发搜索
+                    }
+                  }}
                 />
               </div>
             </div>
             <div className="flex space-x-3">
-              {/* <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+              <button
+                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                onClick={handleSearch} // 点击按钮时触发搜索
+              >
                 <FunnelIcon className="h-5 w-5 mr-2" />
                 筛选
-              </button> */}
-              <button 
+              </button>
+              <button
                 className="inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
                 onClick={() => setIsModalOpen(true)}
               >
@@ -477,11 +531,10 @@ const UserManagement = () => {
           <div className="border-b border-gray-200">
             <nav className="-mb-px flex">
               <button
-                className={`py-4 px-6 text-center border-b-2 font-medium text-sm ${
-                  activeTab === 0
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }`}
+                className={`py-4 px-6 text-center border-b-2 font-medium text-sm ${activeTab === 0
+                  ? 'border-blue-500 text-blue-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
               >
                 用户管理
               </button>
@@ -532,7 +585,7 @@ const UserManagement = () => {
                   >
                     {editingUser ? '编辑用户' : '新增用户'}
                   </Dialog.Title>
-                  
+
                   <div className="mt-4 space-y-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">用户名</label>
@@ -540,37 +593,52 @@ const UserManagement = () => {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         value={editingUser ? editingUser.username : newUser.username}
-                        onChange={(e) => 
-                          editingUser 
-                            ? setEditingUser({...editingUser, username: e.target.value}) 
-                            : setNewUser({...newUser, username: e.target.value})
+                        onChange={(e) =>
+                          editingUser
+                            ? setEditingUser({ ...editingUser, username: e.target.value })
+                            : setNewUser({ ...newUser, username: e.target.value })
                         }
                       />
                     </div>
-                    
+
+                    {/* 只在创建新用户时显示密码字段 */}
+                    {!editingUser && (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                        <input
+                          type="password"
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                          value={newUser.password || ''}
+                          onChange={(e) =>
+                            setNewUser({ ...newUser, password: e.target.value })
+                          }
+                        />
+                      </div>
+                    )}
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">邮箱</label>
                       <input
                         type="email"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         value={editingUser ? editingUser.email : newUser.email}
-                        onChange={(e) => 
-                          editingUser 
-                            ? setEditingUser({...editingUser, email: e.target.value}) 
-                            : setNewUser({...newUser, email: e.target.value})
+                        onChange={(e) =>
+                          editingUser
+                            ? setEditingUser({ ...editingUser, email: e.target.value })
+                            : setNewUser({ ...newUser, email: e.target.value })
                         }
                       />
                     </div>
-                    
+
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">角色</label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         value={editingUser ? editingUser.role : newUser.role}
-                        onChange={(e) => 
-                          editingUser 
-                            ? setEditingUser({...editingUser, role: e.target.value}) 
-                            : setNewUser({...newUser, role: e.target.value})
+                        onChange={(e) =>
+                          editingUser
+                            ? setEditingUser({ ...editingUser, role: e.target.value })
+                            : setNewUser({ ...newUser, role: e.target.value })
                         }
                       >
                         <option value="user">普通用户</option>
@@ -579,31 +647,118 @@ const UserManagement = () => {
                         <option value="admin">管理员</option>
                       </select>
                     </div>
-                    
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">关联商品ID</label>
-                      <input
-                        type="number"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="可选，留空表示不关联"
-                        value={editingUser ? editingUser.good_id || '' : newUser.good_id || ''}
-                        onChange={(e) => 
-                          editingUser 
-                            ? setEditingUser({...editingUser, good_id: e.target.value ? parseInt(e.target.value) : null}) 
-                            : setNewUser({...newUser, good_id: e.target.value ? parseInt(e.target.value) : null})
-                        }
-                      />
-                    </div>
-                    
+
+
+
+                    {/* 关联商品和店铺 */}
+<div>
+  <label className="block text-sm font-medium text-gray-700 mb-1">关联商品和店铺</label>
+  <div className="space-y-2">
+    {/* 自定义多选下拉组件 */}
+    <div className="relative">
+      {/* 已选择标签显示区域 */}
+      <div className="mb-2 flex flex-wrap gap-2 min-h-[40px] p-2 border border-gray-300 rounded-md bg-white">
+        {(editingUser ? (editingUser.goods_stores || []) : (newUser.goods_stores || [])).map((item, index) => {
+          const goodInfo = goodsWithStoresList.find(g => g.good_id === item.good_id);
+          return (
+            <span 
+              key={index} 
+              className="inline-flex items-center px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full"
+            >
+              {goodInfo ? `${goodInfo.good_name} (${goodInfo.store_name})` : `商品ID: ${item.good_id}`}
+              <button
+                type="button"
+                className="ml-1 text-blue-600 hover:text-blue-800"
+                onClick={(e) => {
+                  e.stopPropagation(); // 阻止事件冒泡
+                  const updatedGoodsStores = [...(editingUser ? (editingUser.goods_stores || []) : (newUser.goods_stores || []))];
+                  updatedGoodsStores.splice(index, 1);
+                  if (editingUser) {
+                    setEditingUser({ ...editingUser, goods_stores: updatedGoodsStores });
+                  } else {
+                    setNewUser({ ...newUser, goods_stores: updatedGoodsStores });
+                  }
+                }}
+              >
+                ×
+              </button>
+            </span>
+          );
+        })}
+        {(editingUser ? (editingUser.goods_stores || []).length : (newUser.goods_stores || []).length) === 0 && (
+          <span className="text-gray-400 text-sm flex items-center">请选择商品...</span>
+        )}
+      </div>
+      
+      {/* 输入框用于触发下拉 */}
+      <input
+        type="text"
+        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 cursor-pointer"
+        placeholder="点击选择商品..."
+        onClick={() => setDropdownOpen(!dropdownOpen)}
+        readOnly
+      />
+      
+      {/* 下拉选择器 - 只在点击时显示 */}
+      {dropdownOpen && (
+        <div 
+          className="absolute z-20 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+          onClick={(e) => e.stopPropagation()} // 防止点击下拉内容时关闭下拉
+        >
+          {goodsWithStoresList && goodsWithStoresList.map((good) => {
+            const isSelected = (editingUser ? (editingUser.goods_stores || []) : (newUser.goods_stores || []))
+              .some(item => item.good_id === good.good_id);
+            
+            return (
+              <div
+                key={good.good_id}
+                className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${isSelected ? 'bg-blue-50 text-blue-700' : ''}`}
+                onClick={() => {
+                  const currentSelections = [...(editingUser ? (editingUser.goods_stores || []) : (newUser.goods_stores || []))];
+                  const existsIndex = currentSelections.findIndex(item => item.good_id === good.good_id);
+                  
+                  if (existsIndex > -1) {
+                    // 如果已存在，则移除
+                    currentSelections.splice(existsIndex, 1);
+                  } else {
+                    // 如果不存在，则添加
+                    currentSelections.push({
+                      good_id: good.good_id,
+                      store_id: good.store_id
+                    });
+                  }
+                  
+                  if (editingUser) {
+                    setEditingUser({ ...editingUser, goods_stores: currentSelections });
+                  } else {
+                    setNewUser({ ...newUser, goods_stores: currentSelections });
+                  }
+                }}
+              >
+                <div className="flex justify-between items-center">
+                  <span>{good.good_name}</span>
+                  <span className="text-xs text-gray-500">(店铺: {good.store_name})</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+
+
+                    {/* 状态 */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">状态</label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                         value={editingUser ? editingUser.is_active : newUser.is_active}
-                        onChange={(e) => 
-                          editingUser 
-                            ? setEditingUser({...editingUser, is_active: e.target.value === 'true'}) 
-                            : setNewUser({...newUser, is_active: e.target.value === 'true'})
+                        onChange={(e) =>
+                          editingUser
+                            ? setEditingUser({ ...editingUser, is_active: e.target.value === 'true' })
+                            : setNewUser({ ...newUser, is_active: e.target.value === 'true' })
                         }
                       >
                         <option value="true">激活</option>

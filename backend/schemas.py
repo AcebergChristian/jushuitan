@@ -1,35 +1,49 @@
 from pydantic import BaseModel
 from typing import Optional, List
-from datetime import datetime
+import json
+
 
 # 用户相关模式
 class UserBase(BaseModel):
     username: str
     email: str
-    is_active: bool = True
+    role: Optional[str] = "user"
+    is_active: Optional[bool] = True
+    is_del: Optional[bool] = False
 
 class UserCreate(UserBase):
     password: str
-    role: Optional[str] = "sales"
-    good_id: Optional[int] = None
+    goods_stores: Optional[List[dict]] = []  # 添加这个字段
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
     email: Optional[str] = None
+    role: Optional[str] = None
     is_active: Optional[bool] = None
     password: Optional[str] = None
-    role: Optional[str] = None
-    good_id: Optional[int] = None
+    goods_stores: Optional[List[dict]] = []  # 添加这个字段
+
 
 class User(UserBase):
     id: int
     role: Optional[str] = None
-    good_id: Optional[int] = None
     created_at: str
     updated_at: str
+    goods_stores: Optional[List[dict]] = []  # 添加这个字段
     
     class Config:
         from_attributes = True   # Peewee兼容性配置
+
+    @classmethod
+    def validate_goods_stores(cls, v):
+        """验证并转换goods_stores字段"""
+        if isinstance(v, str):
+            try:
+                return json.loads(v) if v else []
+            except json.JSONDecodeError:
+                return []
+        return v if v is not None else []
+
 
 # 商品相关模式
 class ProductBase(BaseModel):
