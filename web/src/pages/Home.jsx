@@ -41,12 +41,12 @@ const Home = () => {
     {
       key: '/data-management',
       icon: <DatabaseOutlined />,
-      label: '数据管理',
+      label: '订单管理',
     },
     {
       key: '/good-management',
       icon: <ShoppingCartOutlined />,
-      label: '商品管理',
+      label: '商品台账',
     },
     {
       key: '/userstore-management',

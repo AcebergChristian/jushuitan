@@ -304,29 +304,62 @@ def sync_jushuitan_data():
 
 
 # 同步订单数据 - 查出商品数 - insert到goods表
-@router.get("/sync_goods/")
-def sync_goods():
+@router.post("/sync_goods/")
+def sync_goods(request: dict = None):
     """
     同步订单数据中的商品信息到goods表
     - 提取disInnerOrderGoodsViewList中的商品数据
     - 按shopIid聚合相同商品的金额
     - 计算各种利润指标
+    - 支持按指定日期同步数据
     """
+    from datetime import datetime, date
+    from ..models.database import Goods
+    from ..spiders.jushuitan_api import get_jushuitan_orders
     
     try:
+        # 检查是否提供了同步日期
+        sync_date_str = request.get('sync_date') if request else None
+        sync_date = None
+        if sync_date_str:
+            try:
+                sync_date = datetime.strptime(sync_date_str, '%Y-%m-%d').date()
+            except ValueError:
+                raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
+    
+
         # 获取所有未删除的订单数据
-        api_response = get_jushuitan_orders()
+        api_response = get_jushuitan_orders(sync_date=sync_date)
         if not api_response or 'data' not in api_response:
             raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
 
         orders = api_response.get('data', [])
-        print("Total orders:", len(orders), type(orders))
 
         # 用于存储商品数据的字典，以shopIid为主键
         goods_dict = {}
-        
+
         for order in orders:
             try:
+                # 如果指定了同步日期，则只处理该日期的订单
+                if sync_date:
+                    order_time_str = order.get('orderTime')
+                    if order_time_str:
+                        try:
+                            # 解析订单时间，提取日期部分
+                            if 'T' in order_time_str:
+                                order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
+                                order_date = order_datetime.date()
+                            else:
+                                # 如果只是日期字符串
+                                order_date = datetime.strptime(order_time_str.split(' ')[0], '%Y-%m-%d').date()
+                            
+                            # 只处理指定日期的订单
+                            if order_date != sync_date:
+                                continue
+                        except:
+                            # 如果解析失败，跳过该订单
+                            continue
+                
                 # 解析disInnerOrderGoodsViewList字段
                 goods_list = order.get('disInnerOrderGoodsViewList')
                 
@@ -360,17 +393,21 @@ def sync_goods():
                     total_price = float(goods_item.get('totalPrice', 0) or 0)
                     item_count = int(goods_item.get('itemCount', 1) or 1)
                     
-                    # 获取订单创建时间并转换为日期对象
-                    order_created_at_str = order.get('created_at')
-                    if order_created_at_str:
-                        if isinstance(order_created_at_str, str):
-                            order_created_at = datetime.fromisoformat(order_created_at_str.replace('Z', '+00:00'))
-                        elif isinstance(order_created_at_str, datetime):
-                            order_created_at = order_created_at_str
+                    # 如果指定了同步日期，使用该日期，否则使用订单创建日期
+                    if sync_date:
+                        order_created_at = datetime.combine(sync_date, datetime.min.time())
+                    else:
+                        # 获取订单创建时间并转换为日期对象
+                        order_created_at_str = order.get('created_at')
+                        if order_created_at_str:
+                            if isinstance(order_created_at_str, str):
+                                order_created_at = datetime.fromisoformat(order_created_at_str.replace('Z', '+00:00'))
+                            elif isinstance(order_created_at_str, datetime):
+                                order_created_at = order_created_at_str
+                            else:
+                                order_created_at = datetime.now()
                         else:
                             order_created_at = datetime.now()
-                    else:
-                        order_created_at = datetime.now()
                     
                     # 使用shopIid和日期作为组合键，以便区分同一天内的重复与不同日期的数据
                     date_key = order_created_at.date()
@@ -492,8 +529,14 @@ def sync_goods():
         # 统计处理结果
         processed_count = len(goods_dict)
         
+        # 根据是否指定了同步日期返回不同的消息
+        if sync_date:
+            message_text = f"成功同步指定日期 {sync_date_str} 的商品数据，处理了 {processed_count} 条商品记录"
+        else:
+            message_text = f"成功同步商品数据，处理了 {processed_count} 条商品记录"
+
         return {
-            "message": f"成功同步商品数据，处理了 {processed_count} 条商品记录"
+            "message": message_text
         }
         
     except Exception as e:
@@ -846,9 +889,11 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
     """
     获取用户商品汇总数据
     管理员可查看所有用户的数据，普通用户只能查看自己的数据
-    返回每个用户的关联商品和店铺的汇总信息
+    返回每个用户的关联商品和店铺的汇总信息（仅限最新一天的数据）
     """
     from ..models.database import Goods, User
+    from peewee import fn
+    from datetime import datetime, date
     
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
@@ -893,14 +938,20 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
             })
             continue
         
-        # 提取商品ID列表
-        goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
+        # 提取用户关联的商品ID列表
+        user_associated_goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
         
-        # 查询对应的商品数据
+        # 获取最新一天的日期
+        today = date.today()
+        
+        # 查询对应的商品数据，只查询最新一天的数据
         goods_data = []
-        if goods_ids:
+        if user_associated_goods_ids:
+            # 先获取最新一天的记录
             goods_records = Goods.select().where(
-                (Goods.goods_id.in_(goods_ids)) & (Goods.is_del == False)
+                (Goods.goods_id.in_(user_associated_goods_ids)) & 
+                (Goods.is_del == False) &
+                (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
             )
             
             for record in goods_records:
@@ -1000,7 +1051,7 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
         })
     
     return {
-        "message": f"成功获取{'所有用户' if is_admin else '当前用户'}的商品汇总数据",
+        "message": f"成功获取{'所有用户' if is_admin else '当前用户'}的商品汇总数据（仅限今日）",
         "data": users_summary
     }
 
@@ -1010,8 +1061,11 @@ def get_user_goods_detail(user_id: int, current_user = Depends(get_current_user)
     """
     获取特定用户关联的商品详情
     管理员可查看任意用户的数据，普通用户只能查看自己的数据
+    仅返回最新一天的数据
     """
     from ..models.database import Goods, User
+    from peewee import fn
+    from datetime import datetime, date
     
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
@@ -1034,11 +1088,16 @@ def get_user_goods_detail(user_id: int, current_user = Depends(get_current_user)
     # 提取商品ID列表
     goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
     
-    # 查询对应的商品数据
+    # 获取最新一天的日期
+    today = date.today()
+    
+    # 查询对应的商品数据，只查询最新一天的数据
     goods_data = []
     if goods_ids:
         goods_records = Goods.select().where(
-            (Goods.goods_id.in_(goods_ids)) & (Goods.is_del == False)
+            (Goods.goods_id.in_(goods_ids)) & 
+            (Goods.is_del == False) &
+            (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
         )
         
         for record in goods_records:
@@ -1065,12 +1124,9 @@ def get_user_goods_detail(user_id: int, current_user = Depends(get_current_user)
             })
     
     return {
-        "message": f"成功获取用户 {target_user.username} 的商品详情",
+        "message": f"成功获取用户 {target_user.username} 的商品详情（仅限今日）",
         "data": goods_data
     }
-
-
-
 
 
 

@@ -42,7 +42,7 @@ export const apiRequest = async (endpoint, options = {}) => {
       message.error(errorMessage);
       
       // 如果是403或其他认证相关错误也跳转到登录
-      if ([401, 403].includes(response.status)) {
+      if ([401, 403, 422, 400, 405].includes(response.status)) {
         localStorage.removeItem('token');
         localStorage.removeItem('userinfo');
         history.push('/login');

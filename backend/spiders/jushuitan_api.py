@@ -2,7 +2,7 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-def get_jushuitan_orders():
+def get_jushuitan_orders(sync_date=None):
     """
     获取聚水潭订单数据，默认查询前一天的所有订单
     """
@@ -19,13 +19,14 @@ def get_jushuitan_orders():
         "source": "SUPPLIER"
     }
 
-    # 计算昨天的日期范围
-    yesterday = datetime.now() - timedelta(days=1)
-    # start_time = yesterday.strftime("%Y-%m-%d 00:00:00")
-    # end_time = yesterday.strftime("%Y-%m-%d 23:59:59")
-
-    start_time = '2026-01-01 00:00:00'
-    end_time = '2026-01-02 00:00:00'
+    # 如果没有提供sync_date，则默认使用前一天的日期
+    if sync_date is None:
+        yesterday = datetime.now() - timedelta(days=1)
+        sync_date = yesterday.strftime("%Y-%m-%d")
+    
+    # 设置当天的开始和结束时间
+    start_time = f"{sync_date} 00:00:00"
+    end_time = f"{sync_date} 23:59:59"
 
     payload = {
         "startTime": start_time,

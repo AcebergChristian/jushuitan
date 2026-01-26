@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Card, Button, Space, Modal, Form, Input, Select, message, Tag, Spin } from 'antd';
-import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
+import { PlusOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
 import { apiRequest } from '../utils/api';
 
 const { Option } = Select;
@@ -338,7 +338,7 @@ const UserGoodManagement = () => {
         extra={
           <Button 
             type="primary" 
-            icon={<PlusOutlined />} 
+            icon={<ReloadOutlined />} 
             onClick={loadUsers}
             loading={dataLoading}
           >
