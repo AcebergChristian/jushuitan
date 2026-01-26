@@ -30,12 +30,15 @@ def create_new_user(user: schemas.UserCreate, current_user: UserModel = Depends(
         if db_user_by_email:
             raise HTTPException(status_code=400, detail="邮箱已存在")
         
+        # 直接使用传入的goods_stores数据
+        processed_goods_stores = user.goods_stores if user.goods_stores is not None else []
+        
         created_user = UserModel.create(
             username=user.username,
             email=user.email,
             hashed_password=user_service.generate_password_hash(user.password),  # 使用正确的字段名
             role=user.role or "user",
-            goods_stores= user.goods_stores
+            goods_stores=json.dumps(processed_goods_stores, ensure_ascii=False)  # 以JSON字符串形式存储
         )
         
         # 使用model_to_dict_safe函数转换数据格式
@@ -44,6 +47,7 @@ def create_new_user(user: schemas.UserCreate, current_user: UserModel = Depends(
         if 'goods_stores' not in user_dict or user_dict['goods_stores'] is None:
             user_dict['goods_stores'] = []
         return user_dict
+
 
 @router.get("/users/")
 def read_users(
@@ -72,22 +76,16 @@ def read_users(
     # 获取分页数据
     users = query.offset(skip).limit(limit)
     
-    result = [
-        {
-            "id": user.id,
-            "username": user.username,
-            "email": user.email,
-            "role": user.role,
-            "is_active": user.is_active,
-            "is_del": user.is_del,
-            "created_at": user.created_at.isoformat() if isinstance(user.created_at, datetime) else user.created_at,
-            "updated_at": user.updated_at.isoformat() if isinstance(user.updated_at, datetime) else user.updated_at,
-            "goods_stores": user.get_goods_stores()  # 添加这个字段
-        }
-        for user in users
-    ]
+    result = []
+    for user in users:
+        # 获取用户数据字典
+        user_dict = user_service.model_to_dict_safe(user)
+        # 使用模型的get_goods_stores方法获取正确解析的goods_stores数据
+        user_dict["goods_stores"] = user.get_goods_stores()
+        result.append(user_dict)
     
     return {"data": result, "total": total}
+
 
 
 @router.get("/users/me", response_model=schemas.User)
@@ -116,22 +114,36 @@ def update_user(
     # 准备更新数据
     update_data = user_update.dict(exclude_unset=True)
     
-    # 特别处理goods_stores字段
+    # 特别处理goods_stores字段 - 直接追加和去重
     if 'goods_stores' in update_data:
-        goods_stores_list = update_data['goods_stores']
-        processed_goods_stores = []
+        # 从数据库获取当前的goods_stores
+        current_goods_stores_str = existing_user.goods_stores
+        if current_goods_stores_str:
+            try:
+                current_goods_stores = json.loads(current_goods_stores_str)
+            except json.JSONDecodeError:
+                current_goods_stores = []
+        else:
+            current_goods_stores = []
         
-        for item in goods_stores_list:
-            # 确保每个商品条目都包含id和name
-            processed_item = {
-                "good_id": item.get("good_id", ""),
-                "store_id": item.get("store_id", ""),
-                "good_name": item.get("good_name", ""),
-                "store_name": item.get("store_name", "")
-            }
-            processed_goods_stores.append(processed_item)
+        # 获取新的goods_stores
+        new_goods_stores = update_data['goods_stores']
         
-        existing_user.set_goods_stores(processed_goods_stores)
+        # 直接追加新数据
+        combined_goods_stores = current_goods_stores + new_goods_stores
+        
+        # 去重：基于整个对象进行去重
+        seen = set()
+        unique_goods_stores = []
+        for item in combined_goods_stores:
+            item_str = json.dumps(item, sort_keys=True)  # 将对象转换为排序后的字符串作为唯一标识
+            if item_str not in seen:
+                seen.add(item_str)
+                unique_goods_stores.append(item)
+        
+        # 直接更新用户goods_stores字段
+        existing_user.goods_stores = json.dumps(unique_goods_stores, ensure_ascii=False)
+        existing_user.save()
         del update_data['goods_stores']  # 从更新数据中移除，因为我们直接处理了
     
     # 特别处理密码字段
@@ -152,6 +164,9 @@ def update_user(
         user_dict['goods_stores'] = []
     
     return user_dict
+
+
+
 
 
 @router.put("/users/{user_id}", response_model=schemas.User)

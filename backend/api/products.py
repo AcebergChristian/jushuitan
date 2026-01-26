@@ -4,6 +4,7 @@ from .. import schemas
 from ..services import product_service
 from ..database import get_db
 from ..models.database import JushuitanProduct, Goods
+from .auth import get_current_user
 
 
 import sqlite3
@@ -530,6 +531,9 @@ def get_goods_list(
         # 排除已删除的记录
         query = query.where(Goods.is_del == False)  # False
         
+        # 按创建时间降序排列
+        query = query.order_by(Goods.created_at.desc())
+
         # 获取总数
         total_count = query.count()
         
@@ -560,8 +564,8 @@ def get_goods_list(
                 'net_profit_rate': good.net_profit_rate,
                 'is_del': good.is_del,
                 'creator': good.creator,
-                'created_at': good.created_at,
-                'updated_at': good.updated_at
+                'created_at': good.created_at.strftime("%Y-%m-%d %H:%M:%S"),
+                'updated_at': good.updated_at.strftime("%Y-%m-%d %H:%M:%S")
             }
             result.append(good_dict)
         
@@ -577,6 +581,501 @@ def get_goods_list(
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"获取商品列表失败: {str(e)}")
+
+
+
+
+
+
+# 根据当前登录的用户 ，去查他关联的所有商品的id，再去查其店铺的数据，展示
+@router.get("/user_goods_stores_data/")
+def get_user_goods_stores_data(current_user = Depends(get_current_user)):
+    """
+    根据当前登录用户的goods_stores字段查询商品及店铺数据
+    管理员可查看所有数据，普通用户只能查看自己的数据
+    按店铺维度返回汇总数据
+    返回包含销售金额、成本、利润等统计信息的数据
+    """
+    from ..models.database import Goods, User
+    
+    # 判断是否为管理员
+    is_admin = current_user.role == 'admin'
+    
+    store_data = []
+    
+    if is_admin:
+        # 管理员查看所有商品数据，按店铺分组
+        goods_records = Goods.select().where(Goods.is_del == False)
+        
+        # 按店铺ID分组
+        stores_dict = {}
+        for record in goods_records:
+            store_id = record.store_id
+            if store_id not in stores_dict:
+                stores_dict[store_id] = []
+            stores_dict[store_id].append(record)
+        
+        # 为每个店铺生成汇总数据
+        for store_id, goods_list in stores_dict.items():
+            # 计算店铺汇总数据
+            total_payment_amount = sum((g.payment_amount or 0.0) for g in goods_list)
+            total_sales_amount = sum((g.sales_amount or 0.0) for g in goods_list)
+            total_sales_cost = sum((g.sales_cost or 0.0) for g in goods_list)
+            total_gross_profit_1_occurred = sum((g.gross_profit_1_occurred or 0.0) for g in goods_list)
+            avg_gross_profit_1_rate = (
+                sum((g.gross_profit_1_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_advertising_expenses = sum((g.advertising_expenses or 0.0) for g in goods_list)
+            total_advertising_ratio = (
+                sum((g.advertising_ratio or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_gross_profit_3 = sum((g.gross_profit_3 or 0.0) for g in goods_list)
+            avg_gross_profit_3_rate = (
+                sum((g.gross_profit_3_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_gross_profit_4 = sum((g.gross_profit_4 or 0.0) for g in goods_list)
+            avg_gross_profit_4_rate = (
+                sum((g.gross_profit_4_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_net_profit = sum((g.net_profit or 0.0) for g in goods_list)
+            avg_net_profit_rate = (
+                sum((g.net_profit_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            
+            # 获取店铺名称（使用第一个商品的店铺名称）
+            store_name = goods_list[0].store_name if goods_list else ""
+            
+            store_data.append({
+                'store_id': store_id,
+                'store_name': store_name,
+                'goods_count': len(goods_list),
+                'payment_amount': total_payment_amount,
+                'sales_amount': total_sales_amount,
+                'sales_cost': total_sales_cost,
+                'gross_profit_1_occurred': total_gross_profit_1_occurred,
+                'gross_profit_1_rate': avg_gross_profit_1_rate,
+                'advertising_expenses': total_advertising_expenses,
+                'advertising_ratio': total_advertising_ratio,
+                'gross_profit_3': total_gross_profit_3,
+                'gross_profit_3_rate': avg_gross_profit_3_rate,
+                'gross_profit_4': total_gross_profit_4,
+                'gross_profit_4_rate': avg_gross_profit_4_rate,
+                'net_profit': total_net_profit,
+                'net_profit_rate': avg_net_profit_rate,
+                'created_at': goods_list[0].created_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].created_at else "",
+                'updated_at': goods_list[0].updated_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].updated_at else ""
+            })
+    else:
+        # 普通用户查看自己关联的商品和店铺信息
+        user_goods_stores = current_user.get_goods_stores()
+        
+        if not user_goods_stores:
+            return {
+                "message": "当前用户未关联任何商品和店铺",
+                "data": [],
+                "summary": {}
+            }
+        
+        # 提取商品ID列表
+        goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
+        
+        # 查询对应的商品数据
+        goods_records = []
+        if goods_ids:
+            goods_records = Goods.select().where(
+                (Goods.goods_id.in_(goods_ids)) & (Goods.is_del == False)
+            )
+        
+        # 按店铺ID分组
+        stores_dict = {}
+        for record in goods_records:
+            store_id = record.store_id
+            if store_id not in stores_dict:
+                stores_dict[store_id] = []
+            stores_dict[store_id].append(record)
+        
+        # 为每个店铺生成汇总数据
+        for store_id, goods_list in stores_dict.items():
+            # 计算店铺汇总数据
+            total_payment_amount = sum((g.payment_amount or 0.0) for g in goods_list)
+            total_sales_amount = sum((g.sales_amount or 0.0) for g in goods_list)
+            total_sales_cost = sum((g.sales_cost or 0.0) for g in goods_list)
+            total_gross_profit_1_occurred = sum((g.gross_profit_1_occurred or 0.0) for g in goods_list)
+            avg_gross_profit_1_rate = (
+                sum((g.gross_profit_1_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_advertising_expenses = sum((g.advertising_expenses or 0.0) for g in goods_list)
+            total_advertising_ratio = (
+                sum((g.advertising_ratio or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_gross_profit_3 = sum((g.gross_profit_3 or 0.0) for g in goods_list)
+            avg_gross_profit_3_rate = (
+                sum((g.gross_profit_3_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_gross_profit_4 = sum((g.gross_profit_4 or 0.0) for g in goods_list)
+            avg_gross_profit_4_rate = (
+                sum((g.gross_profit_4_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            total_net_profit = sum((g.net_profit or 0.0) for g in goods_list)
+            avg_net_profit_rate = (
+                sum((g.net_profit_rate or 0.0) for g in goods_list) / len(goods_list) 
+                if goods_list else 0
+            )
+            
+            store_name = goods_list[0].store_name if goods_list else ""
+            
+            store_data.append({
+                'store_id': store_id,
+                'store_name': store_name,
+                'goods_count': len(goods_list),
+                'payment_amount': total_payment_amount,
+                'sales_amount': total_sales_amount,
+                'sales_cost': total_sales_cost,
+                'gross_profit_1_occurred': total_gross_profit_1_occurred,
+                'gross_profit_1_rate': avg_gross_profit_1_rate,
+                'advertising_expenses': total_advertising_expenses,
+                'advertising_ratio': total_advertising_ratio,
+                'gross_profit_3': total_gross_profit_3,
+                'gross_profit_3_rate': avg_gross_profit_3_rate,
+                'gross_profit_4': total_gross_profit_4,
+                'gross_profit_4_rate': avg_gross_profit_4_rate,
+                'net_profit': total_net_profit,
+                'net_profit_rate': avg_net_profit_rate,
+                'created_at': goods_list[0].created_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].created_at else "",
+                'updated_at': goods_list[0].updated_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].updated_at else ""
+            })
+    
+    # 计算汇总统计数据
+    summary = {}
+    if store_data:
+        summary = {
+            'total_payment_amount': sum(item['payment_amount'] for item in store_data),
+            'total_sales_amount': sum(item['sales_amount'] for item in store_data),
+            'total_sales_cost': sum(item['sales_cost'] for item in store_data),
+            'total_gross_profit_1_occurred': sum(item['gross_profit_1_occurred'] for item in store_data),
+            'avg_gross_profit_1_rate': sum(item['gross_profit_1_rate'] for item in store_data) / len(store_data) if store_data else 0,
+            'total_advertising_expenses': sum(item['advertising_expenses'] for item in store_data),
+            'total_gross_profit_3': sum(item['gross_profit_3'] for item in store_data),
+            'avg_gross_profit_3_rate': sum(item['gross_profit_3_rate'] for item in store_data) / len(store_data) if store_data else 0,
+            'total_gross_profit_4': sum(item['gross_profit_4'] for item in store_data),
+            'avg_gross_profit_4_rate': sum(item['gross_profit_4_rate'] for item in store_data) / len(store_data) if store_data else 0,
+            'total_net_profit': sum(item['net_profit'] for item in store_data),
+            'avg_net_profit_rate': sum(item['net_profit_rate'] for item in store_data) / len(store_data) if store_data else 0,
+            'total_stores': len(store_data),
+            'total_goods': sum(item['goods_count'] for item in store_data)
+        }
+    
+    return {
+        "message": f"成功获取{'所有' if is_admin else '用户关联'}的店铺汇总数据",
+        "data": store_data,
+        "summary": summary
+    }
+
+
+# 新增接口：获取特定店铺的商品详情
+@router.get("/store_goods_detail/{store_id}")
+def get_store_goods_detail(store_id: str, current_user = Depends(get_current_user)):
+    """
+    获取特定店铺的商品详情
+    """
+    from ..models.database import Goods, User
+    
+    # 判断是否为管理员
+    is_admin = current_user.role == 'admin'
+    
+    goods_data = []
+    
+    if is_admin:
+        # 管理员可以查看任意店铺的商品数据
+        goods_records = Goods.select().where(
+            (Goods.store_id == store_id) & (Goods.is_del == False)
+        )
+    else:
+        # 普通用户只能查看自己关联的店铺商品数据
+        user_goods_stores = current_user.get_goods_stores()
+        user_store_ids = [item.get('store_id') for item in user_goods_stores if item.get('store_id')]
+        
+        if store_id not in user_store_ids:
+            return {"message": "无权访问此店铺的商品详情", "data": [], "error": True}
+        
+        goods_records = Goods.select().where(
+            (Goods.store_id == store_id) & (Goods.is_del == False)
+        )
+    
+    for record in goods_records:
+        goods_data.append({
+            'good_id': record.goods_id,
+            'good_name': record.goods_name,
+            'store_id': record.store_id,
+            'store_name': record.store_name,
+            'payment_amount': record.payment_amount or 0.0,
+            'sales_amount': record.sales_amount or 0.0,
+            'sales_cost': record.sales_cost or 0.0,
+            'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+            'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+            'advertising_expenses': record.advertising_expenses or 0.0,
+            'advertising_ratio': record.advertising_ratio or 0.0,
+            'gross_profit_3': record.gross_profit_3 or 0.0,
+            'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+            'gross_profit_4': record.gross_profit_4 or 0.0,
+            'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+            'net_profit': record.net_profit or 0.0,
+            'net_profit_rate': record.net_profit_rate or 0.0,
+            'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
+            'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
+        })
+    
+    return {
+        "message": "成功获取店铺商品详情",
+        "data": goods_data
+    }
+
+
+# 用户-商品 接口（根据当前登录的用户 ，去查他关联的所有商品的数据， 管理员查看所有用户和商品的数据）
+@router.get("/user_goods_summary/")
+def get_user_goods_summary(current_user = Depends(get_current_user)):
+    """
+    获取用户商品汇总数据
+    管理员可查看所有用户的数据，普通用户只能查看自己的数据
+    返回每个用户的关联商品和店铺的汇总信息
+    """
+    from ..models.database import Goods, User
+    
+    # 判断是否为管理员
+    is_admin = current_user.role == 'admin'
+    
+    users_summary = []
+    
+    if is_admin:
+        # 管理员查看所有用户
+        users = User.select().where(User.is_del == False)
+    else:
+        # 普通用户只能查看自己的信息
+        users = [current_user]
+    
+    for user in users:
+        # 获取用户关联的商品和店铺信息
+        user_goods_stores = user.get_goods_stores()
+        
+        if not user_goods_stores:
+            # 如果用户没有关联任何商品和店铺，仍需返回用户基本信息
+            users_summary.append({
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'role': user.role,
+                'goods_count': 0,
+                'stores_count': 0,
+                'payment_amount': 0.0,
+                'sales_amount': 0.0,
+                'sales_cost': 0.0,
+                'gross_profit_1_occurred': 0.0,
+                'gross_profit_1_rate': 0.0,
+                'advertising_expenses': 0.0,
+                'advertising_ratio': 0.0,
+                'gross_profit_3': 0.0,
+                'gross_profit_3_rate': 0.0,
+                'gross_profit_4': 0.0,
+                'gross_profit_4_rate': 0.0,
+                'net_profit': 0.0,
+                'net_profit_rate': 0.0,
+                'created_at': user.created_at.strftime("%Y-%m-%d %H:%M:%S") if user.created_at else "",
+                'updated_at': user.updated_at.strftime("%Y-%m-%d %H:%M:%S") if user.updated_at else ""
+            })
+            continue
+        
+        # 提取商品ID列表
+        goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
+        
+        # 查询对应的商品数据
+        goods_data = []
+        if goods_ids:
+            goods_records = Goods.select().where(
+                (Goods.goods_id.in_(goods_ids)) & (Goods.is_del == False)
+            )
+            
+            for record in goods_records:
+                goods_data.append({
+                    'good_id': record.goods_id,
+                    'good_name': record.goods_name,
+                    'store_id': record.store_id,
+                    'store_name': record.store_name,
+                    'payment_amount': record.payment_amount or 0.0,
+                    'sales_amount': record.sales_amount or 0.0,
+                    'sales_cost': record.sales_cost or 0.0,
+                    'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+                    'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+                    'advertising_expenses': record.advertising_expenses or 0.0,
+                    'advertising_ratio': record.advertising_ratio or 0.0,
+                    'gross_profit_3': record.gross_profit_3 or 0.0,
+                    'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+                    'gross_profit_4': record.gross_profit_4 or 0.0,
+                    'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+                    'net_profit': record.net_profit or 0.0,
+                    'net_profit_rate': record.net_profit_rate or 0.0,
+                    'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
+                    'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
+                })
+        
+        # 计算汇总数据
+        if goods_data:
+            total_payment_amount = sum(item['payment_amount'] for item in goods_data)
+            total_sales_amount = sum(item['sales_amount'] for item in goods_data)
+            total_sales_cost = sum(item['sales_cost'] for item in goods_data)
+            total_gross_profit_1_occurred = sum(item['gross_profit_1_occurred'] for item in goods_data)
+            avg_gross_profit_1_rate = (
+                sum(item['gross_profit_1_rate'] for item in goods_data) / len(goods_data) 
+                if goods_data else 0
+            )
+            total_advertising_expenses = sum(item['advertising_expenses'] for item in goods_data)
+            avg_advertising_ratio = (
+                sum(item['advertising_ratio'] for item in goods_data) / len(goods_data) 
+                if goods_data else 0
+            )
+            total_gross_profit_3 = sum(item['gross_profit_3'] for item in goods_data)
+            avg_gross_profit_3_rate = (
+                sum(item['gross_profit_3_rate'] for item in goods_data) / len(goods_data) 
+                if goods_data else 0
+            )
+            total_gross_profit_4 = sum(item['gross_profit_4'] for item in goods_data)
+            avg_gross_profit_4_rate = (
+                sum(item['gross_profit_4_rate'] for item in goods_data) / len(goods_data) 
+                if goods_data else 0
+            )
+            total_net_profit = sum(item['net_profit'] for item in goods_data)
+            avg_net_profit_rate = (
+                sum(item['net_profit_rate'] for item in goods_data) / len(goods_data) 
+                if goods_data else 0
+            )
+            
+            # 统计不同的店铺数量
+            store_ids = set(item['store_id'] for item in goods_data if item['store_id'])
+        else:
+            total_payment_amount = 0.0
+            total_sales_amount = 0.0
+            total_sales_cost = 0.0
+            total_gross_profit_1_occurred = 0.0
+            avg_gross_profit_1_rate = 0.0
+            total_advertising_expenses = 0.0
+            avg_advertising_ratio = 0.0
+            total_gross_profit_3 = 0.0
+            avg_gross_profit_3_rate = 0.0
+            total_gross_profit_4 = 0.0
+            avg_gross_profit_4_rate = 0.0
+            total_net_profit = 0.0
+            avg_net_profit_rate = 0.0
+            store_ids = set()
+        
+        users_summary.append({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'role': user.role,
+            'goods_count': len(goods_data),
+            'stores_count': len(store_ids),
+            'payment_amount': total_payment_amount,
+            'sales_amount': total_sales_amount,
+            'sales_cost': total_sales_cost,
+            'gross_profit_1_occurred': total_gross_profit_1_occurred,
+            'gross_profit_1_rate': avg_gross_profit_1_rate,
+            'advertising_expenses': total_advertising_expenses,
+            'advertising_ratio': avg_advertising_ratio,
+            'gross_profit_3': total_gross_profit_3,
+            'gross_profit_3_rate': avg_gross_profit_3_rate,
+            'gross_profit_4': total_gross_profit_4,
+            'gross_profit_4_rate': avg_gross_profit_4_rate,
+            'net_profit': total_net_profit,
+            'net_profit_rate': avg_net_profit_rate,
+            'created_at': user.created_at.strftime("%Y-%m-%d %H:%M:%S") if user.created_at else "",
+            'updated_at': user.updated_at.strftime("%Y-%m-%d %H:%M:%S") if user.updated_at else ""
+        })
+    
+    return {
+        "message": f"成功获取{'所有用户' if is_admin else '当前用户'}的商品汇总数据",
+        "data": users_summary
+    }
+
+
+@router.get("/user_goods_detail/{user_id}")
+def get_user_goods_detail(user_id: int, current_user = Depends(get_current_user)):
+    """
+    获取特定用户关联的商品详情
+    管理员可查看任意用户的数据，普通用户只能查看自己的数据
+    """
+    from ..models.database import Goods, User
+    
+    # 判断是否为管理员
+    is_admin = current_user.role == 'admin'
+    
+    # 获取目标用户
+    target_user = User.get_or_none(User.id == user_id)
+    if not target_user:
+        return {"message": "用户不存在", "data": [], "error": True}
+    
+    # 权限检查
+    if not is_admin and current_user.id != user_id:
+        return {"message": "无权访问此用户的数据", "data": [], "error": True}
+    
+    # 获取用户关联的商品和店铺信息
+    user_goods_stores = target_user.get_goods_stores()
+    
+    if not user_goods_stores:
+        return {"message": "该用户未关联任何商品和店铺", "data": [], "error": False}
+    
+    # 提取商品ID列表
+    goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
+    
+    # 查询对应的商品数据
+    goods_data = []
+    if goods_ids:
+        goods_records = Goods.select().where(
+            (Goods.goods_id.in_(goods_ids)) & (Goods.is_del == False)
+        )
+        
+        for record in goods_records:
+            goods_data.append({
+                'good_id': record.goods_id,
+                'good_name': record.goods_name,
+                'store_id': record.store_id,
+                'store_name': record.store_name,
+                'payment_amount': record.payment_amount or 0.0,
+                'sales_amount': record.sales_amount or 0.0,
+                'sales_cost': record.sales_cost or 0.0,
+                'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+                'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+                'advertising_expenses': record.advertising_expenses or 0.0,
+                'advertising_ratio': record.advertising_ratio or 0.0,
+                'gross_profit_3': record.gross_profit_3 or 0.0,
+                'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+                'gross_profit_4': record.gross_profit_4 or 0.0,
+                'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+                'net_profit': record.net_profit or 0.0,
+                'net_profit_rate': record.net_profit_rate or 0.0,
+                'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
+                'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
+            })
+    
+    return {
+        "message": f"成功获取用户 {target_user.username} 的商品详情",
+        "data": goods_data
+    }
+
+
+
+
+
+
+
+
 
 
 

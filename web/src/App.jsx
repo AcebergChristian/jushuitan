@@ -1,41 +1,41 @@
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/locale/zh_CN';
 import LoginPage from './pages/LoginPage';
 import Home from './pages/Home';
-import Dash from './components/Dash';
-import DataManagement from './pages/DataManagement';
-import GoodManagement from './pages/GoodManagement';
-import UserStoreManagement from './pages/UserStoreManagement';
+import ProtectedRoute from './components/ProtectedRoute';
 
-import UserManagement from './pages/UserManagement';
-import { isAuthenticated } from './utils/auth';
+// 引入视图组件
+import Dashboard from './views/Dashboard';
+import DataManagement from './views/DataManagement';
+import GoodManagement from './views/GoodManagement';
+import UserManagement from './views/UserManagement';
+import UserStoreManagement from './views/UserStoreManagement';
+import UserGoodManagement from './views/UserGoodManagement';
 
 function App() {
-  const authStatus = isAuthenticated(); // 使用专门的身份验证函数
-  const userinfo = JSON.parse(localStorage.getItem('userinfo'));
-
-
   return (
-    <div className="App">
-      <Routes>
-        <Route 
-          path="/login" 
-          element={!authStatus ? <LoginPage /> : <Navigate to="/" />} 
-        />
-        <Route 
-          path="/" 
-          element={authStatus ? <Home /> : <Navigate to="/login" />}
-        >
-          <Route index element={<Dash />} />
-          <Route path="data-management" element={<DataManagement />} />
-          <Route path="good-management" element={<GoodManagement />} />
-          <Route path="userstore-management" element={<UserStoreManagement />} />
-          {userinfo && userinfo.role === 'admin' && <Route path="user-management" element={<UserManagement />} />}
-        </Route>
-        
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </div>
+    <ConfigProvider locale={zhCN}>
+        <Routes>
+          <Route 
+            path="/login" 
+            element={<LoginPage />} 
+          />
+          <Route 
+            path="/*" 
+            element={<Home />} 
+          >
+            <Route index element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="data-management" element={<ProtectedRoute><DataManagement /></ProtectedRoute>} />
+            <Route path="good-management" element={<ProtectedRoute><GoodManagement /></ProtectedRoute>} />
+            <Route path="userstore-management" element={<ProtectedRoute><UserStoreManagement /></ProtectedRoute>} />
+            <Route path="user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
+            <Route path="usergood-management" element={<ProtectedRoute><UserGoodManagement /></ProtectedRoute>} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Route>
+        </Routes>
+    </ConfigProvider>
   );
 }
 

@@ -22,7 +22,7 @@ class User(BaseModel):
     created_at = DateTimeField(default=datetime.now)
     updated_at = DateTimeField(default=datetime.now)
     # 新增关联商品和店铺的字段
-    goods_stores = TextField(default='[]')  # 存储JSON格式的[{good_id:'', store_id:''}, {}, ...]
+    goods_stores = TextField(default='[]')  # 存储JSON格式的[{good_id:'', good_name:''}, {}, ...]
 
     def set_goods_stores(self, goods_stores_list):
         """设置用户关联的商品和店铺列表"""
