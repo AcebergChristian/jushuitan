@@ -390,6 +390,8 @@ def sync_goods(request: dict = None):
                     pic = goods_item.get('pic', '')
                     properties = goods_item.get('properties', '')
                     price = float(goods_item.get('price', 0) or 0)
+                    payAmount = float(goods_item.get('payAmount', 0) or 0)
+                    paidAmount = float(goods_item.get('paidAmount', 0) or 0)
                     total_price = float(goods_item.get('totalPrice', 0) or 0)
                     item_count = int(goods_item.get('itemCount', 1) or 1)
                     
@@ -420,8 +422,8 @@ def sync_goods(request: dict = None):
                         'store_id': order.get('shopId') or '',
                         'store_name': order.get('shopName') or '未知店铺',
                         'order_id': order.get('oid') or '',
-                        'payment_amount': total_price,
-                        'sales_amount': total_price,
+                        'payment_amount': paidAmount,
+                        'sales_amount': payAmount,
                         'sales_cost': price * item_count,  # 成本乘以数量
                         'item_count': item_count,
                         'price': price,
