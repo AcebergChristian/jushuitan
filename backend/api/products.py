@@ -12,7 +12,7 @@ import os
 import json
 from datetime import datetime, date, timedelta
 
-from ..spiders.jushuitan_api import get_jushuitan_orders
+from ..spiders.jushuitan_api import get_all_jushuitan_orders
 
 router = APIRouter()
 
@@ -160,7 +160,7 @@ def sync_jushuitan_data():
     """同步聚水潭数据到数据库，根据oid字段处理重复数据"""
     
     # 获取聚水潭API数据
-    api_response = get_jushuitan_orders()
+    api_response = get_all_jushuitan_orders()
     if not api_response or 'data' not in api_response:
         raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
     
@@ -315,7 +315,7 @@ def sync_goods(request: dict = None):
     """
     from datetime import datetime, date
     from ..models.database import Goods
-    from ..spiders.jushuitan_api import get_jushuitan_orders
+    from ..spiders.jushuitan_api import get_all_jushuitan_orders
     
     try:
         # 检查是否提供了同步日期
@@ -329,7 +329,7 @@ def sync_goods(request: dict = None):
     
 
         # 获取所有未删除的订单数据
-        api_response = get_jushuitan_orders(sync_date=sync_date)
+        api_response = get_all_jushuitan_orders(sync_date=sync_date)
         if not api_response or 'data' not in api_response:
             raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
 
@@ -942,7 +942,7 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
         user_associated_goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
         
         # 获取最新一天的日期
-        today = date.today()
+        # today = date.today()
         
         # 查询对应的商品数据，只查询最新一天的数据
         goods_data = []
@@ -950,8 +950,8 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
             # 先获取最新一天的记录
             goods_records = Goods.select().where(
                 (Goods.goods_id.in_(user_associated_goods_ids)) & 
-                (Goods.is_del == False) &
-                (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
+                (Goods.is_del == False) 
+                # & (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
             )
             
             for record in goods_records:
@@ -1089,15 +1089,15 @@ def get_user_goods_detail(user_id: int, current_user = Depends(get_current_user)
     goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
     
     # 获取最新一天的日期
-    today = date.today()
+    # today = date.today()
     
     # 查询对应的商品数据，只查询最新一天的数据
     goods_data = []
     if goods_ids:
         goods_records = Goods.select().where(
             (Goods.goods_id.in_(goods_ids)) & 
-            (Goods.is_del == False) &
-            (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
+            (Goods.is_del == False)
+            # & (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
         )
         
         for record in goods_records:
