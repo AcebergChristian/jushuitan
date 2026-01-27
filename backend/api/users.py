@@ -49,7 +49,7 @@ def create_new_user(user: schemas.UserCreate, current_user: UserModel = Depends(
         return user_dict
 
 
-@router.get("/users/")
+@router.get("/users")
 def read_users(
     skip: int = Query(0, ge=0),
     limit: int = Query(10, ge=1, le=100),
@@ -169,26 +169,7 @@ def update_user(
 
 
 
-@router.put("/users/{user_id}", response_model=schemas.User)
-def update_existing_user(user_id: int, user: schemas.UserUpdate, current_user: UserModel = Depends(get_current_user)):
-    """更新用户信息"""
-    # 验证权限
-    if current_user.role != "admin":
-        raise HTTPException(status_code=403, detail="只有管理员可以更新用户")
     
-    # 禁止admin更新自己的用户信息
-    if current_user.role == "admin" and user_id == current_user.id:
-        raise HTTPException(status_code=403, detail="管理员不能更新自己的用户信息")
-    
-    with get_db() as db:
-        updated_user = user_service.update_user(db, user_id=user_id, **user.dict(exclude_unset=True))
-        if updated_user is None:
-            raise HTTPException(status_code=404, detail="用户不存在")
-            # 使用model_to_dict_safe函数转换数据格式
-        return user_service.model_to_dict_safe(updated_user)
-
-        
-
 @router.delete("/users/{user_id}")
 def delete_existing_user(user_id: int, current_user: UserModel = Depends(get_current_user)):
     """删除用户"""

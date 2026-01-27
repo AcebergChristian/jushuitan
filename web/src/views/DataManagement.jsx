@@ -25,15 +25,25 @@ const DataManagement = () => {
 
   // 根据参考组件动态生成列配置
   const generateColumns = (data) => {
-    if (!data || data.length === 0) {
-      return [{
-        title: '暂无数据',
-        dataIndex: 'nodata',
-        key: 'nodata',
-        render: () => '暂无数据'
-      }];
-    }
+  if (!data || data.length === 0) {
+    return [{
+      title: '暂无数据',
+      dataIndex: 'nodata',
+      key: 'nodata',
+      render: () => '暂无数据'
+    }];
+  }
 
+  // 获取所有可能的字段名（从第一条记录获取）
+  const firstItem = data[0];
+  if (!firstItem) {
+    return [{
+      title: '暂无数据',
+      dataIndex: 'nodata',
+      key: 'nodata',
+      render: () => '暂无数据'
+    }];
+  }
     // 获取所有可能的字段名（从第一条记录获取）
     const allKeys = Object.keys(data[0]);
     // 移除一些不需要显示的字段

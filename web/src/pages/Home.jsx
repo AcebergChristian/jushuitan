@@ -103,9 +103,15 @@ const Home = () => {
     }
   };
 
-  // 如果用户未登录，重定向到登录页面
+  // 检查用户是否已认证，未认证则重定向到登录页
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate('/login');
+    }
+  }, [navigate]);
+
+  // 如果用户未登录，返回空组件
   if (!isAuthenticated()) {
-    navigate('/login');
     return null;
   }
 
@@ -113,8 +119,9 @@ const Home = () => {
     <Layout style={{ minHeight: '100vh' }}>
       <Sider trigger={null} collapsible collapsed={collapsed} width={256}>
         <div className="logo" style={{ height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 16px' }}>
-          <img src="https://assets.sursung.com/prod/gylsc/static/channelLogo.ae1c123a.svg" alt="Logo" style={{ height: '32px', marginRight: '8px' }} />
-          {!collapsed && <span style={{ fontSize: '18px', fontWeight: 'bold', color: '#fff' }}>聚水潭系统</span>}
+          {/* <img src="https://assets.sursung.com/prod/gylsc/static/channelLogo.ae1c123a.svg" alt="Logo" style={{ height: '32px', marginRight: '8px' }} /> */}
+          🟦
+          {!collapsed && <span style={{ marginLeft: 10, fontSize: '18px', fontWeight: 'bold', color: '#fff' }}>聚水潭系统</span>}
         </div>
         <Menu
           theme="dark"

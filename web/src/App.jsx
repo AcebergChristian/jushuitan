@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import LoginPage from './pages/LoginPage';
@@ -18,22 +18,70 @@ function App() {
   return (
     <ConfigProvider locale={zhCN}>
         <Routes>
-          <Route 
-            path="/login" 
-            element={<LoginPage />} 
-          />
-          <Route 
-            path="/*" 
-            element={<Home />} 
-          >
-            <Route index element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="data-management" element={<ProtectedRoute><DataManagement /></ProtectedRoute>} />
-            <Route path="good-management" element={<ProtectedRoute><GoodManagement /></ProtectedRoute>} />
-            <Route path="userstore-management" element={<ProtectedRoute><UserStoreManagement /></ProtectedRoute>} />
-            <Route path="user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
-            <Route path="usergood-management" element={<ProtectedRoute><UserGoodManagement /></ProtectedRoute>} />
+
+          {/* 登录页 */}
+          <Route path="/login" element={<LoginPage />} />
+
+          {/* 后台布局 */}
+          <Route path="/" element={<Home />}>
+            <Route
+              index
+              element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="data-management"
+              element={
+                <ProtectedRoute>
+                  <DataManagement />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="good-management"
+              element={
+                <ProtectedRoute>
+                  <GoodManagement />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="userstore-management"
+              element={
+                <ProtectedRoute>
+                  <UserStoreManagement />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="user-management"
+              element={
+                <ProtectedRoute>
+                  <UserManagement />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="usergood-management"
+              element={
+                <ProtectedRoute>
+                  <UserGoodManagement />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* 未匹配路径 */}
             <Route path="*" element={<Navigate to="/" replace />} />
           </Route>
+
         </Routes>
     </ConfigProvider>
   );

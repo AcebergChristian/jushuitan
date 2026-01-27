@@ -3,6 +3,8 @@ from peewee import SqliteDatabase
 import os
 from contextlib import contextmanager
 
+from backend.models.database import create_tables
+
 # 使用环境变量或默认值来配置数据库
 DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///database.db')
 
@@ -31,5 +33,4 @@ def get_db():
 
 def init_db():
     """初始化数据库，创建所有表"""
-    from backend.models.database import create_tables
     create_tables()
