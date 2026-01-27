@@ -14,7 +14,7 @@ class BaseModel(Model):
 
 class User(BaseModel):
     username = CharField(unique=True)
-    email = CharField(unique=False)
+    email = CharField(unique=True)
     hashed_password = CharField()  # 使用正确的字段名
     role = CharField(default='user')  # 'admin' or 'user'
     is_active = BooleanField(default=True)

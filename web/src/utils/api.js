@@ -2,13 +2,28 @@
 import { message } from 'antd';
 import { history } from './history';
 
-const API_BASE_URL = '';  // 使用相对路径，让代理配置生效
+// 根据环境动态设置基础URL
+const getApiBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    // 在生产环境中，如果前端和后端在同一域名下，但不同端口，需要指定端口
+    // 或者使用绝对URL指向后端服务
+    const isDev = process.env.NODE_ENV === 'development';
+    if (isDev) {
+      return ''; // 开发环境使用代理
+    }
+    // 生产环境：根据实际情况配置后端API的基础URL
+    // 如果后端运行在相同域名的不同端口上，例如 :8000
+    return window.location.protocol + '//' + window.location.hostname + ':8000';
+  }
+  return '';
+};
 
+const API_BASE_URL = getApiBaseUrl();
 
 // 通用 API 请求函数（生产 / 开发通用）
 export const apiRequest = async (endpoint, options = {}) => {
   // 统一保证 /api 前缀
-  const url = endpoint.startsWith('/api') ? endpoint : `/api${endpoint}`;
+  const url = endpoint.startsWith('/api') ? `${API_BASE_URL}${endpoint}` : `${API_BASE_URL}/api${endpoint}`;
 
   const config = {
     headers: {
@@ -41,9 +56,20 @@ export const apiRequest = async (endpoint, options = {}) => {
   }
 };
 
-// 登录函数
+// 登录函数 - 修改为使用动态基础URL
 export const login = async (username, password) => {
-  const response = await fetch('/api/login', {
+  const isDev = process.env.NODE_ENV === 'development';
+  let url;
+  
+  if (isDev) {
+    url = '/api/login';
+  } else {
+    // 生产环境使用完整URL
+    url = `${window.location.protocol}//${window.location.hostname}:8000/api/login`;
+  }
+  
+  try {
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -54,13 +80,35 @@ export const login = async (username, password) => {
     }),
   });
 
-  if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.detail || errorData.message || '登录失败');
+  if (response.ok) {
+      const data = await response.json();
+      // 存储token
+      localStorage.setItem('token', data.access_token);
+      localStorage.setItem('userinfo', data.userinfo);
+      
+      return { success: true, data };
+    } else {
+      // 尝试获取错误详情
+      let errorDetail = '用户名或密码错误';
+      try {
+        const errorData = await response.json();
+        errorDetail = errorData.detail || errorData.message || errorDetail;
+      } catch (parseErr) {
+        // 如果无法解析错误响应，则使用默认错误信息
+      }
+      return { success: false, error: errorDetail };
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    return { success: false, error: error.message };
   }
-
-  return response;
 };
+
+
+
+
+
+
 
 // 获取当前用户信息
 export const getCurrentUser = async () => {

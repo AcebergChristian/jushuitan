@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { loginAndStoreUserInfo } from '../utils/auth';
+import { login } from '../utils/api';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -14,7 +14,7 @@ const LoginPage = () => {
     
     try {
       // 使用auth.js中的登录函数
-      const result = await loginAndStoreUserInfo(username, password);
+      const result = await login(username, password);
       
       if (result.success) {
         console.log('Login success:', result.data);

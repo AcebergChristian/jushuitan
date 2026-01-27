@@ -44,17 +44,33 @@ app.include_router(auth_router, prefix="/api", tags=["auth"])
 
 
 # 前端 dist 路径（你确认过的 backend/dist）
-frontend_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "backend", "dist")
+frontend_path = Path(__file__).resolve().parent.parent / "backend" / "dist"
 
 if os.path.exists(frontend_path):
-    # 直接挂载根路径，支持 SPA 自动兜底
-    app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
+    # 挂载静态资源到 /static 路径
+    app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+    
+    # 为前端路由提供兜底处理 - 但要确保不会影响API路由
+    @app.get("/{full_path:path}", include_in_schema=False)
+    async def serve_spa(request: Request, full_path: str):
+        # 避免干扰API请求
+        if full_path.startswith("api/"):
+            return JSONResponse({"detail": "Not Found"}, status_code=404)
+            
+        requested_path = frontend_path / full_path
+        if requested_path.exists() and requested_path.is_file():
+            return FileResponse(requested_path)
+        
+        # 对于所有其他请求，返回 index.html，让前端路由处理
+        index_path = frontend_path / "index.html"
+        if index_path.exists():
+            return FileResponse(index_path)
+        
+        return JSONResponse({"detail": "Frontend index.html not found"}, status_code=500)
+    
     print(f"前端静态文件已挂载到根路径: {frontend_path}")
 else:
     print(f"警告: 前端 dist 目录不存在: {frontend_path}")
-
-
-
 
 @app.get("/")
 async def root():

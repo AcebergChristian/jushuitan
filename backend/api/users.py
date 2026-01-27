@@ -110,6 +110,12 @@ def update_user(
     existing_user = UserModel.get_or_none(UserModel.id == user_id)
     if not existing_user:
         raise HTTPException(status_code=404, detail="用户不存在")
+
+    # 检查邮箱是否已存在
+    with get_db() as db_connection:
+        db_user_by_email = user_service.get_user_by_email(db_connection, email=user_update.email)
+        if db_user_by_email:
+            raise HTTPException(status_code=400, detail="邮箱已存在")
     
     # 准备更新数据
     update_data = user_update.dict(exclude_unset=True)
