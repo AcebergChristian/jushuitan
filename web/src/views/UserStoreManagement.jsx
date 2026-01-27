@@ -257,7 +257,7 @@ const UserStoreManagement = () => {
   const loadStores = async (showMessage = true) => {
   setDataLoading(true);
   try {
-    const response = await apiRequest('/user_goods_stores_data/');
+    const response = await apiRequest('/stores_data/');
     const result = await response.json();
     
     if (result.data) {

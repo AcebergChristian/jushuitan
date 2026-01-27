@@ -326,7 +326,6 @@ def sync_goods(request: dict = None):
                 sync_date = datetime.strptime(sync_date_str, '%Y-%m-%d').date()
             except ValueError:
                 raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
-    
 
         # 获取所有未删除的订单数据
         api_response = get_all_jushuitan_orders(sync_date=sync_date)
@@ -335,7 +334,7 @@ def sync_goods(request: dict = None):
 
         orders = api_response.get('data', [])
 
-        # 用于存储商品数据的字典，以shopIid为主键
+        # 用于存储商品数据的字典，以shopIid为主键进行聚合
         goods_dict = {}
 
         for order in orders:
@@ -360,6 +359,10 @@ def sync_goods(request: dict = None):
                             # 如果解析失败，跳过该订单
                             continue
                 
+                payAmount = float(order.get('payAmount', 0) or 0)
+                paidAmount = float(order.get('paidAmount', 0) or 0)
+                drpAmount = float(order.get('drpAmount', 0) or 0)
+
                 # 解析disInnerOrderGoodsViewList字段
                 goods_list = order.get('disInnerOrderGoodsViewList')
                 
@@ -390,8 +393,6 @@ def sync_goods(request: dict = None):
                     pic = goods_item.get('pic', '')
                     properties = goods_item.get('properties', '')
                     price = float(goods_item.get('price', 0) or 0)
-                    payAmount = float(goods_item.get('payAmount', 0) or 0)
-                    paidAmount = float(goods_item.get('paidAmount', 0) or 0)
                     total_price = float(goods_item.get('totalPrice', 0) or 0)
                     item_count = int(goods_item.get('itemCount', 1) or 1)
                     
@@ -411,31 +412,39 @@ def sync_goods(request: dict = None):
                         else:
                             order_created_at = datetime.now()
                     
-                    # 使用shopIid和日期作为组合键，以便区分同一天内的重复与不同日期的数据
-                    date_key = order_created_at.date()
-                    full_key = (unique_key, date_key)
+                    # 使用shopIid作为唯一键，用于聚合相同商品
+                    full_key = unique_key
                     
-                    # 初始化商品数据结构
-                    goods_dict[full_key] = {
-                        'goods_id': shop_iid,  # 商品ID使用shopIid
-                        'goods_name': item_name,
-                        'store_id': order.get('shopId') or '',
-                        'store_name': order.get('shopName') or '未知店铺',
-                        'order_id': order.get('oid') or '',
-                        'payment_amount': paidAmount,
-                        'sales_amount': payAmount,
-                        'sales_cost': price * item_count,  # 成本乘以数量
-                        'item_count': item_count,
-                        'price': price,
-                        'total_price': total_price,
-                        'supplier_name': supplier_name,
-                        'pic': pic,
-                        'item_code': item_code,
-                        'properties': properties,
-                        'creator': 'system',
-                        'created_at': order_created_at,
-                        'updated_at': datetime.now()
-                    }
+                    # 如果商品已存在，进行数值字段的聚合
+                    if full_key in goods_dict:
+                        # 聚合数值字段
+                        goods_dict[full_key]['payment_amount'] += paidAmount
+                        goods_dict[full_key]['sales_amount'] += payAmount
+                        goods_dict[full_key]['sales_cost'] += drpAmount
+                        goods_dict[full_key]['item_count'] += item_count
+                        goods_dict[full_key]['total_price'] += total_price
+                    else:
+                        # 初始化商品数据结构
+                        goods_dict[full_key] = {
+                            'goods_id': shop_iid,  # 商品ID使用shopIid
+                            'goods_name': item_name,
+                            'store_id': order.get('shopId') or '',
+                            'store_name': order.get('shopName') or '未知店铺',
+                            'order_id': order.get('oid') or '',
+                            'payment_amount': paidAmount,  # 使用订单的paidAmount
+                            'sales_amount': payAmount,    # 使用订单的payAmount
+                            'sales_cost': drpAmount,      # 使用订单的drpAmount
+                            'item_count': item_count,
+                            'price': price,
+                            'total_price': total_price,
+                            'supplier_name': supplier_name,
+                            'pic': pic,
+                            'item_code': item_code,
+                            'properties': properties,
+                            'creator': 'system',
+                            'created_at': order_created_at,
+                            'updated_at': datetime.now()
+                        }
         
             except Exception as e:
                 print(f"Error processing order {order.get('id')}: {e}")
@@ -443,50 +452,68 @@ def sync_goods(request: dict = None):
         # 处理数据库中已存在的商品记录
         for full_key, goods_data in goods_dict.items():
             shop_iid = goods_data['goods_id']
-            current_date = goods_data['created_at'].date()
             
             # 查询数据库中是否存在相同shopIid的历史记录
             existing_records = Goods.select().where(
                 (Goods.goods_id == shop_iid)
             )
             
-            records_to_delete = []
-            should_insert_new = True
+            # 如果存在相同shopIid的记录，只更新updated_at字段
+            if existing_records:
+                from datetime import datetime
+                now = datetime.now()
+                query = Goods.update(updated_at=now).where(
+                    (Goods.goods_id == shop_iid)
+                )
+                query.execute()
+            # 如果不存在相同shopIid的记录，则不执行任何操作（不插入新记录）
             
-            for record in existing_records:
-                existing_date = record.created_at.date()
-                
-                # 如果历史记录的创建日期与当前记录的创建日期相同，则标记为删除
-                if existing_date == current_date:
-                    records_to_delete.append(record.id)
-                # 如果历史记录的创建日期不同，则保留不删除
+        # 插入或更新聚合后的商品记录
+        for full_key, goods_data in goods_dict.items():
+            # 查询数据库中是否存在相同shopIid的记录
+            existing_record = Goods.get_or_none(Goods.goods_id == goods_data['goods_id'])
             
-            # 删除同一天的旧记录
-            if records_to_delete:
-                for record_id in records_to_delete:
-                    Goods.delete().where(Goods.id == record_id).execute()
-            
-            # 插入新的记录
-            new_good = Goods.create(
-                goods_id=goods_data['goods_id'],
-                goods_name=goods_data['goods_name'],
-                store_id=goods_data['store_id'],
-                store_name=goods_data['store_name'],
-                order_id=goods_data['order_id'],
-                payment_amount=goods_data['payment_amount'],
-                sales_amount=goods_data['sales_amount'],
-                sales_cost=goods_data['sales_cost'],
-                item_count=goods_data['item_count'],
-                price=goods_data['price'],
-                total_price=goods_data['total_price'],
-                supplier_name=goods_data['supplier_name'],
-                pic=goods_data['pic'],
-                item_code=goods_data['item_code'],
-                properties=goods_data['properties'],
-                creator=goods_data['creator'],
-                created_at=goods_data['created_at'],
-                updated_at=goods_data['updated_at']
-            )
+            if existing_record:
+                # 如果存在相同shopIid的记录，更新它
+                existing_record.goods_name = goods_data['goods_name']
+                existing_record.store_id = goods_data['store_id']
+                existing_record.store_name = goods_data['store_name']
+                existing_record.order_id = goods_data['order_id']
+                existing_record.payment_amount = goods_data['payment_amount']
+                existing_record.sales_amount = goods_data['sales_amount']
+                existing_record.sales_cost = goods_data['sales_cost']
+                existing_record.item_count = goods_data['item_count']
+                existing_record.price = goods_data['price']
+                existing_record.total_price = goods_data['total_price']
+                existing_record.supplier_name = goods_data['supplier_name']
+                existing_record.pic = goods_data['pic']
+                existing_record.item_code = goods_data['item_code']
+                existing_record.properties = goods_data['properties']
+                existing_record.creator = goods_data['creator']
+                existing_record.updated_at = datetime.now()
+                existing_record.save()
+            else:
+                # 如果不存在相同shopIid的记录，创建新记录
+                new_good = Goods.create(
+                    goods_id=goods_data['goods_id'],
+                    goods_name=goods_data['goods_name'],
+                    store_id=goods_data['store_id'],
+                    store_name=goods_data['store_name'],
+                    order_id=goods_data['order_id'],
+                    payment_amount=goods_data['payment_amount'],
+                    sales_amount=goods_data['sales_amount'],
+                    sales_cost=goods_data['sales_cost'],  # 确保这里是聚合后的sales_cost
+                    item_count=goods_data['item_count'],
+                    price=goods_data['price'],
+                    total_price=goods_data['total_price'],
+                    supplier_name=goods_data['supplier_name'],
+                    pic=goods_data['pic'],
+                    item_code=goods_data['item_code'],
+                    properties=goods_data['properties'],
+                    creator=goods_data['creator'],
+                    created_at=goods_data['created_at'],
+                    updated_at=goods_data['updated_at']
+                )
 
         # 计算利润相关指标并更新
         all_updated_goods = Goods.select().where(
@@ -547,13 +574,10 @@ def sync_goods(request: dict = None):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
 
+        
 
 
-
-
-
-
-# 获取商品列表 - 支持分页和模糊查询
+# 商品台账查询接口 - 支持分页和模糊查询
 @router.get("/goods/")
 def get_goods_list(
     skip: int = Query(0, ge=0, description="跳过的记录数"),
@@ -632,8 +656,8 @@ def get_goods_list(
 
 
 
-# 根据当前登录的用户 ，去查他关联的所有商品的id，再去查其店铺的数据，展示
-@router.get("/user_goods_stores_data/")
+# 店铺管理分页查询接口
+@router.get("/stores_data/")
 def get_user_goods_stores_data(current_user = Depends(get_current_user)):
     """
     根据当前登录用户的goods_stores字段查询商品及店铺数据
@@ -662,34 +686,64 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
         
         # 为每个店铺生成汇总数据
         for store_id, goods_list in stores_dict.items():
+            # 对商品进行去重处理（按商品ID）
+            unique_goods_dict = {}
+            for g in goods_list:
+                good_id = g.goods_id
+                if good_id not in unique_goods_dict:
+                    unique_goods_dict[good_id] = {
+                        'payment_amount': g.payment_amount or 0.0,
+                        'sales_amount': g.sales_amount or 0.0,
+                        'sales_cost': g.sales_cost or 0.0,
+                        'gross_profit_1_occurred': g.gross_profit_1_occurred or 0.0,
+                        'gross_profit_1_rate': g.gross_profit_1_rate or 0.0,
+                        'advertising_expenses': g.advertising_expenses or 0.0,
+                        'advertising_ratio': g.advertising_ratio or 0.0,
+                        'gross_profit_3': g.gross_profit_3 or 0.0,
+                        'gross_profit_3_rate': g.gross_profit_3_rate or 0.0,
+                        'gross_profit_4': g.gross_profit_4 or 0.0,
+                        'gross_profit_4_rate': g.gross_profit_4_rate or 0.0,
+                        'net_profit': g.net_profit or 0.0,
+                        'net_profit_rate': g.net_profit_rate or 0.0,
+                        'created_at': g.created_at,
+                        'updated_at': g.updated_at
+                    }
+                else:
+                    # 累加数值字段
+                    unique_goods_dict[good_id]['payment_amount'] += g.payment_amount or 0.0
+                    unique_goods_dict[good_id]['sales_amount'] += g.sales_amount or 0.0
+                    unique_goods_dict[good_id]['sales_cost'] += g.sales_cost or 0.0
+                    unique_goods_dict[good_id]['gross_profit_1_occurred'] += g.gross_profit_1_occurred or 0.0
+                    unique_goods_dict[good_id]['advertising_expenses'] += g.advertising_expenses or 0.0
+                    unique_goods_dict[good_id]['gross_profit_3'] += g.gross_profit_3 or 0.0
+                    unique_goods_dict[good_id]['gross_profit_4'] += g.gross_profit_4 or 0.0
+                    unique_goods_dict[good_id]['net_profit'] += g.net_profit or 0.0
+            
             # 计算店铺汇总数据
-            total_payment_amount = sum((g.payment_amount or 0.0) for g in goods_list)
-            total_sales_amount = sum((g.sales_amount or 0.0) for g in goods_list)
-            total_sales_cost = sum((g.sales_cost or 0.0) for g in goods_list)
-            total_gross_profit_1_occurred = sum((g.gross_profit_1_occurred or 0.0) for g in goods_list)
+            total_payment_amount = sum(item['payment_amount'] for item in unique_goods_dict.values())
+            total_sales_amount = sum(item['sales_amount'] for item in unique_goods_dict.values())
+            total_sales_cost = sum(item['sales_cost'] for item in unique_goods_dict.values())
+            total_gross_profit_1_occurred = sum(item['gross_profit_1_occurred'] for item in unique_goods_dict.values())
+            total_advertising_expenses = sum(item['advertising_expenses'] for item in unique_goods_dict.values())
+            total_gross_profit_3 = sum(item['gross_profit_3'] for item in unique_goods_dict.values())
+            total_gross_profit_4 = sum(item['gross_profit_4'] for item in unique_goods_dict.values())
+            total_net_profit = sum(item['net_profit'] for item in unique_goods_dict.values())
+            
+            # 重新计算比率（基于汇总数据）
             avg_gross_profit_1_rate = (
-                sum((g.gross_profit_1_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_gross_profit_1_occurred / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_advertising_expenses = sum((g.advertising_expenses or 0.0) for g in goods_list)
             total_advertising_ratio = (
-                sum((g.advertising_ratio or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_advertising_expenses / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_gross_profit_3 = sum((g.gross_profit_3 or 0.0) for g in goods_list)
             avg_gross_profit_3_rate = (
-                sum((g.gross_profit_3_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_gross_profit_3 / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_gross_profit_4 = sum((g.gross_profit_4 or 0.0) for g in goods_list)
             avg_gross_profit_4_rate = (
-                sum((g.gross_profit_4_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_gross_profit_4 / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_net_profit = sum((g.net_profit or 0.0) for g in goods_list)
             avg_net_profit_rate = (
-                sum((g.net_profit_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_net_profit / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
             
             # 获取店铺名称（使用第一个商品的店铺名称）
@@ -698,20 +752,20 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
             store_data.append({
                 'store_id': store_id,
                 'store_name': store_name,
-                'goods_count': len(goods_list),
+                'goods_count': len(unique_goods_dict),  # 去重后的商品数量
                 'payment_amount': total_payment_amount,
                 'sales_amount': total_sales_amount,
                 'sales_cost': total_sales_cost,
                 'gross_profit_1_occurred': total_gross_profit_1_occurred,
-                'gross_profit_1_rate': avg_gross_profit_1_rate,
+                'gross_profit_1_rate': round(avg_gross_profit_1_rate, 2),
                 'advertising_expenses': total_advertising_expenses,
-                'advertising_ratio': total_advertising_ratio,
+                'advertising_ratio': round(total_advertising_ratio, 2),
                 'gross_profit_3': total_gross_profit_3,
-                'gross_profit_3_rate': avg_gross_profit_3_rate,
+                'gross_profit_3_rate': round(avg_gross_profit_3_rate, 2),
                 'gross_profit_4': total_gross_profit_4,
-                'gross_profit_4_rate': avg_gross_profit_4_rate,
+                'gross_profit_4_rate': round(avg_gross_profit_4_rate, 2),
                 'net_profit': total_net_profit,
-                'net_profit_rate': avg_net_profit_rate,
+                'net_profit_rate': round(avg_net_profit_rate, 2),
                 'created_at': goods_list[0].created_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].created_at else "",
                 'updated_at': goods_list[0].updated_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].updated_at else ""
             })
@@ -746,34 +800,64 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
         
         # 为每个店铺生成汇总数据
         for store_id, goods_list in stores_dict.items():
+            # 对商品进行去重处理（按商品ID）
+            unique_goods_dict = {}
+            for g in goods_list:
+                good_id = g.goods_id
+                if good_id not in unique_goods_dict:
+                    unique_goods_dict[good_id] = {
+                        'payment_amount': g.payment_amount or 0.0,
+                        'sales_amount': g.sales_amount or 0.0,
+                        'sales_cost': g.sales_cost or 0.0,
+                        'gross_profit_1_occurred': g.gross_profit_1_occurred or 0.0,
+                        'gross_profit_1_rate': g.gross_profit_1_rate or 0.0,
+                        'advertising_expenses': g.advertising_expenses or 0.0,
+                        'advertising_ratio': g.advertising_ratio or 0.0,
+                        'gross_profit_3': g.gross_profit_3 or 0.0,
+                        'gross_profit_3_rate': g.gross_profit_3_rate or 0.0,
+                        'gross_profit_4': g.gross_profit_4 or 0.0,
+                        'gross_profit_4_rate': g.gross_profit_4_rate or 0.0,
+                        'net_profit': g.net_profit or 0.0,
+                        'net_profit_rate': g.net_profit_rate or 0.0,
+                        'created_at': g.created_at,
+                        'updated_at': g.updated_at
+                    }
+                else:
+                    # 累加数值字段
+                    unique_goods_dict[good_id]['payment_amount'] += g.payment_amount or 0.0
+                    unique_goods_dict[good_id]['sales_amount'] += g.sales_amount or 0.0
+                    unique_goods_dict[good_id]['sales_cost'] += g.sales_cost or 0.0
+                    unique_goods_dict[good_id]['gross_profit_1_occurred'] += g.gross_profit_1_occurred or 0.0
+                    unique_goods_dict[good_id]['advertising_expenses'] += g.advertising_expenses or 0.0
+                    unique_goods_dict[good_id]['gross_profit_3'] += g.gross_profit_3 or 0.0
+                    unique_goods_dict[good_id]['gross_profit_4'] += g.gross_profit_4 or 0.0
+                    unique_goods_dict[good_id]['net_profit'] += g.net_profit or 0.0
+            
             # 计算店铺汇总数据
-            total_payment_amount = sum((g.payment_amount or 0.0) for g in goods_list)
-            total_sales_amount = sum((g.sales_amount or 0.0) for g in goods_list)
-            total_sales_cost = sum((g.sales_cost or 0.0) for g in goods_list)
-            total_gross_profit_1_occurred = sum((g.gross_profit_1_occurred or 0.0) for g in goods_list)
+            total_payment_amount = sum(item['payment_amount'] for item in unique_goods_dict.values())
+            total_sales_amount = sum(item['sales_amount'] for item in unique_goods_dict.values())
+            total_sales_cost = sum(item['sales_cost'] for item in unique_goods_dict.values())
+            total_gross_profit_1_occurred = sum(item['gross_profit_1_occurred'] for item in unique_goods_dict.values())
+            total_advertising_expenses = sum(item['advertising_expenses'] for item in unique_goods_dict.values())
+            total_gross_profit_3 = sum(item['gross_profit_3'] for item in unique_goods_dict.values())
+            total_gross_profit_4 = sum(item['gross_profit_4'] for item in unique_goods_dict.values())
+            total_net_profit = sum(item['net_profit'] for item in unique_goods_dict.values())
+            
+            # 重新计算比率（基于汇总数据）
             avg_gross_profit_1_rate = (
-                sum((g.gross_profit_1_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_gross_profit_1_occurred / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_advertising_expenses = sum((g.advertising_expenses or 0.0) for g in goods_list)
             total_advertising_ratio = (
-                sum((g.advertising_ratio or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_advertising_expenses / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_gross_profit_3 = sum((g.gross_profit_3 or 0.0) for g in goods_list)
             avg_gross_profit_3_rate = (
-                sum((g.gross_profit_3_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_gross_profit_3 / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_gross_profit_4 = sum((g.gross_profit_4 or 0.0) for g in goods_list)
             avg_gross_profit_4_rate = (
-                sum((g.gross_profit_4_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_gross_profit_4 / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
-            total_net_profit = sum((g.net_profit or 0.0) for g in goods_list)
             avg_net_profit_rate = (
-                sum((g.net_profit_rate or 0.0) for g in goods_list) / len(goods_list) 
-                if goods_list else 0
+                (total_net_profit / total_sales_amount * 100) if total_sales_amount != 0 else 0
             )
             
             store_name = goods_list[0].store_name if goods_list else ""
@@ -781,20 +865,20 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
             store_data.append({
                 'store_id': store_id,
                 'store_name': store_name,
-                'goods_count': len(goods_list),
+                'goods_count': len(unique_goods_dict),  # 去重后的商品数量
                 'payment_amount': total_payment_amount,
                 'sales_amount': total_sales_amount,
                 'sales_cost': total_sales_cost,
                 'gross_profit_1_occurred': total_gross_profit_1_occurred,
-                'gross_profit_1_rate': avg_gross_profit_1_rate,
+                'gross_profit_1_rate': round(avg_gross_profit_1_rate, 2),
                 'advertising_expenses': total_advertising_expenses,
-                'advertising_ratio': total_advertising_ratio,
+                'advertising_ratio': round(total_advertising_ratio, 2),
                 'gross_profit_3': total_gross_profit_3,
-                'gross_profit_3_rate': avg_gross_profit_3_rate,
+                'gross_profit_3_rate': round(avg_gross_profit_3_rate, 2),
                 'gross_profit_4': total_gross_profit_4,
-                'gross_profit_4_rate': avg_gross_profit_4_rate,
+                'gross_profit_4_rate': round(avg_gross_profit_4_rate, 2),
                 'net_profit': total_net_profit,
-                'net_profit_rate': avg_net_profit_rate,
+                'net_profit_rate': round(avg_net_profit_rate, 2),
                 'created_at': goods_list[0].created_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].created_at else "",
                 'updated_at': goods_list[0].updated_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].updated_at else ""
             })
@@ -807,17 +891,28 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
             'total_sales_amount': sum(item['sales_amount'] for item in store_data),
             'total_sales_cost': sum(item['sales_cost'] for item in store_data),
             'total_gross_profit_1_occurred': sum(item['gross_profit_1_occurred'] for item in store_data),
-            'avg_gross_profit_1_rate': sum(item['gross_profit_1_rate'] for item in store_data) / len(store_data) if store_data else 0,
             'total_advertising_expenses': sum(item['advertising_expenses'] for item in store_data),
             'total_gross_profit_3': sum(item['gross_profit_3'] for item in store_data),
-            'avg_gross_profit_3_rate': sum(item['gross_profit_3_rate'] for item in store_data) / len(store_data) if store_data else 0,
             'total_gross_profit_4': sum(item['gross_profit_4'] for item in store_data),
-            'avg_gross_profit_4_rate': sum(item['gross_profit_4_rate'] for item in store_data) / len(store_data) if store_data else 0,
             'total_net_profit': sum(item['net_profit'] for item in store_data),
-            'avg_net_profit_rate': sum(item['net_profit_rate'] for item in store_data) / len(store_data) if store_data else 0,
             'total_stores': len(store_data),
             'total_goods': sum(item['goods_count'] for item in store_data)
         }
+        
+        # 重新计算总体比率
+        total_sales_amount = summary['total_sales_amount']
+        if total_sales_amount != 0:
+            summary['avg_gross_profit_1_rate'] = round(summary['total_gross_profit_1_occurred'] / total_sales_amount * 100, 2)
+            summary['avg_advertising_ratio'] = round(summary['total_advertising_expenses'] / total_sales_amount * 100, 2)
+            summary['avg_gross_profit_3_rate'] = round(summary['total_gross_profit_3'] / total_sales_amount * 100, 2)
+            summary['avg_gross_profit_4_rate'] = round(summary['total_gross_profit_4'] / total_sales_amount * 100, 2)
+            summary['avg_net_profit_rate'] = round(summary['total_net_profit'] / total_sales_amount * 100, 2)
+        else:
+            summary['avg_gross_profit_1_rate'] = 0
+            summary['avg_advertising_ratio'] = 0
+            summary['avg_gross_profit_3_rate'] = 0
+            summary['avg_gross_profit_4_rate'] = 0
+            summary['avg_net_profit_rate'] = 0
     
     return {
         "message": f"成功获取{'所有' if is_admin else '用户关联'}的店铺汇总数据",
@@ -856,33 +951,75 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             (Goods.store_id == store_id) & (Goods.is_del == False)
         )
     
+    # 对商品进行去重处理（按商品ID）
+    unique_goods_dict = {}
     for record in goods_records:
-        goods_data.append({
-            'good_id': record.goods_id,
-            'good_name': record.goods_name,
-            'store_id': record.store_id,
-            'store_name': record.store_name,
-            'payment_amount': record.payment_amount or 0.0,
-            'sales_amount': record.sales_amount or 0.0,
-            'sales_cost': record.sales_cost or 0.0,
-            'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
-            'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
-            'advertising_expenses': record.advertising_expenses or 0.0,
-            'advertising_ratio': record.advertising_ratio or 0.0,
-            'gross_profit_3': record.gross_profit_3 or 0.0,
-            'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
-            'gross_profit_4': record.gross_profit_4 or 0.0,
-            'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
-            'net_profit': record.net_profit or 0.0,
-            'net_profit_rate': record.net_profit_rate or 0.0,
-            'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
-            'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
-        })
+        good_id = record.goods_id
+        if good_id not in unique_goods_dict:
+            unique_goods_dict[good_id] = {
+                'good_id': record.goods_id,
+                'good_name': record.goods_name,
+                'store_id': record.store_id,
+                'store_name': record.store_name,
+                'payment_amount': record.payment_amount or 0.0,
+                'sales_amount': record.sales_amount or 0.0,
+                'sales_cost': record.sales_cost or 0.0,
+                'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+                'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+                'advertising_expenses': record.advertising_expenses or 0.0,
+                'advertising_ratio': record.advertising_ratio or 0.0,
+                'gross_profit_3': record.gross_profit_3 or 0.0,
+                'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+                'gross_profit_4': record.gross_profit_4 or 0.0,
+                'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+                'net_profit': record.net_profit or 0.0,
+                'net_profit_rate': record.net_profit_rate or 0.0,
+                'created_at': record.created_at,
+                'updated_at': record.updated_at
+            }
+        else:
+            # 累加数值字段
+            unique_goods_dict[good_id]['payment_amount'] += record.payment_amount or 0.0
+            unique_goods_dict[good_id]['sales_amount'] += record.sales_amount or 0.0
+            unique_goods_dict[good_id]['sales_cost'] += record.sales_cost or 0.0
+            unique_goods_dict[good_id]['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
+            unique_goods_dict[good_id]['advertising_expenses'] += record.advertising_expenses or 0.0
+            unique_goods_dict[good_id]['gross_profit_3'] += record.gross_profit_3 or 0.0
+            unique_goods_dict[good_id]['gross_profit_4'] += record.gross_profit_4 or 0.0
+            unique_goods_dict[good_id]['net_profit'] += record.net_profit or 0.0
+    
+    # 将去重后的数据添加到结果中，并重新计算比率
+    for good_item in unique_goods_dict.values():
+        sales_amount = good_item['sales_amount']
+        if sales_amount != 0:
+            good_item['gross_profit_1_rate'] = round(good_item['gross_profit_1_occurred'] / sales_amount * 100, 2)
+            good_item['advertising_ratio'] = round(good_item['advertising_expenses'] / sales_amount * 100, 2)
+            good_item['gross_profit_3_rate'] = round(good_item['gross_profit_3'] / sales_amount * 100, 2)
+            good_item['gross_profit_4_rate'] = round(good_item['gross_profit_4'] / sales_amount * 100, 2)
+            good_item['net_profit_rate'] = round(good_item['net_profit'] / sales_amount * 100, 2)
+        else:
+            good_item['gross_profit_1_rate'] = 0
+            good_item['advertising_ratio'] = 0
+            good_item['gross_profit_3_rate'] = 0
+            good_item['gross_profit_4_rate'] = 0
+            good_item['net_profit_rate'] = 0
+        
+        # 转换时间格式
+        good_item['created_at'] = good_item['created_at'].strftime("%Y-%m-%d %H:%M:%S") if good_item['created_at'] else ""
+        good_item['updated_at'] = good_item['updated_at'].strftime("%Y-%m-%d %H:%M:%S") if good_item['updated_at'] else ""
+        
+        goods_data.append(good_item)
     
     return {
         "message": "成功获取店铺商品详情",
         "data": goods_data
     }
+
+
+
+
+
+
 
 
 # 用户-商品 接口（根据当前登录的用户 ，去查他关联的所有商品的数据， 管理员查看所有用户和商品的数据）
