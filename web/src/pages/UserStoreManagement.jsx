@@ -13,7 +13,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { apiRequest } from '../utils/api';
 
-const UserStoreManagement = () => {
+const StoreManagement = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -506,4 +506,4 @@ const UserStoreManagement = () => {
   );
 };
 
-export default UserStoreManagement;
+export default StoreManagement;

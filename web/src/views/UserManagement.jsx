@@ -29,20 +29,17 @@ const UserManagement = () => {
 
   // 加载商品和店铺关联数据
   const loadGoodsWithStoresList = async () => {
-    try {
-      const response = await apiRequest('/goods/');
-      if (response.ok) {
-        const data = await response.json();
-        const formattedList = data.data.map(good => ({
-          good_id: good.goods_id,
-          good_name: good.goods_name
-        }));
-        setGoodsWithStoresList(formattedList);
-      }
-    } catch (error) {
-      console.error('获取商品店铺关联列表失败:', error);
+  try {
+    const response = await apiRequest('/goods_dict/'); // 调用新的商品字典接口
+    if (response.ok) {
+      const data = await response.json();
+      // 直接使用接口返回的格式，无需额外处理
+      setGoodsWithStoresList(data.data || []);
     }
-  };
+  } catch (error) {
+    console.error('获取商品字典列表失败:', error);
+  }
+};
 
   useEffect(() => {
     loadGoodsWithStoresList();
@@ -180,19 +177,24 @@ const UserManagement = () => {
     if (values.goods_stores && values.goods_stores.length > 0) {
       processedGoodsStores = values.goods_stores.map(item => {
         if (typeof item === 'string') {
-          // 如果是字符串格式 "good_id-store_id"，拆分并转换为对象
-          const [good_id, store_id] = item.split('-');
-          // 查找对应的good_name和store_name
-          const matchedItem = goodsWithStoresList.find(g => g.good_id === good_id && g.store_id === store_id);
+          // 如果是商品ID字符串，查找对应的商品信息
+          const matchedItem = goodsWithStoresList.find(g => g.value === item);
           return {
-            good_id: good_id,
-            store_id: store_id,
-            good_name: matchedItem ? matchedItem.good_name : '',
-            store_name: matchedItem ? matchedItem.store_name : ''
+            good_id: item,
+            good_name: matchedItem ? matchedItem.label : ''
           };
         } else if (typeof item === 'object' && item !== null) {
-          // 如果已经是对象格式，直接使用
-          return item;
+          // 如果已经是对象格式，检查是否是新格式还是旧格式
+          if (item.hasOwnProperty('value') && item.hasOwnProperty('label')) {
+            // 新格式：{value: 商品ID, label: 商品名}
+            return {
+              good_id: item.value,
+              good_name: item.label
+            };
+          } else if (item.hasOwnProperty('good_id') && item.hasOwnProperty('good_name')) {
+            // 旧格式：{good_id: 商品ID, good_name: 商品名}
+            return item;
+          }
         }
         return null;
       }).filter(item => item !== null); // 过滤掉无效项
@@ -461,13 +463,13 @@ const handleEdit = (record) => {
             >
               {goodsWithStoresList.map(item => (
                 <Option 
-                  key={`${item.good_id}`} 
-                  value={`${item.good_id}`}
-                  label={`${item.good_name}`}
+                  key={`${item.value}`} 
+                  value={`${item.value}`}
+                  label={`${item.label}`}
                 >
                   <div>
-                    <div>{item.good_name}</div>
-                    <div style={{ fontSize: '12px', color: '#999' }}>{item.store_name}</div>
+                    <div>{item.label}</div>
+                    <div style={{ fontSize: '12px', color: '#999' }}>{item.value}</div>
                   </div>
                 </Option>
               ))}

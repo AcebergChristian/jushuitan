@@ -11,7 +11,7 @@ import Dashboard from './views/Dashboard';
 import DataManagement from './views/DataManagement';
 import GoodManagement from './views/GoodManagement';
 import UserManagement from './views/UserManagement';
-import UserStoreManagement from './views/UserStoreManagement';
+import StoreManagement from './views/StoreManagement';
 import UserGoodManagement from './views/UserGoodManagement';
 
 function App() {
@@ -55,7 +55,7 @@ function App() {
               path="userstore-management"
               element={
                 <ProtectedRoute>
-                  <UserStoreManagement />
+                  <StoreManagement />
                 </ProtectedRoute>
               }
             />

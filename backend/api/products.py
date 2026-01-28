@@ -154,13 +154,23 @@ def read_jushuitan_products_by_type(data_type: str, skip: int = 0, limit: int = 
 
 
 
+
 # 点击获取同步数据进表里
 @router.post("/sync_jushuitan_data")
-def sync_jushuitan_data():
+def sync_jushuitan_data(request: dict = None):
     """同步聚水潭数据到数据库，根据oid字段处理重复数据"""
     
+    # 获取请求体中的同步日期
+    sync_date_str = request.get('sync_date') if request else None
+    sync_date = None
+    if sync_date_str:
+        try:
+            sync_date = datetime.strptime(sync_date_str, '%Y-%m-%d').date()
+        except ValueError:
+            raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
+
     # 获取聚水潭API数据
-    api_response = get_all_jushuitan_orders()
+    api_response = get_all_jushuitan_orders(sync_date=sync_date)
     if not api_response or 'data' not in api_response:
         raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
     
@@ -314,7 +324,7 @@ def sync_goods(request: dict = None):
     - 支持按指定日期同步数据
     """
     from datetime import datetime, date
-    from ..models.database import Goods
+    from ..models.database import Goods, JushuitanProduct
     from ..spiders.jushuitan_api import get_all_jushuitan_orders
     
     try:
@@ -327,21 +337,57 @@ def sync_goods(request: dict = None):
             except ValueError:
                 raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
 
-        # 获取所有未删除的订单数据
-        api_response = get_all_jushuitan_orders(sync_date=sync_date)
-        if not api_response or 'data' not in api_response:
-            raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
+        # 直接从数据库中的JushuitanProduct表获取订单数据
+        # 查询未删除的订单记录
+        order_query = JushuitanProduct.select().where(JushuitanProduct.is_del == False)
+        
+        # 如果指定了同步日期，则添加日期筛选
+        if sync_date:
+            # 将sync_date转换为当天的开始和结束时间
+            start_of_day = datetime.combine(sync_date, datetime.min.time())
+            end_of_day = datetime.combine(sync_date, datetime.max.time())
+            order_query = order_query.where(
+                (JushuitanProduct.created_at >= start_of_day) & 
+                (JushuitanProduct.created_at <= end_of_day)
+            )
+        
+        orders = list(order_query)
+        
+        # 如果数据库中没有订单数据，再从API获取
+        if not orders:
+            api_response = get_all_jushuitan_orders(sync_date=sync_date)
+            if not api_response or 'data' not in api_response:
+                raise HTTPException(status_code=400, detail="获取聚水潭API数据失败或数据库中没有可用订单数据")
+            orders = api_response.get('data', [])
 
-        orders = api_response.get('data', [])
-
-        # 用于存储商品数据的字典，以shopIid为主键进行聚合
+        # 用于存储商品数据的字典，以shopIid和订单时间为唯一键进行区分
         goods_dict = {}
 
         for order in orders:
+            # 如果是从数据库获取的订单对象，需要转换为字典
+            if hasattr(order, 'disInnerOrderGoodsViewList'):
+                # 从数据库获取的订单对象
+                order_dict = {
+                    'oid': order.oid,
+                    'payAmount': order.payAmount,
+                    'paidAmount': order.paidAmount,
+                    'drpAmount': order.drpAmount,
+                    'shopId': order.shopId,
+                    'shopName': order.shopName,
+                    'orderTime': order.orderTime,
+                    'disInnerOrderGoodsViewList': order.disInnerOrderGoodsViewList,
+                    'created_at': order.created_at
+                }
+                order_obj = order
+            else:
+                # 从API获取的订单字典
+                order_dict = order
+                order_obj = None
+            
             try:
                 # 如果指定了同步日期，则只处理该日期的订单
-                if sync_date:
-                    order_time_str = order.get('orderTime')
+                if sync_date and order_obj is None:  # 只有从API获取的订单需要检查时间
+                    order_time_str = order_dict.get('orderTime')
                     if order_time_str:
                         try:
                             # 解析订单时间，提取日期部分
@@ -359,12 +405,23 @@ def sync_goods(request: dict = None):
                             # 如果解析失败，跳过该订单
                             continue
                 
-                payAmount = float(order.get('payAmount', 0) or 0)
-                paidAmount = float(order.get('paidAmount', 0) or 0)
-                drpAmount = float(order.get('drpAmount', 0) or 0)
+                payAmount = float(order_dict.get('payAmount', 0) or 0)
+                paidAmount = float(order_dict.get('paidAmount', 0) or 0)
+                drpAmount = float(order_dict.get('drpAmount', 0) or 0)
 
                 # 解析disInnerOrderGoodsViewList字段
-                goods_list = order.get('disInnerOrderGoodsViewList')
+                goods_list_raw = order_dict.get('disInnerOrderGoodsViewList')
+                
+                # 解析JSON字符串
+                import json
+                try:
+                    if isinstance(goods_list_raw, str):
+                        goods_list = json.loads(goods_list_raw)
+                    else:
+                        goods_list = goods_list_raw
+                except json.JSONDecodeError:
+                    print(f"无法解析disInnerOrderGoodsViewList: {goods_list_raw}")
+                    continue
                 
                 # 根据项目规范，确保目标字段为list类型
                 if not isinstance(goods_list, list):
@@ -383,8 +440,29 @@ def sync_goods(request: dict = None):
                     if not shop_iid:  # 如果没有shopIid，则跳过
                         continue
                     
-                    # 使用shopIid作为唯一键
-                    unique_key = shop_iid
+                    # 使用shopIid + 订单时间作为唯一键，保留订单时间维度
+                    order_time_str = order_dict.get('orderTime')
+                    order_datetime = None
+                    if order_time_str:
+                        try:
+                            if 'T' in order_time_str:
+                                order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
+                            else:
+                                # 如果只是日期时间字符串
+                                order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d %H:%M:%S')
+                        except ValueError:
+                            try:
+                                # 尝试其他常见格式
+                                order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d')
+                            except ValueError:
+                                # 如果解析失败，使用当前时间
+                                order_datetime = datetime.now()
+                    else:
+                        # 如果没有订单时间，使用当前时间
+                        order_datetime = datetime.now()
+                    
+                    # 使用shopIid + 订单时间作为唯一键
+                    unique_key = f"{shop_iid}_{order_datetime.strftime('%Y%m%d%H%M%S')}"
                     
                     # 获取商品其他信息 - 使用正确的英文字段名
                     item_name = goods_item.get('itemName', '未知商品')
@@ -401,126 +479,66 @@ def sync_goods(request: dict = None):
                         order_created_at = datetime.combine(sync_date, datetime.min.time())
                     else:
                         # 获取订单创建时间并转换为日期对象
-                        order_created_at_str = order.get('created_at')
-                        if order_created_at_str:
-                            if isinstance(order_created_at_str, str):
-                                order_created_at = datetime.fromisoformat(order_created_at_str.replace('Z', '+00:00'))
-                            elif isinstance(order_created_at_str, datetime):
-                                order_created_at = order_created_at_str
+                        if order_obj:
+                            order_created_at = order_obj.created_at
+                        else:
+                            order_created_at_str = order_dict.get('created_at')
+                            if order_created_at_str:
+                                if isinstance(order_created_at_str, str):
+                                    order_created_at = datetime.fromisoformat(order_created_at_str.replace('Z', '+00:00'))
+                                elif isinstance(order_created_at_str, datetime):
+                                    order_created_at = order_created_at_str
+                                else:
+                                    order_created_at = datetime.now()
                             else:
                                 order_created_at = datetime.now()
-                        else:
-                            order_created_at = datetime.now()
                     
-                    # 使用shopIid作为唯一键，用于聚合相同商品
-                    full_key = unique_key
-                    
-                    # 如果商品已存在，进行数值字段的聚合
-                    if full_key in goods_dict:
-                        # 聚合数值字段
-                        goods_dict[full_key]['payment_amount'] += paidAmount
-                        goods_dict[full_key]['sales_amount'] += payAmount
-                        goods_dict[full_key]['sales_cost'] += drpAmount
-                        goods_dict[full_key]['item_count'] += item_count
-                        goods_dict[full_key]['total_price'] += total_price
-                    else:
-                        # 初始化商品数据结构
-                        goods_dict[full_key] = {
-                            'goods_id': shop_iid,  # 商品ID使用shopIid
-                            'goods_name': item_name,
-                            'store_id': order.get('shopId') or '',
-                            'store_name': order.get('shopName') or '未知店铺',
-                            'order_id': order.get('oid') or '',
-                            'payment_amount': paidAmount,  # 使用订单的paidAmount
-                            'sales_amount': payAmount,    # 使用订单的payAmount
-                            'sales_cost': drpAmount,      # 使用订单的drpAmount
-                            'item_count': item_count,
-                            'price': price,
-                            'total_price': total_price,
-                            'supplier_name': supplier_name,
-                            'pic': pic,
-                            'item_code': item_code,
-                            'properties': properties,
-                            'creator': 'system',
-                            'created_at': order_created_at,
-                            'updated_at': datetime.now()
-                        }
+                    # 初始化商品数据结构
+                    goods_dict[unique_key] = {
+                        'goods_id': shop_iid,  # 商品ID使用shopIid
+                        'goods_name': item_name,
+                        'store_id': order_dict.get('shopId') or '',
+                        'store_name': order_dict.get('shopName') or '未知店铺',
+                        'order_id': order_dict.get('oid') or '',
+                        'payment_amount': paidAmount,  # 使用订单的paidAmount
+                        'sales_amount': payAmount,    # 使用订单的payAmount
+                        'sales_cost': drpAmount,      # 使用订单的drpAmount
+                        'item_count': item_count,
+                        'price': price,
+                        'total_price': total_price,
+                        'supplier_name': supplier_name,
+                        'pic': pic,
+                        'item_code': item_code,
+                        'properties': properties,
+                        'creator': 'system',
+                        'created_at': order_created_at,
+                        'goodorder_time': order_datetime,  # 保留订单时间
+                        'updated_at': datetime.now()
+                    }
         
             except Exception as e:
-                print(f"Error processing order {order.get('id')}: {e}")
+                print(f"Error processing order {order_dict.get('id') if order_dict else 'unknown'}: {e}")
 
-        # 处理数据库中已存在的商品记录
+        # 删除之前同步的相同日期的数据（避免重复）
+        if sync_date:
+            start_of_day = datetime.combine(sync_date, datetime.min.time())
+            end_of_day = datetime.combine(sync_date, datetime.max.time())
+            Goods.delete().where(
+                (Goods.goodorder_time >= start_of_day) & 
+                (Goods.goodorder_time <= end_of_day)
+            ).execute()
+        else:
+            # 如果没有指定日期，删除所有数据重新插入（或可以考虑更精确的清理策略）
+            Goods.delete().execute()
+
+        # 插入新的商品记录
         for full_key, goods_data in goods_dict.items():
-            shop_iid = goods_data['goods_id']
-            
-            # 查询数据库中是否存在相同shopIid的历史记录
-            existing_records = Goods.select().where(
-                (Goods.goods_id == shop_iid)
-            )
-            
-            # 如果存在相同shopIid的记录，只更新updated_at字段
-            if existing_records:
-                from datetime import datetime
-                now = datetime.now()
-                query = Goods.update(updated_at=now).where(
-                    (Goods.goods_id == shop_iid)
-                )
-                query.execute()
-            # 如果不存在相同shopIid的记录，则不执行任何操作（不插入新记录）
-            
-        # 插入或更新聚合后的商品记录
-        for full_key, goods_data in goods_dict.items():
-            # 查询数据库中是否存在相同shopIid的记录
-            existing_record = Goods.get_or_none(Goods.goods_id == goods_data['goods_id'])
-            
-            if existing_record:
-                # 如果存在相同shopIid的记录，更新它
-                existing_record.goods_name = goods_data['goods_name']
-                existing_record.store_id = goods_data['store_id']
-                existing_record.store_name = goods_data['store_name']
-                existing_record.order_id = goods_data['order_id']
-                existing_record.payment_amount = goods_data['payment_amount']
-                existing_record.sales_amount = goods_data['sales_amount']
-                existing_record.sales_cost = goods_data['sales_cost']
-                existing_record.item_count = goods_data['item_count']
-                existing_record.price = goods_data['price']
-                existing_record.total_price = goods_data['total_price']
-                existing_record.supplier_name = goods_data['supplier_name']
-                existing_record.pic = goods_data['pic']
-                existing_record.item_code = goods_data['item_code']
-                existing_record.properties = goods_data['properties']
-                existing_record.creator = goods_data['creator']
-                existing_record.updated_at = datetime.now()
-                existing_record.save()
-            else:
-                # 如果不存在相同shopIid的记录，创建新记录
-                new_good = Goods.create(
-                    goods_id=goods_data['goods_id'],
-                    goods_name=goods_data['goods_name'],
-                    store_id=goods_data['store_id'],
-                    store_name=goods_data['store_name'],
-                    order_id=goods_data['order_id'],
-                    payment_amount=goods_data['payment_amount'],
-                    sales_amount=goods_data['sales_amount'],
-                    sales_cost=goods_data['sales_cost'],  # 确保这里是聚合后的sales_cost
-                    item_count=goods_data['item_count'],
-                    price=goods_data['price'],
-                    total_price=goods_data['total_price'],
-                    supplier_name=goods_data['supplier_name'],
-                    pic=goods_data['pic'],
-                    item_code=goods_data['item_code'],
-                    properties=goods_data['properties'],
-                    creator=goods_data['creator'],
-                    created_at=goods_data['created_at'],
-                    updated_at=goods_data['updated_at']
-                )
+            new_good = Goods.create(**goods_data)
 
         # 计算利润相关指标并更新
-        all_updated_goods = Goods.select().where(
-            Goods.goods_id.in_([goods_data['goods_id'] for goods_data in goods_dict.values()])
-        )
+        all_new_goods = list(Goods.select())
         
-        for good_record in all_updated_goods:
+        for good_record in all_new_goods:
             # 确保所有数值字段都不为None
             sales_amount = good_record.sales_amount or 0.0
             cost_amount = good_record.sales_cost or 0.0
@@ -574,7 +592,14 @@ def sync_goods(request: dict = None):
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
 
-        
+
+
+
+
+
+
+
+
 
 
 # 商品台账查询接口 - 支持分页和模糊查询
@@ -633,6 +658,7 @@ def get_goods_list(
                 'net_profit_rate': good.net_profit_rate,
                 'is_del': good.is_del,
                 'creator': good.creator,
+                'goodorder_time': good.goodorder_time.strftime("%Y-%m-%d %H:%M:%S"),
                 'created_at': good.created_at.strftime("%Y-%m-%d %H:%M:%S"),
                 'updated_at': good.updated_at.strftime("%Y-%m-%d %H:%M:%S")
             }
@@ -658,23 +684,47 @@ def get_goods_list(
 
 # 店铺管理分页查询接口
 @router.get("/stores_data/")
-def get_user_goods_stores_data(current_user = Depends(get_current_user)):
+def get_user_goods_stores_data(
+    start_date: str = Query(None, description="开始日期，格式：YYYY-MM-DD"),
+    end_date: str = Query(None, description="结束日期，格式：YYYY-MM-DD"),
+    current_user = Depends(get_current_user)
+):
     """
     根据当前登录用户的goods_stores字段查询商品及店铺数据
     管理员可查看所有数据，普通用户只能查看自己的数据
     按店铺维度返回汇总数据
     返回包含销售金额、成本、利润等统计信息的数据
+    支持按日期范围查询
     """
     from ..models.database import Goods, User
+    from datetime import datetime
     
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
     
     store_data = []
     
+    # 构建查询条件
+    query_conditions = [Goods.is_del == False]
+    
+    # 如果提供了日期范围，则添加日期筛选条件
+    if start_date and end_date:
+        try:
+            # 正确解析 YYYY-MM-DD 格式的日期
+            start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+            end_dt = datetime.strptime(end_date, "%Y-%m-%d")
+            # 将开始日期设置为当天的开始（00:00:00）
+            start_dt = start_dt.replace(hour=0, minute=0, second=0)
+            # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
+            end_dt = end_dt.replace(hour=23, minute=59, second=59)
+            # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
+            query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
+        except ValueError:
+            raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
+    
     if is_admin:
         # 管理员查看所有商品数据，按店铺分组
-        goods_records = Goods.select().where(Goods.is_del == False)
+        goods_records = Goods.select().where(*query_conditions)
         
         # 按店铺ID分组
         stores_dict = {}
@@ -686,48 +736,16 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
         
         # 为每个店铺生成汇总数据
         for store_id, goods_list in stores_dict.items():
-            # 对商品进行去重处理（按商品ID）
-            unique_goods_dict = {}
-            for g in goods_list:
-                good_id = g.goods_id
-                if good_id not in unique_goods_dict:
-                    unique_goods_dict[good_id] = {
-                        'payment_amount': g.payment_amount or 0.0,
-                        'sales_amount': g.sales_amount or 0.0,
-                        'sales_cost': g.sales_cost or 0.0,
-                        'gross_profit_1_occurred': g.gross_profit_1_occurred or 0.0,
-                        'gross_profit_1_rate': g.gross_profit_1_rate or 0.0,
-                        'advertising_expenses': g.advertising_expenses or 0.0,
-                        'advertising_ratio': g.advertising_ratio or 0.0,
-                        'gross_profit_3': g.gross_profit_3 or 0.0,
-                        'gross_profit_3_rate': g.gross_profit_3_rate or 0.0,
-                        'gross_profit_4': g.gross_profit_4 or 0.0,
-                        'gross_profit_4_rate': g.gross_profit_4_rate or 0.0,
-                        'net_profit': g.net_profit or 0.0,
-                        'net_profit_rate': g.net_profit_rate or 0.0,
-                        'created_at': g.created_at,
-                        'updated_at': g.updated_at
-                    }
-                else:
-                    # 累加数值字段
-                    unique_goods_dict[good_id]['payment_amount'] += g.payment_amount or 0.0
-                    unique_goods_dict[good_id]['sales_amount'] += g.sales_amount or 0.0
-                    unique_goods_dict[good_id]['sales_cost'] += g.sales_cost or 0.0
-                    unique_goods_dict[good_id]['gross_profit_1_occurred'] += g.gross_profit_1_occurred or 0.0
-                    unique_goods_dict[good_id]['advertising_expenses'] += g.advertising_expenses or 0.0
-                    unique_goods_dict[good_id]['gross_profit_3'] += g.gross_profit_3 or 0.0
-                    unique_goods_dict[good_id]['gross_profit_4'] += g.gross_profit_4 or 0.0
-                    unique_goods_dict[good_id]['net_profit'] += g.net_profit or 0.0
-            
+            # 不再进行商品去重，而是保留每个订单项的完整信息
             # 计算店铺汇总数据
-            total_payment_amount = sum(item['payment_amount'] for item in unique_goods_dict.values())
-            total_sales_amount = sum(item['sales_amount'] for item in unique_goods_dict.values())
-            total_sales_cost = sum(item['sales_cost'] for item in unique_goods_dict.values())
-            total_gross_profit_1_occurred = sum(item['gross_profit_1_occurred'] for item in unique_goods_dict.values())
-            total_advertising_expenses = sum(item['advertising_expenses'] for item in unique_goods_dict.values())
-            total_gross_profit_3 = sum(item['gross_profit_3'] for item in unique_goods_dict.values())
-            total_gross_profit_4 = sum(item['gross_profit_4'] for item in unique_goods_dict.values())
-            total_net_profit = sum(item['net_profit'] for item in unique_goods_dict.values())
+            total_payment_amount = sum(g.payment_amount or 0.0 for g in goods_list)
+            total_sales_amount = sum(g.sales_amount or 0.0 for g in goods_list)
+            total_sales_cost = sum(g.sales_cost or 0.0 for g in goods_list)
+            total_gross_profit_1_occurred = sum(g.gross_profit_1_occurred or 0.0 for g in goods_list)
+            total_advertising_expenses = sum(g.advertising_expenses or 0.0 for g in goods_list)
+            total_gross_profit_3 = sum(g.gross_profit_3 or 0.0 for g in goods_list)
+            total_gross_profit_4 = sum(g.gross_profit_4 or 0.0 for g in goods_list)
+            total_net_profit = sum(g.net_profit or 0.0 for g in goods_list)
             
             # 重新计算比率（基于汇总数据）
             avg_gross_profit_1_rate = (
@@ -752,7 +770,7 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
             store_data.append({
                 'store_id': store_id,
                 'store_name': store_name,
-                'goods_count': len(unique_goods_dict),  # 去重后的商品数量
+                'goods_count': len(goods_list),  # 保留所有商品记录的数量（不是去重后的数量）
                 'payment_amount': total_payment_amount,
                 'sales_amount': total_sales_amount,
                 'sales_cost': total_sales_cost,
@@ -783,12 +801,13 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
         # 提取商品ID列表
         goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
         
-        # 查询对应的商品数据
-        goods_records = []
+        # 构建查询条件（包含日期筛选）
+        user_query_conditions = query_conditions.copy()
         if goods_ids:
-            goods_records = Goods.select().where(
-                (Goods.goods_id.in_(goods_ids)) & (Goods.is_del == False)
-            )
+            user_query_conditions.append(Goods.goods_id.in_(goods_ids))
+        
+        # 查询对应的商品数据
+        goods_records = Goods.select().where(*user_query_conditions)
         
         # 按店铺ID分组
         stores_dict = {}
@@ -800,48 +819,16 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
         
         # 为每个店铺生成汇总数据
         for store_id, goods_list in stores_dict.items():
-            # 对商品进行去重处理（按商品ID）
-            unique_goods_dict = {}
-            for g in goods_list:
-                good_id = g.goods_id
-                if good_id not in unique_goods_dict:
-                    unique_goods_dict[good_id] = {
-                        'payment_amount': g.payment_amount or 0.0,
-                        'sales_amount': g.sales_amount or 0.0,
-                        'sales_cost': g.sales_cost or 0.0,
-                        'gross_profit_1_occurred': g.gross_profit_1_occurred or 0.0,
-                        'gross_profit_1_rate': g.gross_profit_1_rate or 0.0,
-                        'advertising_expenses': g.advertising_expenses or 0.0,
-                        'advertising_ratio': g.advertising_ratio or 0.0,
-                        'gross_profit_3': g.gross_profit_3 or 0.0,
-                        'gross_profit_3_rate': g.gross_profit_3_rate or 0.0,
-                        'gross_profit_4': g.gross_profit_4 or 0.0,
-                        'gross_profit_4_rate': g.gross_profit_4_rate or 0.0,
-                        'net_profit': g.net_profit or 0.0,
-                        'net_profit_rate': g.net_profit_rate or 0.0,
-                        'created_at': g.created_at,
-                        'updated_at': g.updated_at
-                    }
-                else:
-                    # 累加数值字段
-                    unique_goods_dict[good_id]['payment_amount'] += g.payment_amount or 0.0
-                    unique_goods_dict[good_id]['sales_amount'] += g.sales_amount or 0.0
-                    unique_goods_dict[good_id]['sales_cost'] += g.sales_cost or 0.0
-                    unique_goods_dict[good_id]['gross_profit_1_occurred'] += g.gross_profit_1_occurred or 0.0
-                    unique_goods_dict[good_id]['advertising_expenses'] += g.advertising_expenses or 0.0
-                    unique_goods_dict[good_id]['gross_profit_3'] += g.gross_profit_3 or 0.0
-                    unique_goods_dict[good_id]['gross_profit_4'] += g.gross_profit_4 or 0.0
-                    unique_goods_dict[good_id]['net_profit'] += g.net_profit or 0.0
-            
+            # 不再进行商品去重，而是保留每个订单项的完整信息
             # 计算店铺汇总数据
-            total_payment_amount = sum(item['payment_amount'] for item in unique_goods_dict.values())
-            total_sales_amount = sum(item['sales_amount'] for item in unique_goods_dict.values())
-            total_sales_cost = sum(item['sales_cost'] for item in unique_goods_dict.values())
-            total_gross_profit_1_occurred = sum(item['gross_profit_1_occurred'] for item in unique_goods_dict.values())
-            total_advertising_expenses = sum(item['advertising_expenses'] for item in unique_goods_dict.values())
-            total_gross_profit_3 = sum(item['gross_profit_3'] for item in unique_goods_dict.values())
-            total_gross_profit_4 = sum(item['gross_profit_4'] for item in unique_goods_dict.values())
-            total_net_profit = sum(item['net_profit'] for item in unique_goods_dict.values())
+            total_payment_amount = sum(g.payment_amount or 0.0 for g in goods_list)
+            total_sales_amount = sum(g.sales_amount or 0.0 for g in goods_list)
+            total_sales_cost = sum(g.sales_cost or 0.0 for g in goods_list)
+            total_gross_profit_1_occurred = sum(g.gross_profit_1_occurred or 0.0 for g in goods_list)
+            total_advertising_expenses = sum(g.advertising_expenses or 0.0 for g in goods_list)
+            total_gross_profit_3 = sum(g.gross_profit_3 or 0.0 for g in goods_list)
+            total_gross_profit_4 = sum(g.gross_profit_4 or 0.0 for g in goods_list)
+            total_net_profit = sum(g.net_profit or 0.0 for g in goods_list)
             
             # 重新计算比率（基于汇总数据）
             avg_gross_profit_1_rate = (
@@ -865,7 +852,7 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
             store_data.append({
                 'store_id': store_id,
                 'store_name': store_name,
-                'goods_count': len(unique_goods_dict),  # 去重后的商品数量
+                'goods_count': len(goods_list),  # 保留所有商品记录的数量（不是去重后的数量）
                 'payment_amount': total_payment_amount,
                 'sales_amount': total_sales_amount,
                 'sales_cost': total_sales_cost,
@@ -914,14 +901,25 @@ def get_user_goods_stores_data(current_user = Depends(get_current_user)):
             summary['avg_gross_profit_4_rate'] = 0
             summary['avg_net_profit_rate'] = 0
     
+    # 根据是否有日期筛选添加适当的消息
+    date_msg = f"（{start_date} 至 {end_date}）" if start_date and end_date else ""
     return {
-        "message": f"成功获取{'所有' if is_admin else '用户关联'}的店铺汇总数据",
+        "message": f"成功获取{'所有' if is_admin else '用户关联'}的店铺汇总数据{date_msg}",
         "data": store_data,
         "summary": summary
     }
 
 
-# 新增接口：获取特定店铺的商品详情
+
+
+
+
+
+
+
+
+
+# 获取特定店铺的商品详情
 @router.get("/store_goods_detail/{store_id}")
 def get_store_goods_detail(store_id: str, current_user = Depends(get_current_user)):
     """
@@ -938,7 +936,7 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
         # 管理员可以查看任意店铺的商品数据
         goods_records = Goods.select().where(
             (Goods.store_id == store_id) & (Goods.is_del == False)
-        )
+        ).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
     else:
         # 普通用户只能查看自己关联的店铺商品数据
         user_goods_stores = current_user.get_goods_stores()
@@ -949,66 +947,34 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
         
         goods_records = Goods.select().where(
             (Goods.store_id == store_id) & (Goods.is_del == False)
-        )
+        ).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
     
-    # 对商品进行去重处理（按商品ID）
-    unique_goods_dict = {}
+    # 不再对商品进行去重处理，而是平铺显示每个订单项
     for record in goods_records:
-        good_id = record.goods_id
-        if good_id not in unique_goods_dict:
-            unique_goods_dict[good_id] = {
-                'good_id': record.goods_id,
-                'good_name': record.goods_name,
-                'store_id': record.store_id,
-                'store_name': record.store_name,
-                'payment_amount': record.payment_amount or 0.0,
-                'sales_amount': record.sales_amount or 0.0,
-                'sales_cost': record.sales_cost or 0.0,
-                'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
-                'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
-                'advertising_expenses': record.advertising_expenses or 0.0,
-                'advertising_ratio': record.advertising_ratio or 0.0,
-                'gross_profit_3': record.gross_profit_3 or 0.0,
-                'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
-                'gross_profit_4': record.gross_profit_4 or 0.0,
-                'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
-                'net_profit': record.net_profit or 0.0,
-                'net_profit_rate': record.net_profit_rate or 0.0,
-                'created_at': record.created_at,
-                'updated_at': record.updated_at
-            }
-        else:
-            # 累加数值字段
-            unique_goods_dict[good_id]['payment_amount'] += record.payment_amount or 0.0
-            unique_goods_dict[good_id]['sales_amount'] += record.sales_amount or 0.0
-            unique_goods_dict[good_id]['sales_cost'] += record.sales_cost or 0.0
-            unique_goods_dict[good_id]['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
-            unique_goods_dict[good_id]['advertising_expenses'] += record.advertising_expenses or 0.0
-            unique_goods_dict[good_id]['gross_profit_3'] += record.gross_profit_3 or 0.0
-            unique_goods_dict[good_id]['gross_profit_4'] += record.gross_profit_4 or 0.0
-            unique_goods_dict[good_id]['net_profit'] += record.net_profit or 0.0
-    
-    # 将去重后的数据添加到结果中，并重新计算比率
-    for good_item in unique_goods_dict.values():
-        sales_amount = good_item['sales_amount']
-        if sales_amount != 0:
-            good_item['gross_profit_1_rate'] = round(good_item['gross_profit_1_occurred'] / sales_amount * 100, 2)
-            good_item['advertising_ratio'] = round(good_item['advertising_expenses'] / sales_amount * 100, 2)
-            good_item['gross_profit_3_rate'] = round(good_item['gross_profit_3'] / sales_amount * 100, 2)
-            good_item['gross_profit_4_rate'] = round(good_item['gross_profit_4'] / sales_amount * 100, 2)
-            good_item['net_profit_rate'] = round(good_item['net_profit'] / sales_amount * 100, 2)
-        else:
-            good_item['gross_profit_1_rate'] = 0
-            good_item['advertising_ratio'] = 0
-            good_item['gross_profit_3_rate'] = 0
-            good_item['gross_profit_4_rate'] = 0
-            good_item['net_profit_rate'] = 0
-        
-        # 转换时间格式
-        good_item['created_at'] = good_item['created_at'].strftime("%Y-%m-%d %H:%M:%S") if good_item['created_at'] else ""
-        good_item['updated_at'] = good_item['updated_at'].strftime("%Y-%m-%d %H:%M:%S") if good_item['updated_at'] else ""
-        
-        goods_data.append(good_item)
+        goods_data.append({
+            'id': record.id,
+            'good_id': record.goods_id,
+            'good_name': record.goods_name,
+            'store_id': record.store_id,
+            'store_name': record.store_name,
+            'order_id': record.order_id,  # 显示具体的订单号
+            'payment_amount': record.payment_amount or 0.0,
+            'sales_amount': record.sales_amount or 0.0,
+            'sales_cost': record.sales_cost or 0.0,
+            'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+            'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+            'advertising_expenses': record.advertising_expenses or 0.0,
+            'advertising_ratio': record.advertising_ratio or 0.0,
+            'gross_profit_3': record.gross_profit_3 or 0.0,
+            'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+            'gross_profit_4': record.gross_profit_4 or 0.0,
+            'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+            'net_profit': record.net_profit or 0.0,
+            'net_profit_rate': record.net_profit_rate or 0.0,
+            'goodorder_time': record.goodorder_time.strftime("%Y-%m-%d %H:%M:%S") if record.goodorder_time else "",  # 显示订单时间
+            'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
+            'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
+        })
     
     return {
         "message": "成功获取店铺商品详情",
@@ -1020,15 +986,18 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
 
 
 
-
-
 # 用户-商品 接口（根据当前登录的用户 ，去查他关联的所有商品的数据， 管理员查看所有用户和商品的数据）
 @router.get("/user_goods_summary/")
-def get_user_goods_summary(current_user = Depends(get_current_user)):
+def get_user_goods_summary(
+    start_date: str = Query(None, description="开始日期，格式：YYYY-MM-DD"),
+    end_date: str = Query(None, description="结束日期，格式：YYYY-MM-DD"),
+    current_user = Depends(get_current_user)
+):
     """
     获取用户商品汇总数据
     管理员可查看所有用户的数据，普通用户只能查看自己的数据
-    返回每个用户的关联商品和店铺的汇总信息（仅限最新一天的数据）
+    返回每个用户的关联商品和店铺的汇总信息
+    支持按日期范围查询
     """
     from ..models.database import Goods, User
     from peewee import fn
@@ -1059,6 +1028,7 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
                 'role': user.role,
                 'goods_count': 0,
                 'stores_count': 0,
+                'orders_count': 0,  # 订单数量
                 'payment_amount': 0.0,
                 'sales_amount': 0.0,
                 'sales_cost': 0.0,
@@ -1080,42 +1050,122 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
         # 提取用户关联的商品ID列表
         user_associated_goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
         
-        # 获取最新一天的日期
-        # today = date.today()
+        # 如果用户没有关联任何商品ID，返回空结果
+        if not user_associated_goods_ids:
+            users_summary.append({
+                'id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'role': user.role,
+                'goods_count': 0,
+                'stores_count': 0,
+                'orders_count': 0,
+                'payment_amount': 0.0,
+                'sales_amount': 0.0,
+                'sales_cost': 0.0,
+                'gross_profit_1_occurred': 0.0,
+                'gross_profit_1_rate': 0.0,
+                'advertising_expenses': 0.0,
+                'advertising_ratio': 0.0,
+                'gross_profit_3': 0.0,
+                'gross_profit_3_rate': 0.0,
+                'gross_profit_4': 0.0,
+                'gross_profit_4_rate': 0.0,
+                'net_profit': 0.0,
+                'net_profit_rate': 0.0,
+                'created_at': user.created_at.strftime("%Y-%m-%d %H:%M:%S") if user.created_at else "",
+                'updated_at': user.updated_at.strftime("%Y-%m-%d %H:%M:%S") if user.updated_at else ""
+            })
+            continue
         
-        # 查询对应的商品数据，只查询最新一天的数据
-        goods_data = []
-        if user_associated_goods_ids:
-            # 先获取最新一天的记录
-            goods_records = Goods.select().where(
-                (Goods.goods_id.in_(user_associated_goods_ids)) & 
-                (Goods.is_del == False) 
-                # & (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
-            )
-            
-            for record in goods_records:
-                goods_data.append({
+        # 构建查询条件
+        query_conditions = [
+            Goods.is_del == False,
+            Goods.goods_id.in_(user_associated_goods_ids)  # 限制为用户关联的商品ID
+        ]
+        
+        # 如果提供了日期范围，则添加日期筛选条件
+        if start_date and end_date:
+            try:
+                # 正确解析 YYYY-MM-DD 格式的日期
+                start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+                end_dt = datetime.strptime(end_date, "%Y-%m-%d")
+                # 将开始日期设置为当天的开始（00:00:00）
+                start_dt = start_dt.replace(hour=0, minute=0, second=0)
+                # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
+                end_dt = end_dt.replace(hour=23, minute=59, second=59)
+                # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
+                query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
+            except ValueError:
+                raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
+        
+        # 查询用户关联的商品数据
+        goods_records = Goods.select().where(*query_conditions)
+        
+        # 按商品ID分组，汇总相同商品的数据
+        goods_by_id = {}
+        for record in goods_records:
+            goods_id = record.goods_id
+            if goods_id not in goods_by_id:
+                goods_by_id[goods_id] = {
                     'good_id': record.goods_id,
                     'good_name': record.goods_name,
                     'store_id': record.store_id,
                     'store_name': record.store_name,
-                    'payment_amount': record.payment_amount or 0.0,
-                    'sales_amount': record.sales_amount or 0.0,
-                    'sales_cost': record.sales_cost or 0.0,
-                    'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
-                    'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
-                    'advertising_expenses': record.advertising_expenses or 0.0,
-                    'advertising_ratio': record.advertising_ratio or 0.0,
-                    'gross_profit_3': record.gross_profit_3 or 0.0,
-                    'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
-                    'gross_profit_4': record.gross_profit_4 or 0.0,
-                    'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
-                    'net_profit': record.net_profit or 0.0,
-                    'net_profit_rate': record.net_profit_rate or 0.0,
-                    'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
-                    'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
-                })
+                    'payment_amount': 0.0,
+                    'sales_amount': 0.0,
+                    'sales_cost': 0.0,
+                    'gross_profit_1_occurred': 0.0,
+                    'gross_profit_1_rate': 0.0,
+                    'advertising_expenses': 0.0,
+                    'advertising_ratio': 0.0,
+                    'gross_profit_3': 0.0,
+                    'gross_profit_3_rate': 0.0,
+                    'gross_profit_4': 0.0,
+                    'gross_profit_4_rate': 0.0,
+                    'net_profit': 0.0,
+                    'net_profit_rate': 0.0,
+                    'order_ids': set(),  # 记录涉及的订单ID集合
+                    'created_at': record.created_at,
+                    'updated_at': record.updated_at
+                }
+            
+            # 累加数值字段
+            goods_by_id[goods_id]['payment_amount'] += record.payment_amount or 0.0
+            goods_by_id[goods_id]['sales_amount'] += record.sales_amount or 0.0
+            goods_by_id[goods_id]['sales_cost'] += record.sales_cost or 0.0
+            goods_by_id[goods_id]['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
+            goods_by_id[goods_id]['advertising_expenses'] += record.advertising_expenses or 0.0
+            goods_by_id[goods_id]['gross_profit_3'] += record.gross_profit_3 or 0.0
+            goods_by_id[goods_id]['gross_profit_4'] += record.gross_profit_4 or 0.0
+            goods_by_id[goods_id]['net_profit'] += record.net_profit or 0.0
+            
+            # 记录订单ID
+            if record.order_id:
+                goods_by_id[goods_id]['order_ids'].add(record.order_id)
         
+        # 转换为列表格式
+        goods_data = []
+        for goods_info in goods_by_id.values():
+            # 重新计算比率
+            sales_amount = goods_info['sales_amount']
+            if sales_amount != 0:
+                goods_info['gross_profit_1_rate'] = round(goods_info['gross_profit_1_occurred'] / sales_amount * 100, 2)
+                goods_info['advertising_ratio'] = round(goods_info['advertising_expenses'] / sales_amount * 100, 2)
+                goods_info['gross_profit_3_rate'] = round(goods_info['gross_profit_3'] / sales_amount * 100, 2)
+                goods_info['gross_profit_4_rate'] = round(goods_info['gross_profit_4'] / sales_amount * 100, 2)
+                goods_info['net_profit_rate'] = round(goods_info['net_profit'] / sales_amount * 100, 2)
+            else:
+                goods_info['gross_profit_1_rate'] = 0
+                goods_info['advertising_ratio'] = 0
+                goods_info['gross_profit_3_rate'] = 0
+                goods_info['gross_profit_4_rate'] = 0
+                goods_info['net_profit_rate'] = 0
+            
+            goods_info['orders_count'] = len(goods_info['order_ids'])  # 订单数量
+            del goods_info['order_ids']  # 删除临时字段
+            goods_data.append(goods_info)
+
         # 计算汇总数据
         if goods_data:
             total_payment_amount = sum(item['payment_amount'] for item in goods_data)
@@ -1149,6 +1199,9 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
             
             # 统计不同的店铺数量
             store_ids = set(item['store_id'] for item in goods_data if item['store_id'])
+            
+            # 统计总的订单数量（所有商品涉及的订单总数）
+            total_orders_count = sum(item.get('orders_count', 0) for item in goods_data)
         else:
             total_payment_amount = 0.0
             total_sales_amount = 0.0
@@ -1164,14 +1217,16 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
             total_net_profit = 0.0
             avg_net_profit_rate = 0.0
             store_ids = set()
-        
+            total_orders_count = 0
+
         users_summary.append({
             'id': user.id,
             'username': user.username,
             'email': user.email,
             'role': user.role,
-            'goods_count': len(goods_data),
+            'goods_count': len(goods_data),  # 汇总后的商品种类数量
             'stores_count': len(store_ids),
+            'orders_count': total_orders_count,  # 总订单数量
             'payment_amount': total_payment_amount,
             'sales_amount': total_sales_amount,
             'sales_cost': total_sales_cost,
@@ -1189,18 +1244,25 @@ def get_user_goods_summary(current_user = Depends(get_current_user)):
             'updated_at': user.updated_at.strftime("%Y-%m-%d %H:%M:%S") if user.updated_at else ""
         })
     
+    # 根据是否有日期筛选添加适当的消息
+    date_msg = f"（{start_date} 至 {end_date}）" if start_date and end_date else ""
     return {
-        "message": f"成功获取{'所有用户' if is_admin else '当前用户'}的商品汇总数据（仅限今日）",
+        "message": f"成功获取{'所有用户' if is_admin else '当前用户'}的商品汇总数据{date_msg}",
         "data": users_summary
     }
 
 
 @router.get("/user_goods_detail/{user_id}")
-def get_user_goods_detail(user_id: int, current_user = Depends(get_current_user)):
+def get_user_goods_detail(
+    user_id: int, 
+    start_date: str = Query(None, description="开始日期，格式：YYYY-MM-DD"),
+    end_date: str = Query(None, description="结束日期，格式：YYYY-MM-DD"),
+    current_user = Depends(get_current_user)
+):
     """
     获取特定用户关联的商品详情
     管理员可查看任意用户的数据，普通用户只能查看自己的数据
-    仅返回最新一天的数据
+    支持按日期范围查询
     """
     from ..models.database import Goods, User
     from peewee import fn
@@ -1227,56 +1289,111 @@ def get_user_goods_detail(user_id: int, current_user = Depends(get_current_user)
     # 提取商品ID列表
     goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
     
-    # 获取最新一天的日期
-    # today = date.today()
+    # 如果用户没有关联任何商品ID，返回空结果
+    if not goods_ids:
+        return {"message": "该用户未关联任何商品ID", "data": [], "error": False}
     
-    # 查询对应的商品数据，只查询最新一天的数据
+    # 构建查询条件
+    query_conditions = [
+        Goods.is_del == False,
+        Goods.goods_id.in_(goods_ids)  # 限制为用户关联的商品ID
+    ]
+    
+    # 如果提供了日期范围，则添加日期筛选条件
+    if start_date and end_date:
+        try:
+            # 正确解析 YYYY-MM-DD 格式的日期
+            start_dt = datetime.strptime(start_date, "%Y-%m-%d")
+            end_dt = datetime.strptime(end_date, "%Y-%m-%d")
+            # 将开始日期设置为当天的开始（00:00:00）
+            start_dt = start_dt.replace(hour=0, minute=0, second=0)
+            # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
+            end_dt = end_dt.replace(hour=23, minute=59, second=59)
+            # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
+            query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
+        except ValueError:
+            raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
+    
+    # 查询对应的商品数据（平铺显示，不合并相同商品，保留每个订单的单独记录）
     goods_data = []
-    if goods_ids:
-        goods_records = Goods.select().where(
-            (Goods.goods_id.in_(goods_ids)) & 
-            (Goods.is_del == False)
-            # & (fn.DATE(Goods.created_at) == today)  # 只查询今天的数据
-        )
-        
-        for record in goods_records:
-            goods_data.append({
-                'good_id': record.goods_id,
-                'good_name': record.goods_name,
-                'store_id': record.store_id,
-                'store_name': record.store_name,
-                'payment_amount': record.payment_amount or 0.0,
-                'sales_amount': record.sales_amount or 0.0,
-                'sales_cost': record.sales_cost or 0.0,
-                'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
-                'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
-                'advertising_expenses': record.advertising_expenses or 0.0,
-                'advertising_ratio': record.advertising_ratio or 0.0,
-                'gross_profit_3': record.gross_profit_3 or 0.0,
-                'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
-                'gross_profit_4': record.gross_profit_4 or 0.0,
-                'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
-                'net_profit': record.net_profit or 0.0,
-                'net_profit_rate': record.net_profit_rate or 0.0,
-                'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
-                'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
-            })
+    goods_records = Goods.select().where(*query_conditions).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
     
+    for record in goods_records:
+        goods_data.append({
+            'id': record.id,
+            'good_id': record.goods_id,
+            'good_name': record.goods_name,
+            'store_id': record.store_id,
+            'store_name': record.store_name,
+            'order_id': record.order_id,  # 显示具体的订单号
+            'payment_amount': record.payment_amount or 0.0,
+            'sales_amount': record.sales_amount or 0.0,
+            'sales_cost': record.sales_cost or 0.0,
+            'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+            'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+            'advertising_expenses': record.advertising_expenses or 0.0,
+            'advertising_ratio': record.advertising_ratio or 0.0,
+            'gross_profit_3': record.gross_profit_3 or 0.0,
+            'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+            'gross_profit_4': record.gross_profit_4 or 0.0,
+            'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+            'net_profit': record.net_profit or 0.0,
+            'net_profit_rate': record.net_profit_rate or 0.0,
+            'goodorder_time': record.goodorder_time.strftime("%Y-%m-%d %H:%M:%S") if record.goodorder_time else "",  # 订单时间
+            'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
+            'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
+        })
+
+    # 根据是否有日期筛选添加适当的消息
+    date_msg = f"（{start_date} 至 {end_date}）" if start_date and end_date else ""
     return {
-        "message": f"成功获取用户 {target_user.username} 的商品详情（仅限今日）",
+        "message": f"成功获取用户 {target_user.username} 的商品详情{date_msg}",
         "data": goods_data
     }
 
 
 
 
-
-
-
-
-
-
-
+# 用户去关联商品的字典 接口
+@router.get("/goods_dict/")
+def get_goods_dict():
+    """
+    查询goods表形成字典接口
+    返回商品名和商品ID的选项数组，用于前端下拉选择
+    """
+    from ..models.database import Goods
+    
+    try:
+        # 查询所有未删除的商品，使用group_by去重并按商品ID排序
+        goods_records = Goods.select(
+            Goods.goods_id,
+            Goods.goods_name
+        ).where(
+            Goods.is_del == False
+        ).group_by(Goods.goods_id)  # 使用group_by去重相同的商品ID
+        
+        # 构建字典数组
+        goods_dict = []
+        for record in goods_records:
+            if record.goods_id and record.goods_name:  # 确保ID和名称都不为空
+                goods_dict.append({
+                    'label': record.goods_name,
+                    'value': record.goods_id
+                })
+        
+        # 按商品名称排序，便于用户查找
+        goods_dict.sort(key=lambda x: x['label'])
+        
+        return {
+            "message": "成功获取商品字典数据",
+            "data": goods_dict
+        }
+        
+    except Exception as e:
+        print(f"获取商品字典数据时发生错误: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"获取商品字典数据失败: {str(e)}")
 
 
 

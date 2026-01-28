@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Card, Button, Space, Input, message, Tabs } from 'antd';
+import { Table, Card, Button, Space, Input, message, Tabs, DatePicker } from 'antd';
 import { SearchOutlined, SyncOutlined } from '@ant-design/icons';
 import { apiRequest } from '../utils/api';
 
@@ -10,40 +10,45 @@ const DataManagement = () => {
   const [dataList, setDataList] = useState([]);
   const [pinduoduoData, setPinduoduoData] = useState([]);
   const [loading, setLoading] = useState(false);
-  
+
   // 分页相关状态
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
     total: 0,
   });
-  
+
   // 搜索和筛选状态
   const [searchParams, setSearchParams] = useState({
     keyword: '',
   });
 
+  // 添加状态变量来存储选中的日期
+  const [selectedSyncDate, setSelectedSyncDate] = useState('');
+
+
+
   // 根据参考组件动态生成列配置
   const generateColumns = (data) => {
-  if (!data || data.length === 0) {
-    return [{
-      title: '暂无数据',
-      dataIndex: 'nodata',
-      key: 'nodata',
-      render: () => '暂无数据'
-    }];
-  }
+    if (!data || data.length === 0) {
+      return [{
+        title: '暂无数据',
+        dataIndex: 'nodata',
+        key: 'nodata',
+        render: () => '暂无数据'
+      }];
+    }
 
-  // 获取所有可能的字段名（从第一条记录获取）
-  const firstItem = data[0];
-  if (!firstItem) {
-    return [{
-      title: '暂无数据',
-      dataIndex: 'nodata',
-      key: 'nodata',
-      render: () => '暂无数据'
-    }];
-  }
+    // 获取所有可能的字段名（从第一条记录获取）
+    const firstItem = data[0];
+    if (!firstItem) {
+      return [{
+        title: '暂无数据',
+        dataIndex: 'nodata',
+        key: 'nodata',
+        render: () => '暂无数据'
+      }];
+    }
     // 获取所有可能的字段名（从第一条记录获取）
     const allKeys = Object.keys(data[0]);
     // 移除一些不需要显示的字段
@@ -88,7 +93,7 @@ const DataManagement = () => {
             default:
               badgeClass = 'bg-gray-100 text-gray-800';
           }
-          
+
           return (
             <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${badgeClass}`}>
               {value !== null && value !== undefined && value !== '' ? String(value) : '-'}
@@ -352,18 +357,26 @@ const DataManagement = () => {
   };
 
   // 同步聚水潭数据（同步后刷新当前页）
-  const syncJushuitanData = async () => {
+  const syncJushuitanData = async (syncDate = '') => {
     setLoading(true);
     try {
-      const response = await apiRequest('/sync_jushuitan_data', { method: 'POST' });
-      if (response.ok) {
-        message.success('数据同步成功');
-        fetchJushuitanData(); // 刷新当前页
-      } else {
-        message.error('数据同步失败');
+      const response = await apiRequest('/sync_jushuitan_data',
+        {
+          method: 'POST',
+          body: JSON.stringify({ sync_date: syncDate }) // 传递日期参数
+        }
+      );
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || '同步失败');
       }
+
+      const data = await response.json();
+      message.success(data.message || '同步成功');
+      fetchJushuitanData(); // 重新获取数据
     } catch (error) {
-      message.error('同步数据时发生错误');
+      console.error('同步数据失败:', error);
+      message.error(error.message || '同步失败');
     } finally {
       setLoading(false);
     }
@@ -391,25 +404,25 @@ const DataManagement = () => {
   };
 
   useEffect(() => {
-  if (activePlatformTab === 0) {
-    fetchJushuitanData(pagination.current, pagination.pageSize, searchParams.keyword);
-  } else {
-    fetchPinduoduoData(pagination.current, pagination.pageSize, searchParams.keyword);
-  }
-}, [activePlatformTab, pagination.current, pagination.pageSize, searchParams.keyword]);
+    if (activePlatformTab === 0) {
+      fetchJushuitanData(pagination.current, pagination.pageSize, searchParams.keyword);
+    } else {
+      fetchPinduoduoData(pagination.current, pagination.pageSize, searchParams.keyword);
+    }
+  }, [activePlatformTab, pagination.current, pagination.pageSize, searchParams.keyword]);
 
   // 处理搜索
   const handleSearch = (value) => {
     setSearchParams({
       keyword: value,
     });
-    
+
     // 重置到第一页并重新加载
     setPagination({
       ...pagination,
       current: 1,
     });
-    
+
     if (activePlatformTab === 0) {
       fetchJushuitanData(1, pagination.pageSize, value);
     } else {
@@ -434,8 +447,8 @@ const DataManagement = () => {
 
   return (
     <div>
-      <Card 
-        title="数据管理" 
+      <Card
+        title="数据管理"
         extra={
           <Space>
             <Input.Search
@@ -446,25 +459,32 @@ const DataManagement = () => {
               style={{ width: 300 }}
             />
             {activePlatformTab === 0 && (
-              <Button 
-                type="primary" 
-                icon={<SyncOutlined />}
-                onClick={syncJushuitanData}
-              >
-                同步数据
-              </Button>
+              <Space>
+                <DatePicker
+                  placeholder="选择同步日期"
+                  onChange={(date, dateString) => setSelectedSyncDate(dateString)}
+                  style={{ width: 150 }}
+                />
+                <Button
+                  type="primary"
+                  icon={<SyncOutlined />}
+                  onClick={() => syncJushuitanData(selectedSyncDate)}
+                >
+                  同步数据
+                </Button>
+              </Space>
             )}
           </Space>
         }
       >
-        <Tabs 
-          activeKey={activePlatformTab.toString()} 
+        <Tabs
+          activeKey={activePlatformTab.toString()}
           onChange={(key) => setActivePlatformTab(Number(key))}
         >
           <TabPane tab="聚水潭" key="0">
-            <Table 
-              dataSource={dataList} 
-              columns={columns} 
+            <Table
+              dataSource={dataList}
+              columns={columns}
               rowKey="id"
               loading={loading}
               size="small"
@@ -480,9 +500,9 @@ const DataManagement = () => {
             />
           </TabPane>
           <TabPane tab="拼多多" key="1">
-            <Table 
-              dataSource={pinduoduoData} 
-              columns={columns} 
+            <Table
+              dataSource={pinduoduoData}
+              columns={columns}
               rowKey="id"
               loading={loading}
               size="small"

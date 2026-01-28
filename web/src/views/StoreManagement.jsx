@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Card, Button, Space, Modal, Form, Input, Select, message, Tag, Spin } from 'antd';
-import { PlusOutlined, EyeOutlined } from '@ant-design/icons';
+import { Table, Card, Button, Space, Modal, Form, DatePicker, message, Tag, Spin } from 'antd';
+import { EyeOutlined, RedoOutlined } from '@ant-design/icons';
 import { apiRequest } from '../utils/api';
 
-const { Option } = Select;
+const { RangePicker } = DatePicker;
 
-const UserStoreManagement = () => {
+const StoreManagement = () => {
   const [storesList, setStoresList] = useState([]);
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -17,6 +17,7 @@ const UserStoreManagement = () => {
   const [dataLoading, setDataLoading] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
 
+  const [dateRange, setDateRange] = useState(null); // 添加日期范围状态
   // 店铺状态选项
   const statusOptions = [
     { value: 'active', label: '启用' },
@@ -255,32 +256,45 @@ const UserStoreManagement = () => {
 
   // 加载店铺数据
   const loadStores = async (showMessage = true) => {
-  setDataLoading(true);
-  try {
-    const response = await apiRequest('/stores_data/');
-    const result = await response.json();
-    
-    if (result.data) {
-      setStoresList(result.data);
-      if (showMessage) {
-        message.success(result.message || '数据加载成功');
+    setDataLoading(true);
+    try {
+      // 构建查询参数，包括日期范围
+      let url = '/stores_data/';
+      const params = new URLSearchParams();
+      
+      if (dateRange) {
+        params.append('start_date', dateRange[0].format('YYYY-MM-DD'));
+        params.append('end_date', dateRange[1].format('YYYY-MM-DD'));
       }
-    } else {
+      
+      if (params.toString()) {
+        url += '?' + params.toString();
+      }
+      
+      const response = await apiRequest(url);
+      const result = await response.json();
+      
+      if (result.data) {
+        setStoresList(result.data);
+        if (showMessage) {
+          message.success(result.message || '数据加载成功');
+        }
+      } else {
+        if (showMessage) {
+          message.error(result.message || '数据加载失败');
+        }
+        setStoresList([]);
+      }
+    } catch (error) {
+      console.error('加载店铺数据失败:', error);
       if (showMessage) {
-        message.error(result.message || '数据加载失败');
+        message.error('加载店铺数据失败');
       }
       setStoresList([]);
+    } finally {
+      setDataLoading(false);
     }
-  } catch (error) {
-    console.error('加载店铺数据失败:', error);
-    if (showMessage) {
-      message.error('加载店铺数据失败');
-    }
-    setStoresList([]);
-  } finally {
-    setDataLoading(false);
-  }
-};
+  };
 
 
 
@@ -319,14 +333,22 @@ const UserStoreManagement = () => {
       <Card 
         title="用户商品店铺数据管理" 
         extra={
-          <Button 
-            type="primary" 
-            icon={<PlusOutlined />} 
-            onClick={loadStores}
-            loading={dataLoading}
-          >
-            刷新数据
-          </Button>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <RangePicker
+              value={dateRange}
+              onChange={setDateRange}
+              placeholder={['开始日期', '结束日期']}
+              format="YYYY-MM-DD"
+            />
+            <Button 
+              type="primary" 
+              icon={<RedoOutlined />} 
+              onClick={loadStores}
+              loading={dataLoading}
+            >
+              刷新数据
+            </Button>
+          </div>
         }
       >
         <Spin spinning={dataLoading}>
@@ -374,4 +396,4 @@ const UserStoreManagement = () => {
   )
 }
 
-export default UserStoreManagement;
+export default StoreManagement;

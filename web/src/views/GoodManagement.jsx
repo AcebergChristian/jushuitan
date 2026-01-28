@@ -226,6 +226,12 @@ const [syncDate, setSyncDate] = useState(dayjs()); // 默认为当前日期
       sorter: (a, b) => (a.net_profit_rate || 0) - (b.net_profit_rate || 0),
     },
     {
+      title: '商品订单时间',
+      dataIndex: 'goodorder_time',
+      key: 'goodorder_time',
+      render: (date) => date || '-',
+    },
+    {
       title: '创建时间',
       dataIndex: 'created_at',
       key: 'created_at',

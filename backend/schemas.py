@@ -13,7 +13,7 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
-    goods_stores: Optional[List[dict]] = []  # 添加这个字段
+    goods_stores: Optional[List[dict]] = []
 
 class UserUpdate(BaseModel):
     username: Optional[str] = None
@@ -21,7 +21,7 @@ class UserUpdate(BaseModel):
     role: Optional[str] = None
     is_active: Optional[bool] = None
     password: Optional[str] = None
-    goods_stores: Optional[List[dict]] = []  # 添加这个字段
+    goods_stores: Optional[List[dict]] = []
 
 
 class User(UserBase):
@@ -29,7 +29,7 @@ class User(UserBase):
     role: Optional[str] = None
     created_at: str
     updated_at: str
-    goods_stores: Optional[List[dict]] = []  # 添加这个字段
+    goods_stores: Optional[List[dict]] = []
     
     class Config:
         from_attributes = True   # Peewee兼容性配置

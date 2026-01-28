@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Table, Card, Button, Space, Modal, Form, Input, Select, message, Tag, Spin } from 'antd';
+import { Table, Card, Button, Space, Modal, Form, message, Tag, Spin, DatePicker } from 'antd';
 import { PlusOutlined, EyeOutlined, ReloadOutlined } from '@ant-design/icons';
 import { apiRequest } from '../utils/api';
 
-const { Option } = Select;
+const { RangePicker } = DatePicker;
+
 
 const UserGoodManagement = () => {
   const [usersList, setUsersList] = useState([]);
@@ -17,11 +18,9 @@ const UserGoodManagement = () => {
   const [dataLoading, setDataLoading] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
 
-  // 用户角色选项
-  const roleOptions = [
-    { value: 'admin', label: '管理员' },
-    { value: 'user', label: '普通用户' },
-  ];
+  // 日期范围选择器状态
+  const [selectedDateRange, setSelectedDateRange] = useState([]);
+
 
   // 表格列配置 - 用户汇总数据
   const userColumns = [
@@ -42,7 +41,7 @@ const UserGoodManagement = () => {
       key: 'role',
       render: (text) => (
         <Tag color={text === 'admin' ? 'red' : 'blue'}>
-          {text === 'admin' ? '管理员' : '普通用户'}
+          {text === 'admin' ? '管理员' : text === 'sales' ? '销售' : '普通用户'}
         </Tag>
       ),
     },
@@ -282,7 +281,21 @@ const UserGoodManagement = () => {
   const loadUsers = async () => {
     setDataLoading(true);
     try {
-      const response = await apiRequest('/user_goods_summary/');
+      let url = '/user_goods_summary/';
+      
+      // 如果选择了日期范围，添加到URL参数中
+      const params = new URLSearchParams();
+      if (selectedDateRange && selectedDateRange.length === 2) {
+        params.append('start_date', selectedDateRange[0].format('YYYY-MM-DD'));
+        params.append('end_date', selectedDateRange[1].format('YYYY-MM-DD'));
+      }
+      
+      if (params.toString()) {
+        url += '?' + params.toString();
+      }
+
+      const response = await apiRequest(url);
+   
       const result = await response.json();
       
       if (result.data) {
@@ -307,7 +320,20 @@ const UserGoodManagement = () => {
     setDetailLoading(true);
     
     try {
-      const response = await apiRequest(`/user_goods_detail/${userId}`);
+      let url = `/user_goods_detail/${userId}`;
+      
+      // 如果选择了日期范围，添加到URL参数中
+      const params = new URLSearchParams();
+      if (selectedDateRange && selectedDateRange.length === 2) {
+        params.append('start_date', selectedDateRange[0].format('YYYY-MM-DD'));
+        params.append('end_date', selectedDateRange[1].format('YYYY-MM-DD'));
+      }
+      
+      if (params.toString()) {
+        url += '?' + params.toString();
+      }
+
+      const response = await apiRequest(url);
       const result = await response.json();
       
       if (result.data) {
@@ -336,14 +362,21 @@ const UserGoodManagement = () => {
       <Card 
         title="用户商品汇总数据管理" 
         extra={
-          <Button 
-            type="primary" 
-            icon={<ReloadOutlined />} 
-            onClick={loadUsers}
-            loading={dataLoading}
-          >
-            刷新数据
-          </Button>
+        <Space>
+            <RangePicker
+              value={selectedDateRange}
+              onChange={setSelectedDateRange}
+              placeholder={['开始日期', '结束日期']}
+            />
+            <Button 
+              type="primary" 
+              icon={<ReloadOutlined />} 
+              onClick={loadUsers}
+              loading={loading}
+            >
+              刷新数据
+            </Button>
+          </Space>
         }
       >
         <Spin spinning={dataLoading}>

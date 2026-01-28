@@ -14,7 +14,7 @@ class BaseModel(Model):
 
 class User(BaseModel):
     username = CharField(unique=True)
-    email = CharField(unique=True)
+    email = CharField()
     hashed_password = CharField()  # 使用正确的字段名
     role = CharField(default='user')  # 'admin' or 'user'
     is_active = BooleanField(default=True)
@@ -194,6 +194,7 @@ class Goods(BaseModel):
     net_profit_rate = FloatField(null=True)  # 净利率
     is_del = BooleanField(default=False)  # 逻辑删除标志
     creator = CharField(null=True)  # 创建人
+    goodorder_time = DateTimeField(null=True)  # 商品订单时间
     created_at = DateTimeField(default=datetime.now)  # 创建时间
     updated_at = DateTimeField(default=datetime.now)  # 更新时间
 

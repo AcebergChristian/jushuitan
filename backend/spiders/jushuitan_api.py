@@ -1,6 +1,6 @@
 import requests
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 def get_jushuitan_orders(sync_date=None):
     """
@@ -104,10 +104,13 @@ def get_all_jushuitan_orders(sync_date=None):
         "source": "SUPPLIER"
     }
 
-   # 如果没有提供sync_date，则默认使用前一天的日期
+    # 如果没有提供sync_date，则默认使用前一天的日期
     if sync_date is None:
         yesterday = datetime.now() - timedelta(days=1)
         sync_date = yesterday.strftime("%Y-%m-%d")
+    elif isinstance(sync_date, date):
+        # 如果传入的是date对象，转换为字符串
+        sync_date = sync_date.strftime("%Y-%m-%d")
     
     # 设置当天的开始和结束时间
     start_time = f"{sync_date} 00:00:00"
@@ -118,6 +121,7 @@ def get_all_jushuitan_orders(sync_date=None):
         "endTime": end_time,
         "dateQueryType": "OrderDate",
         "orderTypeEnum": "ALL",
+        "orderStatus":["WaitConfirm","WaitOuterSent","Sent","Question","Delivering"],
         "noteType": "NOFILTER",
         "orderByKey": 0,
         "ascOrDesc": False,
@@ -166,10 +170,10 @@ def get_all_jushuitan_orders(sync_date=None):
 
 
 # 如果直接运行此脚本，则执行查询
-if __name__ == "__main__":
-    result = get_all_jushuitan_orders()
-    if result:
-        data = result.get("data", [])
-        print(f'data========> {len(data)}')
-    else:
-        print('未能获取到聚水潭订单数据')
+# if __name__ == "__main__":
+#     result = get_all_jushuitan_orders()
+#     if result:
+#         data = result.get("data", [])
+#         print(f'data========> {len(data)}')
+#     else:
+#         print('未能获取到聚水潭订单数据')
