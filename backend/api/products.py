@@ -949,37 +949,116 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             (Goods.store_id == store_id) & (Goods.is_del == False)
         ).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
     
-    # 不再对商品进行去重处理，而是平铺显示每个订单项
+    # 按good_id进行分组并汇总数据
+    grouped_goods = {}
     for record in goods_records:
+        good_id = record.goods_id
+        
+        if good_id not in grouped_goods:
+            # 初始化商品数据
+            grouped_goods[good_id] = {
+                'id': record.id,  # 使用第一条记录的ID
+                'good_id': record.goods_id,
+                'good_name': record.goods_name,
+                'store_id': record.store_id,
+                'store_name': record.store_name,
+                'order_ids': [record.order_id] if record.order_id else [],  # 收集所有订单号
+                'payment_amount': record.payment_amount or 0.0,
+                'sales_amount': record.sales_amount or 0.0,
+                'sales_cost': record.sales_cost or 0.0,
+                'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+                'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+                'advertising_expenses': record.advertising_expenses or 0.0,
+                'advertising_ratio': record.advertising_ratio or 0.0,
+                'gross_profit_3': record.gross_profit_3 or 0.0,
+                'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+                'gross_profit_4': record.gross_profit_4 or 0.0,
+                'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+                'net_profit': record.net_profit or 0.0,
+                'net_profit_rate': record.net_profit_rate or 0.0,
+                'first_goodorder_time': record.goodorder_time,  # 最早订单时间
+                'latest_goodorder_time': record.goodorder_time,  # 最晚订单时间
+                'created_at': record.created_at,
+                'updated_at': record.updated_at,
+                'order_count': 1  # 订单数量
+            }
+        else:
+            # 累加数值字段
+            existing = grouped_goods[good_id]
+            existing['payment_amount'] += record.payment_amount or 0.0
+            existing['sales_amount'] += record.sales_amount or 0.0
+            existing['sales_cost'] += record.sales_cost or 0.0
+            existing['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
+            existing['advertising_expenses'] += record.advertising_expenses or 0.0
+            existing['advertising_ratio'] += record.advertising_ratio or 0.0
+            existing['gross_profit_3'] += record.gross_profit_3 or 0.0
+            existing['gross_profit_4'] += record.gross_profit_4 or 0.0
+            existing['net_profit'] += record.net_profit or 0.0
+            
+            # 更新订单ID列表
+            if record.order_id:
+                existing['order_ids'].append(record.order_id)
+            
+            # 更新时间范围
+            if record.goodorder_time and (not existing['latest_goodorder_time'] or record.goodorder_time > existing['latest_goodorder_time']):
+                existing['latest_goodorder_time'] = record.goodorder_time
+            if record.goodorder_time and (not existing['first_goodorder_time'] or record.goodorder_time < existing['first_goodorder_time']):
+                existing['first_goodorder_time'] = record.goodorder_time
+            
+            # 更新更新时间
+            if record.updated_at > existing['updated_at']:
+                existing['updated_at'] = record.updated_at
+            
+            existing['order_count'] += 1
+    
+    # 将分组结果转换为前端需要的格式
+    for good_id, data in grouped_goods.items():
+        # 计算平均利润率（如果需要的话）
+        if data['sales_amount'] != 0:
+            data['gross_profit_1_rate'] = (data['gross_profit_1_occurred'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['gross_profit_3_rate'] = (data['gross_profit_3'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['gross_profit_4_rate'] = (data['gross_profit_4'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['net_profit_rate'] = (data['net_profit'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['advertising_ratio'] = (data['advertising_expenses'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+        
+        # 格式化时间
+        first_time_str = data['first_goodorder_time'].strftime("%Y-%m-%d %H:%M:%S") if data['first_goodorder_time'] else ""
+        latest_time_str = data['latest_goodorder_time'].strftime("%Y-%m-%d %H:%M:%S") if data['latest_goodorder_time'] else ""
+        
         goods_data.append({
-            'id': record.id,
-            'good_id': record.goods_id,
-            'good_name': record.goods_name,
-            'store_id': record.store_id,
-            'store_name': record.store_name,
-            'order_id': record.order_id,  # 显示具体的订单号
-            'payment_amount': record.payment_amount or 0.0,
-            'sales_amount': record.sales_amount or 0.0,
-            'sales_cost': record.sales_cost or 0.0,
-            'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
-            'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
-            'advertising_expenses': record.advertising_expenses or 0.0,
-            'advertising_ratio': record.advertising_ratio or 0.0,
-            'gross_profit_3': record.gross_profit_3 or 0.0,
-            'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
-            'gross_profit_4': record.gross_profit_4 or 0.0,
-            'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
-            'net_profit': record.net_profit or 0.0,
-            'net_profit_rate': record.net_profit_rate or 0.0,
-            'goodorder_time': record.goodorder_time.strftime("%Y-%m-%d %H:%M:%S") if record.goodorder_time else "",  # 显示订单时间
-            'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
-            'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
+            'id': data['id'],
+            'good_id': data['good_id'],
+            'good_name': data['good_name'],
+            'store_id': data['store_id'],
+            'store_name': data['store_name'],
+            'order_ids': ', '.join(data['order_ids']),  # 将订单号用逗号连接
+            'order_count': data['order_count'],  # 订单数量
+            'payment_amount': round(data['payment_amount'], 2),
+            'sales_amount': round(data['sales_amount'], 2),
+            'sales_cost': round(data['sales_cost'], 2),
+            'gross_profit_1_occurred': round(data['gross_profit_1_occurred'], 2),
+            'gross_profit_1_rate': round(data['gross_profit_1_rate'], 2),
+            'advertising_expenses': round(data['advertising_expenses'], 2),
+            'advertising_ratio': round(data['advertising_ratio'], 2),
+            'gross_profit_3': round(data['gross_profit_3'], 2),
+            'gross_profit_3_rate': round(data['gross_profit_3_rate'], 2),
+            'gross_profit_4': round(data['gross_profit_4'], 2),
+            'gross_profit_4_rate': round(data['gross_profit_4_rate'], 2),
+            'net_profit': round(data['net_profit'], 2),
+            'net_profit_rate': round(data['net_profit_rate'], 2),
+            'first_order_time': first_time_str,  # 最早订单时间
+            'latest_order_time': latest_time_str,  # 最晚订单时间
+            'created_at': data['created_at'].strftime("%Y-%m-%d %H:%M:%S") if data['created_at'] else "",
+            'updated_at': data['updated_at'].strftime("%Y-%m-%d %H:%M:%S") if data['updated_at'] else ""
         })
     
     return {
         "message": "成功获取店铺商品详情",
         "data": goods_data
     }
+
+
+
 
 
 
@@ -1252,6 +1331,8 @@ def get_user_goods_summary(
     }
 
 
+
+# 用户商品详情
 @router.get("/user_goods_detail/{user_id}")
 def get_user_goods_detail(
     user_id: int, 
@@ -1308,40 +1389,117 @@ def get_user_goods_detail(
             # 将开始日期设置为当天的开始（00:00:00）
             start_dt = start_dt.replace(hour=0, minute=0, second=0)
             # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
-            end_dt = end_dt.replace(hour=0, minute=0, second=0)
+            end_dt = end_dt.replace(hour=23, minute=59, second=59)
             # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
             query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
         except ValueError:
             raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
     
-    # 查询对应的商品数据（平铺显示，不合并相同商品，保留每个订单的单独记录）
-    goods_data = []
+    # 查询对应的商品数据
     goods_records = Goods.select().where(*query_conditions).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
     
+    # 按good_id进行分组并汇总数据
+    grouped_goods = {}
     for record in goods_records:
+        good_id = record.goods_id
+        
+        if good_id not in grouped_goods:
+            # 初始化商品数据
+            grouped_goods[good_id] = {
+                'id': record.id,  # 使用第一条记录的ID
+                'good_id': record.goods_id,
+                'good_name': record.goods_name,
+                'store_id': record.store_id,
+                'store_name': record.store_name,
+                'order_ids': [record.order_id] if record.order_id else [],  # 收集所有订单号
+                'payment_amount': record.payment_amount or 0.0,
+                'sales_amount': record.sales_amount or 0.0,
+                'sales_cost': record.sales_cost or 0.0,
+                'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
+                'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
+                'advertising_expenses': record.advertising_expenses or 0.0,
+                'advertising_ratio': record.advertising_ratio or 0.0,
+                'gross_profit_3': record.gross_profit_3 or 0.0,
+                'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
+                'gross_profit_4': record.gross_profit_4 or 0.0,
+                'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
+                'net_profit': record.net_profit or 0.0,
+                'net_profit_rate': record.net_profit_rate or 0.0,
+                'first_goodorder_time': record.goodorder_time,  # 最早订单时间
+                'latest_goodorder_time': record.goodorder_time,  # 最晚订单时间
+                'created_at': record.created_at,
+                'updated_at': record.updated_at,
+                'order_count': 1  # 订单数量
+            }
+        else:
+            # 累加数值字段
+            existing = grouped_goods[good_id]
+            existing['payment_amount'] += record.payment_amount or 0.0
+            existing['sales_amount'] += record.sales_amount or 0.0
+            existing['sales_cost'] += record.sales_cost or 0.0
+            existing['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
+            existing['advertising_expenses'] += record.advertising_expenses or 0.0
+            existing['advertising_ratio'] += record.advertising_ratio or 0.0
+            existing['gross_profit_3'] += record.gross_profit_3 or 0.0
+            existing['gross_profit_4'] += record.gross_profit_4 or 0.0
+            existing['net_profit'] += record.net_profit or 0.0
+            
+            # 更新订单ID列表
+            if record.order_id:
+                existing['order_ids'].append(record.order_id)
+            
+            # 更新时间范围
+            if record.goodorder_time and (not existing['latest_goodorder_time'] or record.goodorder_time > existing['latest_goodorder_time']):
+                existing['latest_goodorder_time'] = record.goodorder_time
+            if record.goodorder_time and (not existing['first_goodorder_time'] or record.goodorder_time < existing['first_goodorder_time']):
+                existing['first_goodorder_time'] = record.goodorder_time
+            
+            # 更新更新时间
+            if record.updated_at > existing['updated_at']:
+                existing['updated_at'] = record.updated_at
+            
+            existing['order_count'] += 1
+    
+    # 将分组结果转换为前端需要的格式
+    goods_data = []
+    for good_id, data in grouped_goods.items():
+        # 计算平均利润率（如果需要的话）
+        if data['sales_amount'] != 0:
+            data['gross_profit_1_rate'] = (data['gross_profit_1_occurred'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['gross_profit_3_rate'] = (data['gross_profit_3'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['gross_profit_4_rate'] = (data['gross_profit_4'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['net_profit_rate'] = (data['net_profit'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+            data['advertising_ratio'] = (data['advertising_expenses'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
+        
+        # 格式化时间
+        first_time_str = data['first_goodorder_time'].strftime("%Y-%m-%d %H:%M:%S") if data['first_goodorder_time'] else ""
+        latest_time_str = data['latest_goodorder_time'].strftime("%Y-%m-%d %H:%M:%S") if data['latest_goodorder_time'] else ""
+        
         goods_data.append({
-            'id': record.id,
-            'good_id': record.goods_id,
-            'good_name': record.goods_name,
-            'store_id': record.store_id,
-            'store_name': record.store_name,
-            'order_id': record.order_id,  # 显示具体的订单号
-            'payment_amount': record.payment_amount or 0.0,
-            'sales_amount': record.sales_amount or 0.0,
-            'sales_cost': record.sales_cost or 0.0,
-            'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
-            'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
-            'advertising_expenses': record.advertising_expenses or 0.0,
-            'advertising_ratio': record.advertising_ratio or 0.0,
-            'gross_profit_3': record.gross_profit_3 or 0.0,
-            'gross_profit_3_rate': record.gross_profit_3_rate or 0.0,
-            'gross_profit_4': record.gross_profit_4 or 0.0,
-            'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
-            'net_profit': record.net_profit or 0.0,
-            'net_profit_rate': record.net_profit_rate or 0.0,
-            'goodorder_time': record.goodorder_time.strftime("%Y-%m-%d %H:%M:%S") if record.goodorder_time else "",  # 订单时间
-            'created_at': record.created_at.strftime("%Y-%m-%d %H:%M:%S") if record.created_at else "",
-            'updated_at': record.updated_at.strftime("%Y-%m-%d %H:%M:%S") if record.updated_at else ""
+            'id': data['id'],
+            'good_id': data['good_id'],
+            'good_name': data['good_name'],
+            'store_id': data['store_id'],
+            'store_name': data['store_name'],
+            'order_ids': ', '.join([oid for oid in data['order_ids'] if oid]),  # 将订单号用逗号连接
+            'order_count': data['order_count'],  # 订单数量
+            'payment_amount': round(data['payment_amount'], 2),
+            'sales_amount': round(data['sales_amount'], 2),
+            'sales_cost': round(data['sales_cost'], 2),
+            'gross_profit_1_occurred': round(data['gross_profit_1_occurred'], 2),
+            'gross_profit_1_rate': round(data['gross_profit_1_rate'], 2),
+            'advertising_expenses': round(data['advertising_expenses'], 2),
+            'advertising_ratio': round(data['advertising_ratio'], 2),
+            'gross_profit_3': round(data['gross_profit_3'], 2),
+            'gross_profit_3_rate': round(data['gross_profit_3_rate'], 2),
+            'gross_profit_4': round(data['gross_profit_4'], 2),
+            'gross_profit_4_rate': round(data['gross_profit_4_rate'], 2),
+            'net_profit': round(data['net_profit'], 2),
+            'net_profit_rate': round(data['net_profit_rate'], 2),
+            'first_order_time': first_time_str,  # 最早订单时间
+            'latest_order_time': latest_time_str,  # 最晚订单时间
+            'created_at': data['created_at'].strftime("%Y-%m-%d %H:%M:%S") if data['created_at'] else "",
+            'updated_at': data['updated_at'].strftime("%Y-%m-%d %H:%M:%S") if data['updated_at'] else ""
         })
 
     # 根据是否有日期筛选添加适当的消息
@@ -1350,8 +1508,6 @@ def get_user_goods_detail(
         "message": f"成功获取用户 {target_user.username} 的商品详情{date_msg}",
         "data": goods_data
     }
-
-
 
 
 # 用户去关联商品的字典 接口
