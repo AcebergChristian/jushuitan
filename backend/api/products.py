@@ -715,8 +715,8 @@ def get_user_goods_stores_data(
             end_dt = datetime.strptime(end_date, "%Y-%m-%d")
             # 将开始日期设置为当天的开始（00:00:00）
             start_dt = start_dt.replace(hour=0, minute=0, second=0)
-            # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
-            end_dt = end_dt.replace(hour=23, minute=59, second=59)
+            # 将结束日期设置为当天的结束（00:00:00），以包含整个结束日期
+            end_dt = end_dt.replace(hour=0, minute=0, second=0)
             # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
             query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
         except ValueError:
@@ -1093,7 +1093,7 @@ def get_user_goods_summary(
                 # 将开始日期设置为当天的开始（00:00:00）
                 start_dt = start_dt.replace(hour=0, minute=0, second=0)
                 # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
-                end_dt = end_dt.replace(hour=23, minute=59, second=59)
+                end_dt = end_dt.replace(hour=0, minute=0, second=0)
                 # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
                 query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
             except ValueError:
@@ -1308,7 +1308,7 @@ def get_user_goods_detail(
             # 将开始日期设置为当天的开始（00:00:00）
             start_dt = start_dt.replace(hour=0, minute=0, second=0)
             # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
-            end_dt = end_dt.replace(hour=23, minute=59, second=59)
+            end_dt = end_dt.replace(hour=0, minute=0, second=0)
             # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
             query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
         except ValueError:

@@ -39,7 +39,7 @@ const StoreManagement = () => {
       key: 'store_name',
     },
     {
-      title: '商品数量',
+      title: '订单数量',
       dataIndex: 'goods_count',
       key: 'goods_count',
       sorter: (a, b) => (a.goods_count || 0) - (b.goods_count || 0),

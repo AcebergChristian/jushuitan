@@ -332,7 +332,6 @@ const UserGoodManagement = () => {
       if (params.toString()) {
         url += '?' + params.toString();
       }
-
       const response = await apiRequest(url);
       const result = await response.json();
       
