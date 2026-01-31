@@ -53,6 +53,11 @@ const Home = () => {
       icon: <UserOutlined />,
       label: '店铺管理',
     },
+    // {
+    //   key: '/cancel-management',
+    //   icon: <UserOutlined />,
+    //   label: '订单取消管理',
+    // },
     {
       key: '/usergood-management',
       icon: <UserOutlined />,

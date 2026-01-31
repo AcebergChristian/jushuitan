@@ -10,9 +10,10 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './views/Dashboard';
 import DataManagement from './views/DataManagement';
 import GoodManagement from './views/GoodManagement';
-import UserManagement from './views/UserManagement';
 import StoreManagement from './views/StoreManagement';
+// import CancelManagement from './views/CancelManagement';
 import UserGoodManagement from './views/UserGoodManagement';
+import UserManagement from './views/UserManagement';
 
 function App() {
   return (
@@ -60,20 +61,29 @@ function App() {
               }
             />
 
-            <Route
-              path="user-management"
+            {/* <Route
+              path="cancel-management"
               element={
                 <ProtectedRoute>
-                  <UserManagement />
+                  <CancelManagement />
                 </ProtectedRoute>
               }
-            />
+            /> */}
 
             <Route
               path="usergood-management"
               element={
                 <ProtectedRoute>
                   <UserGoodManagement />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="user-management"
+              element={
+                <ProtectedRoute>
+                  <UserManagement />
                 </ProtectedRoute>
               }
             />

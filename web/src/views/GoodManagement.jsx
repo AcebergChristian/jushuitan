@@ -14,9 +14,6 @@ const GoodManagement = () => {
   const [selectedGood, setSelectedGood] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
 
-  // 在组件内部添加日期状态
-const [syncDate, setSyncDate] = useState(dayjs()); // 默认为当前日期
-
   // 加载商品数据
   const loadGoods = async (page = 1, size = 10, search = '') => {
     setLoading(true);
@@ -63,40 +60,7 @@ const [syncDate, setSyncDate] = useState(dayjs()); // 默认为当前日期
     setCurrentPage(1); // 搜索时回到第一页
   };
 
-  // 同步商品数据
-  const syncGoodsData = async () => {
-  setLoading(true);
-  try {
-    // 使用选定的日期进行同步
-    const syncDateStr = syncDate.format('YYYY-MM-DD');
-    
-    const response = await apiRequest('/sync_goods/', {
-      method: 'POST',  // 改为POST方法以发送日期参数
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        sync_date: syncDateStr  // 添加日期参数
-      }),
-    });
 
-    if (response.ok) {
-      const result = await response.json();
-      message.success(result.message || '商品数据同步成功');
-      
-      // 同步完成后重新获取当前页的数据
-      loadGoods(currentPage, pageSize, searchTerm);
-    } else {
-      const errorData = await response.json().catch(() => ({}));
-      message.error(errorData.detail || '商品数据同步失败');
-    }
-  } catch (error) {
-    console.error('同步商品数据错误:', error);
-    message.error('同步商品数据时发生错误');
-  } finally {
-    setLoading(false);
-  }
-};
 
   // 查看商品详情
   const viewGoodDetails = (good) => {
@@ -394,18 +358,6 @@ const [syncDate, setSyncDate] = useState(dayjs()); // 默认为当前日期
               style={{ width: 300 }}
             />
 
-            <DatePicker 
-              value={syncDate}
-              onChange={setSyncDate}
-              placeholder="选择同步日期"
-            />
-            <Button 
-              type="primary" 
-              icon={<SyncOutlined />}
-              onClick={syncGoodsData}
-            >
-              同步
-            </Button>
           </Space>
         }
       >
