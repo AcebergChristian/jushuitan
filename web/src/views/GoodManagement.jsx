@@ -113,6 +113,13 @@ const GoodManagement = () => {
       sorter: (a, b) => (a.sales_amount || 0) - (b.sales_amount || 0),
     },
     {
+      title: '退款金额',
+      dataIndex: 'refund_amount',
+      key: 'refund_amount',
+      render: (amount) => `¥${(amount || 0).toFixed(2)}`,
+      sorter: (a, b) => (a.refund_amount || 0) - (b.refund_amount || 0),
+    },
+    {
       title: '销售成本',
       dataIndex: 'sales_cost',
       key: 'sales_cost',

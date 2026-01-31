@@ -50,7 +50,7 @@ def init_default_user():
             print(f"  用户ID: {admin_user.id}")
             print(f"  初始密码: admin")
     
-    print("数据库初始化完成！")
+    print("数据库初始化完成!")
 
 
 def init_default_goods():
@@ -78,6 +78,7 @@ def init_default_goods():
                 store_name="旗舰店",
                 payment_amount=100.00,
                 sales_amount=120.00,
+                refund_amount=40.00,
                 sales_cost=80.00,
                 gross_profit_1_occurred=(120.00 - 80.00),
                 gross_profit_1_rate=((120.00 - 80.00) / 120.00) * 100,
@@ -100,6 +101,7 @@ def init_default_goods():
                 store_name="分店A",
                 payment_amount=200.00,
                 sales_amount=250.00,
+                refund_amount=50.00,
                 sales_cost=150.00,
                 gross_profit_1_occurred=(250.00 - 150.00),
                 gross_profit_1_rate=((250.00 - 150.00) / 250.00) * 100,
@@ -122,6 +124,7 @@ def init_default_goods():
                 store_name="分店B",
                 payment_amount=150.00,
                 sales_amount=180.00,
+                refund_amount=30.00,
                 sales_cost=100.00,
                 gross_profit_1_occurred=(180.00 - 100.00),
                 gross_profit_1_rate=((180.00 - 100.00) / 180.00) * 100,
@@ -140,12 +143,19 @@ def init_default_goods():
         ]
         
         print(f"成功插入 {len(default_goods)} 条商品记录")
-        print("商品表初始化完成！")
+        print("商品表初始化完成!")
 
 
-
-
-
+def init_stores_table():
+    """初始化店铺表"""
+    print("正在初始化店铺表...")
+    init_db()  # 确保数据库和表已经创建
+    
+    
+    with get_db() as db:
+        print("店铺表已准备就绪!")
+        
 if __name__ == "__main__":
     # init_default_user()
     init_default_goods()
+    init_stores_table()

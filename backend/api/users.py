@@ -112,32 +112,19 @@ def update_user(
     
     # 特别处理goods_stores字段 - 直接追加和去重
     if 'goods_stores' in update_data:
-        # 从数据库获取当前的goods_stores
-        current_goods_stores_str = existing_user.goods_stores
-        if current_goods_stores_str:
-            try:
-                current_goods_stores = json.loads(current_goods_stores_str)
-            except json.JSONDecodeError:
-                current_goods_stores = []
-        else:
-            current_goods_stores = []
-        
         # 获取新的goods_stores
         new_goods_stores = update_data['goods_stores']
-        
-        # 直接追加新数据
-        combined_goods_stores = current_goods_stores + new_goods_stores
         
         # 去重：基于整个对象进行去重
         seen = set()
         unique_goods_stores = []
-        for item in combined_goods_stores:
+        for item in new_goods_stores:
             item_str = json.dumps(item, sort_keys=True)  # 将对象转换为排序后的字符串作为唯一标识
             if item_str not in seen:
                 seen.add(item_str)
                 unique_goods_stores.append(item)
         
-        # 直接更新用户goods_stores字段
+        # 直接更新用户goods_stores字段，完全替换原有数据
         existing_user.goods_stores = json.dumps(unique_goods_stores, ensure_ascii=False)
         existing_user.save()
         del update_data['goods_stores']  # 从更新数据中移除，因为我们直接处理了

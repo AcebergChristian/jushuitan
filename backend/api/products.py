@@ -1,18 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from typing import List
-from .. import schemas
-from ..services import product_service
-from ..database import get_db
-from ..models.database import JushuitanProduct, Goods, JushuitanCancelProduct
-from .auth import get_current_user
-
-
 import sqlite3
 import os
 import json
 from datetime import datetime, date, timedelta
+import traceback
 
+
+from .. import schemas
+from ..services import product_service
+from ..database import get_db
+from ..models.database import JushuitanProduct, Goods, JushuitanCancelProduct, User
+from .auth import get_current_user
 from ..spiders.jushuitan_api import get_all_jushuitan_orders
+
 
 router = APIRouter()
 
@@ -159,7 +160,9 @@ def read_jushuitan_products_by_type(data_type: str, skip: int = 0, limit: int = 
 @router.post("/sync_jushuitan_data")
 def sync_jushuitan_data(request: dict = None):
     """同步聚水潭数据到数据库，根据oid字段处理重复数据"""
-    
+
+
+
     # 获取请求体中的同步日期
     sync_date_str = request.get('sync_date') if request else None
     sync_date = None
@@ -178,9 +181,6 @@ def sync_jushuitan_data(request: dict = None):
     
     if not new_data_list:
         return {"message": "没有获取到新的聚水潭数据"}
-    
-    # 使用Peewee ORM进行数据库操作
-    from ..models.database import JushuitanProduct 
     
     # 获取系统当前日期
     current_system_date = datetime.now().strftime('%Y-%m-%d')
@@ -255,7 +255,7 @@ def sync_jushuitan_data(request: dict = None):
                     orderStatus=item.get('orderStatus'),
                     errorMsg=item.get('errorMsg'),
                     errorDesc=item.get('errorDesc'),
-                    labels=str(item.get('labels', [])),
+                    labels=json.dumps(item.get('labels', []), ensure_ascii=False),
                     buyerMessage=item.get('buyerMessage'),
                     remark=item.get('remark'),
                     sellerFlag=item.get('sellerFlag'),
@@ -307,37 +307,9 @@ def sync_jushuitan_data(request: dict = None):
                 )
                 processed_count += 1
     
-    return {
-        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条记录",
-        "processed_count": processed_count
-    }
-
-
-# 同步订单数据 - 查出商品数 - insert到goods表
-@router.post("/sync_goods/")
-def sync_goods(request: dict = None):
-    """
-    同步订单数据中的商品信息到goods表
-    - 提取disInnerOrderGoodsViewList中的商品数据
-    - 按shopIid聚合相同商品的金额
-    - 计算各种利润指标
-    - 支持按指定日期同步数据
-    """
-    from datetime import datetime, date
-    from ..models.database import Goods, JushuitanProduct
-    from ..spiders.jushuitan_api import get_all_jushuitan_orders
     
     try:
-        # 检查是否提供了同步日期
-        sync_date_str = request.get('sync_date') if request else None
-        sync_date = None
-        if sync_date_str:
-            try:
-                sync_date = datetime.strptime(sync_date_str, '%Y-%m-%d').date()
-            except ValueError:
-                raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
-
-        # 直接从数据库中的JushuitanProduct表获取订单数据
+        # 直接从数据库中的JushuitanProduct表获取刚刚同步的订单数据
         # 查询未删除的订单记录
         order_query = JushuitanProduct.select().where(JushuitanProduct.is_del == False)
         
@@ -351,18 +323,48 @@ def sync_goods(request: dict = None):
                 (JushuitanProduct.created_at <= end_of_day)
             )
         
-        orders = list(order_query)
         
-        # 如果数据库中没有订单数据，再从API获取
+        processed_count, _ = sync_goods(sync_date, new_data_list)
+        
+
+    except Exception as e:
+        print(f"同步商品数据时发生错误: {str(e)}")
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
+
+    return {
+        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条订单记录和 {processed_count} 条商品记录",
+        "processed_count": processed_count,
+        "goods_processed_count": processed_count
+    }
+
+
+
+
+
+
+
+
+
+# 批量新增商品台账方法
+def sync_goods(sync_date, orders):
+    """
+    同步订单数据中的商品信息到goods表
+    - 提取disInnerOrderGoodsViewList中的商品数据
+    - 按shopIid聚合相同商品的金额
+    - 计算各种利润指标
+    - 支持按指定日期同步数据
+    """
+
+    try:
         if not orders:
-            api_response = get_all_jushuitan_orders(sync_date=sync_date)
-            if not api_response or 'data' not in api_response:
-                raise HTTPException(status_code=400, detail="获取聚水潭API数据失败或数据库中没有可用订单数据")
-            orders = api_response.get('data', [])
+            raise HTTPException(status_code=400, detail="没有提供订单数据")
+
 
         # 用于存储商品数据的字典，以shopIid和订单时间为唯一键进行区分
         goods_dict = {}
-
+        print(orders[0])
+        
         for order in orders:
             # 如果是从数据库获取的订单对象，需要转换为字典
             if hasattr(order, 'disInnerOrderGoodsViewList'):
@@ -440,7 +442,7 @@ def sync_goods(request: dict = None):
                     if not shop_iid:  # 如果没有shopIid，则跳过
                         continue
                     
-                    # 使用shopIid + 订单时间作为唯一键，保留订单时间维度
+                    # 使用shopIid + 订单时间作为唯一键
                     order_time_str = order_dict.get('orderTime')
                     order_datetime = None
                     if order_time_str:
@@ -479,19 +481,36 @@ def sync_goods(request: dict = None):
                         order_created_at = datetime.combine(sync_date, datetime.min.time())
                     else:
                         # 获取订单创建时间并转换为日期对象
-                        if order_obj:
-                            order_created_at = order_obj.created_at
+                        order_created_at = order.created_at
+                    
+                    # 处理退款金额逻辑 - 检查订单标签是否包含售后相关信息
+                    order_labels_raw = getattr(order, 'labels', '[]') if hasattr(order, 'labels') else order.get('labels', [])
+
+                    # 解析labels字段
+                    import json
+                    try:
+                        if isinstance(order_labels_raw, str):
+                            # 如果是字符串，说明是从数据库中读取的JSON数据
+                            parsed_labels = json.loads(order_labels_raw)
+                        elif isinstance(order_labels_raw, list):
+                            # 如果已经是列表，直接使用
+                            parsed_labels = order_labels_raw
                         else:
-                            order_created_at_str = order_dict.get('created_at')
-                            if order_created_at_str:
-                                if isinstance(order_created_at_str, str):
-                                    order_created_at = datetime.fromisoformat(order_created_at_str.replace('Z', '+00:00'))
-                                elif isinstance(order_created_at_str, datetime):
-                                    order_created_at = order_created_at_str
-                                else:
-                                    order_created_at = datetime.now()
-                            else:
-                                order_created_at = datetime.now()
+                            # 其他情况，转换为列表
+                            parsed_labels = list(order_labels_raw) if order_labels_raw else []
+                    except json.JSONDecodeError:
+                        parsed_labels = []
+                        print(f"无法解析labels字段: {order_labels_raw}")
+                    except Exception as e:
+                        parsed_labels = []
+                        print(f"解析labels字段时发生错误: {e}")
+                        
+                        
+                    # 如果标签中包含发货前售后或发货后售后，则refund_amount为paidAmount，否则为0
+                    if '发货前售后' in parsed_labels or '发货后售后' in parsed_labels:
+                        refund_amount = paidAmount
+                    else:
+                        refund_amount = 0.0
                     
                     # 初始化商品数据结构
                     goods_dict[unique_key] = {
@@ -502,6 +521,7 @@ def sync_goods(request: dict = None):
                         'order_id': order_dict.get('oid') or '',
                         'payment_amount': paidAmount,  # 使用订单的paidAmount
                         'sales_amount': payAmount,    # 使用订单的payAmount
+                        'refund_amount': refund_amount, # 使用计算的refund_amount
                         'sales_cost': drpAmount,      # 使用订单的drpAmount
                         'item_count': item_count,
                         'price': price,
@@ -578,22 +598,17 @@ def sync_goods(request: dict = None):
         
         # 根据是否指定了同步日期返回不同的消息
         if sync_date:
-            message_text = f"成功同步指定日期 {sync_date_str} 的商品数据，处理了 {processed_count} 条商品记录"
+            message_text = f"成功同步指定日期 {sync_date} 的商品数据，处理了 {processed_count} 条商品记录"
         else:
             message_text = f"成功同步商品数据，处理了 {processed_count} 条商品记录"
 
-        return {
-            "message": message_text
-        }
+        return processed_count, message_text
         
     except Exception as e:
         print(f"同步商品数据时发生错误: {str(e)}")
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
-
-
-
 
 
 
@@ -612,7 +627,6 @@ def get_goods_list(
     """
     获取商品列表，支持分页和商品名称模糊查询
     """
-    from ..models.database import Goods
     
     try:
         # 构建查询
@@ -646,6 +660,7 @@ def get_goods_list(
                 'order_id': good.order_id,
                 'payment_amount': good.payment_amount,
                 'sales_amount': good.sales_amount,
+                'refund_amount': good.refund_amount,
                 'sales_cost': good.sales_cost,
                 'gross_profit_1_occurred': good.gross_profit_1_occurred,
                 'gross_profit_1_rate': good.gross_profit_1_rate,
@@ -696,9 +711,7 @@ def get_user_goods_stores_data(
     返回包含销售金额、成本、利润等统计信息的数据
     支持按日期范围查询
     """
-    from ..models.database import Goods, User, JushuitanCancelProduct
-    from datetime import datetime
-    
+
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
     
@@ -947,9 +960,7 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
     """
     获取特定店铺的商品详情
     """
-    from ..models.database import Goods, User, JushuitanCancelProduct
-    from datetime import datetime
-    
+
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
     
@@ -960,11 +971,6 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
         goods_records = Goods.select().where(
             (Goods.store_id == store_id) & (Goods.is_del == False)
         ).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
-        
-        # 查询该店铺的退款数据
-        refund_records = JushuitanCancelProduct.select().where(
-            (JushuitanCancelProduct.shopId == store_id)
-        )
     else:
         # 普通用户只能查看自己关联的店铺商品数据
         user_goods_stores = current_user.get_goods_stores()
@@ -976,24 +982,6 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
         goods_records = Goods.select().where(
             (Goods.store_id == store_id) & (Goods.is_del == False)
         ).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
-        
-        # 查询该店铺的退款数据
-        refund_records = JushuitanCancelProduct.select().where(
-            (JushuitanCancelProduct.shopId == store_id) &
-            (JushuitanCancelProduct.is_del == False) &
-            (JushuitanCancelProduct.data_type == 'cancel')
-        )
-
-    # 将退款记录转换为字典，按商品ID分组
-    refund_by_good_id = {}
-    for refund_record in refund_records:
-        so_id = refund_record.soId  # 商品ID
-        print(f"Refund record - soId: {so_id}, paidAmount: {refund_record.paidAmount}")  # 调试输出
-        if so_id not in refund_by_good_id:
-            refund_by_good_id[so_id] = 0.0
-        refund_by_good_id[so_id] += float(refund_record.paidAmount or 0)
-
-    print(f"Refund mapping: {refund_by_good_id}")  # 调试输出
 
     # 按good_id进行分组并汇总数据
     grouped_goods = {}
@@ -1012,7 +1000,7 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
                 'payment_amount': record.payment_amount or 0.0,
                 'sales_amount': record.sales_amount or 0.0,
                 'sales_cost': record.sales_cost or 0.0,
-                'refund_amount': refund_by_good_id.get(good_id, 0.0),  # 添加退款金额
+                'refund_amount': record.refund_amount or 0.0,  # 直接使用goods表中的退款金额
                 'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
                 'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
                 'advertising_expenses': record.advertising_expenses or 0.0,
@@ -1035,6 +1023,7 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             existing['payment_amount'] += record.payment_amount or 0.0
             existing['sales_amount'] += record.sales_amount or 0.0
             existing['sales_cost'] += record.sales_cost or 0.0
+            existing['refund_amount'] += record.refund_amount or 0.0  # 累加退款金额
             existing['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
             existing['advertising_expenses'] += record.advertising_expenses or 0.0
             existing['advertising_ratio'] += record.advertising_ratio or 0.0
@@ -1090,7 +1079,7 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             'payment_amount': round(data['payment_amount'], 2),
             'sales_amount': round(data['sales_amount'], 2),
             'sales_cost': round(data['sales_cost'], 2),
-            'refund_amount': round(data['refund_amount'], 2),  # 添加退款金额字段
+            'refund_amount': round(data['refund_amount'], 2),  # 使用goods表中的退款金额
             'gross_profit_1_occurred': round(data['gross_profit_1_occurred'], 2),
             'gross_profit_1_rate': round(data['gross_profit_1_rate'], 2),
             'advertising_expenses': round(data['advertising_expenses'], 2),
@@ -1116,10 +1105,6 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
 
 
 
-
-
-
-
 # 用户-商品 接口（根据当前登录的用户 ，去查他关联的所有商品的数据， 管理员查看所有用户和商品的数据）
 @router.get("/user_goods_summary/")
 def get_user_goods_summary(
@@ -1133,9 +1118,6 @@ def get_user_goods_summary(
     返回每个用户的关联商品和店铺的汇总信息
     支持按日期范围查询
     """
-    from ..models.database import Goods, User
-    from peewee import fn
-    from datetime import datetime, date
     
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
@@ -1164,6 +1146,7 @@ def get_user_goods_summary(
                 'stores_count': 0,
                 'orders_count': 0,  # 订单数量
                 'payment_amount': 0.0,
+                'refund_amount': 0.0,
                 'sales_amount': 0.0,
                 'sales_cost': 0.0,
                 'gross_profit_1_occurred': 0.0,
@@ -1195,6 +1178,7 @@ def get_user_goods_summary(
                 'stores_count': 0,
                 'orders_count': 0,
                 'payment_amount': 0.0,
+                'refund_amount': 0.0,
                 'sales_amount': 0.0,
                 'sales_cost': 0.0,
                 'gross_profit_1_occurred': 0.0,
@@ -1248,6 +1232,7 @@ def get_user_goods_summary(
                     'store_name': record.store_name,
                     'payment_amount': 0.0,
                     'sales_amount': 0.0,
+                    'refund_amount': 0.0,
                     'sales_cost': 0.0,
                     'gross_profit_1_occurred': 0.0,
                     'gross_profit_1_rate': 0.0,
@@ -1267,6 +1252,7 @@ def get_user_goods_summary(
             # 累加数值字段
             goods_by_id[goods_id]['payment_amount'] += record.payment_amount or 0.0
             goods_by_id[goods_id]['sales_amount'] += record.sales_amount or 0.0
+            goods_by_id[goods_id]['refund_amount'] += record.refund_amount or 0.0
             goods_by_id[goods_id]['sales_cost'] += record.sales_cost or 0.0
             goods_by_id[goods_id]['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
             goods_by_id[goods_id]['advertising_expenses'] += record.advertising_expenses or 0.0
@@ -1304,6 +1290,7 @@ def get_user_goods_summary(
         if goods_data:
             total_payment_amount = sum(item['payment_amount'] for item in goods_data)
             total_sales_amount = sum(item['sales_amount'] for item in goods_data)
+            total_refund_amount = sum(item['refund_amount'] for item in goods_data)
             total_sales_cost = sum(item['sales_cost'] for item in goods_data)
             total_gross_profit_1_occurred = sum(item['gross_profit_1_occurred'] for item in goods_data)
             avg_gross_profit_1_rate = (
@@ -1339,6 +1326,7 @@ def get_user_goods_summary(
         else:
             total_payment_amount = 0.0
             total_sales_amount = 0.0
+            total_refund_amount = 0.0
             total_sales_cost = 0.0
             total_gross_profit_1_occurred = 0.0
             avg_gross_profit_1_rate = 0.0
@@ -1363,6 +1351,7 @@ def get_user_goods_summary(
             'orders_count': total_orders_count,  # 总订单数量
             'payment_amount': total_payment_amount,
             'sales_amount': total_sales_amount,
+            'refund_amount': total_refund_amount,
             'sales_cost': total_sales_cost,
             'gross_profit_1_occurred': total_gross_profit_1_occurred,
             'gross_profit_1_rate': avg_gross_profit_1_rate,
@@ -1400,9 +1389,6 @@ def get_user_goods_detail(
     管理员可查看任意用户的数据，普通用户只能查看自己的数据
     支持按日期范围查询
     """
-    from ..models.database import Goods, User
-    from peewee import fn
-    from datetime import datetime, date
     
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
@@ -1469,6 +1455,7 @@ def get_user_goods_detail(
                 'order_ids': [record.order_id] if record.order_id else [],  # 收集所有订单号
                 'payment_amount': record.payment_amount or 0.0,
                 'sales_amount': record.sales_amount or 0.0,
+                'refund_amount': record.refund_amount or 0.0,
                 'sales_cost': record.sales_cost or 0.0,
                 'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
                 'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
@@ -1491,6 +1478,7 @@ def get_user_goods_detail(
             existing = grouped_goods[good_id]
             existing['payment_amount'] += record.payment_amount or 0.0
             existing['sales_amount'] += record.sales_amount or 0.0
+            existing['refund_amount'] += record.refund_amount or 0.0
             existing['sales_cost'] += record.sales_cost or 0.0
             existing['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
             existing['advertising_expenses'] += record.advertising_expenses or 0.0
@@ -1540,6 +1528,7 @@ def get_user_goods_detail(
             'order_count': data['order_count'],  # 订单数量
             'payment_amount': round(data['payment_amount'], 2),
             'sales_amount': round(data['sales_amount'], 2),
+            'refund_amount': round(data['refund_amount'], 2),
             'sales_cost': round(data['sales_cost'], 2),
             'gross_profit_1_occurred': round(data['gross_profit_1_occurred'], 2),
             'gross_profit_1_rate': round(data['gross_profit_1_rate'], 2),
@@ -1572,7 +1561,6 @@ def get_goods_dict():
     查询goods表形成字典接口
     返回商品名和商品ID的选项数组，用于前端下拉选择
     """
-    from ..models.database import Goods
     
     try:
         # 查询所有未删除的商品，使用group_by去重并按商品ID排序
@@ -1652,33 +1640,19 @@ def read_pdd_products(skip: int = 0, limit: int = 100):
 
 
 
-# 店铺相关路由
-@router.get("/stores/", response_model=List[schemas.Store])
-def read_stores(skip: int = 0, limit: int = 100):
-    """获取店铺列表"""
-    with get_db() as db:
-        stores = product_service.get_stores(db, skip=skip, limit=limit)
-        return list(stores)
-
-
-
-
 
 # 被取消数据-同步接口
 @router.post("/sync_cancel_data")
 def sync_cancel_data(request: dict = None):
     """同步聚水潭取消订单数据到数据库，只保存包含"发货前售后"或"发货后售后"标签的订单"""
     
-    import json
-    from ..spiders.jushuitan_api import get_cancel_jushuitan_from_allorders
-    from ..models.database import JushuitanCancelProduct
+
     
     # 获取请求体中的同步日期
     sync_date = request.get('sync_date') if request else None
     
     # 如果没有提供日期，默认使用今天
     if not sync_date:
-        from datetime import date
         sync_date = date.today().strftime('%Y-%m-%d')
     
     # 使用单个日期作为查询参数
@@ -1696,9 +1670,8 @@ def sync_cancel_data(request: dict = None):
     
     with get_db() as db:
         # 检查数据库中是否已有同一天的数据，如果有则先删除
-        from datetime import datetime as dt
-        start_of_sync_day = dt.strptime(sync_date, '%Y-%m-%d')
-        end_of_sync_day = dt.strptime(sync_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+        start_of_sync_day = datetime.strptime(sync_date, '%Y-%m-%d')
+        end_of_sync_day = datetime.strptime(sync_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
         
         # 查询当天的数据记录数量
         existing_records = JushuitanCancelProduct.select().where(

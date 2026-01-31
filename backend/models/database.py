@@ -144,31 +144,6 @@ class JushuitanProduct(BaseModel):
     class Meta:
         table_name = 'jushuitan_products'
 
-class Product(BaseModel):
-    id = AutoField(primary_key=True)
-    goods_id = CharField(unique=True, null=False)
-    name = CharField(null=False)
-    price = FloatField(null=False)
-    platform = CharField(null=False)  # 平台类型
-    is_del = BooleanField(default=False)
-    created_at = DateTimeField(default=datetime.now)
-    updated_at = DateTimeField(default=datetime.now)
-
-    class Meta:
-        table_name = 'products'
-
-class Store(BaseModel):
-    id = AutoField(primary_key=True)
-    name = CharField(null=False)
-    platform = CharField(null=False)  # 平台类型
-    store_id = CharField(unique=True, null=False)  # 店铺标识符
-    is_del = BooleanField(default=False)
-    created_at = DateTimeField(default=datetime.now)
-    updated_at = DateTimeField(default=datetime.now)
-
-    class Meta:
-        table_name = 'stores'
-
 
 
 # 商品表：包含所需的所有字段
@@ -181,6 +156,7 @@ class Goods(BaseModel):
     order_id = CharField(null=True)  # 订单ID
     payment_amount = FloatField(null=True)  # 付款金额
     sales_amount = FloatField(null=True)  # 销售金额
+    refund_amount = FloatField(null=True)  # 退款金额
     sales_cost = FloatField(null=True)  # 销售成本
     gross_profit_1_occurred = FloatField(null=True)  # 毛一利润(发生)
     gross_profit_1_rate = FloatField(null=True)  # 毛一利润率
@@ -304,4 +280,4 @@ class JushuitanCancelProduct(BaseModel):
 # 创建所有表
 def create_tables():
     with database:
-        database.create_tables([User, JushuitanProduct, Product, Store, Goods, JushuitanCancelProduct])
+        database.create_tables([User, JushuitanProduct, Goods, JushuitanCancelProduct])
