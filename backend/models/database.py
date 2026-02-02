@@ -277,7 +277,34 @@ class JushuitanCancelProduct(BaseModel):
 
 
 
+class RefundRecord(BaseModel):
+    """
+    退款记录表
+    """
+    id = AutoField(primary_key=True)
+    good_id = CharField(max_length=255, null=True, verbose_name="商品ID")  # 商品ID
+    store_id = CharField(max_length=255, null=True, verbose_name="店铺ID")  # 店铺ID
+    order_id = CharField(max_length=255, null=True, verbose_name="订单ID")  # 订单ID
+    refund_amount = FloatField(default=0.0, verbose_name="退款金额")  # 退款金额
+    refund_time = DateTimeField(null=True, verbose_name="退款时间")  # 退款时间
+    is_del = BooleanField(default=False, verbose_name="是否删除")  # 软删除标志
+    creator = CharField(max_length=255, null=True, verbose_name="创建人")  # 创建人
+    created_at = DateTimeField(default=datetime.now, verbose_name="创建时间")  # 创建时间
+    updated_at = DateTimeField(default=datetime.now, verbose_name="更新时间")  # 更新时间
+
+    class Meta:
+        table_name = 'refund_records'
+
+    def save(self, *args, **kwargs):
+        # 自动更新更新时间
+        self.updated_at = datetime.now()
+        super().save(*args, **kwargs
+)
+
+
+
+
 # 创建所有表
 def create_tables():
     with database:
-        database.create_tables([User, JushuitanProduct, Goods, JushuitanCancelProduct])
+        database.create_tables([User, JushuitanProduct, Goods, JushuitanCancelProduct, RefundRecord])

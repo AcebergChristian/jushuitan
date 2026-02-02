@@ -10,9 +10,10 @@ import traceback
 from .. import schemas
 from ..services import product_service
 from ..database import get_db
-from ..models.database import JushuitanProduct, Goods, JushuitanCancelProduct, User
+from ..models.database import JushuitanProduct, Goods, RefundRecord, User
 from .auth import get_current_user
-from ..spiders.jushuitan_api import get_all_jushuitan_orders
+from ..spiders.jushuitan_api import get_all_jushuitan_orders, get_cancel_jushuitan_from_shouhou
+
 
 
 router = APIRouter()
@@ -325,6 +326,55 @@ def sync_jushuitan_data(request: dict = None):
         
         
         processed_count, _ = sync_goods(sync_date, new_data_list)
+
+
+        # 获取售后数据
+        shouhou_data = get_cancel_jushuitan_from_shouhou(date=sync_date.strftime('%Y-%m-%d') if sync_date else None)
+        
+        if shouhou_data and 'data' in shouhou_data:
+            refund_records_data = []
+            records = shouhou_data.get('data', [])
+            
+            for record in records:
+                # 遍历details列表
+                after_sale_goods = record.get('afterSaleOrderGoodsVO', {})
+                details = after_sale_goods.get('details', [])
+                
+                for detail in details:
+                    # 提取所需字段
+                    refund_record = {
+                        'good_id': detail.get('designCode'),  # 商品ID
+                        'store_id': record.get('shopId'),     # 店铺ID
+                        'order_id': record.get('oid'),        # 订单ID
+                        'refund_amount': detail.get('refundAmount', 0.0),  # 退款金额
+                        'refund_time': datetime.strptime(record.get('confirmDate'), '%Y-%m-%d %H:%M:%S') if record.get('confirmDate') else None,  # 退款时间
+                        'creator': 'system',
+                        'created_at': datetime.now(),
+                        'updated_at': datetime.now(),
+                        'is_del': False
+                    }
+                    refund_records_data.append(refund_record)
+            
+            # 批量插入退款记录
+            if refund_records_data:
+                # 先删除当天的退款记录（避免重复）
+                if sync_date:
+                    start_of_day = datetime.combine(sync_date, datetime.min.time())
+                    end_of_day = datetime.combine(sync_date, datetime.max.time())
+                    RefundRecord.delete().where(
+                        (RefundRecord.created_at >= start_of_day) & 
+                        (RefundRecord.created_at <= end_of_day)
+                    ).execute()
+                else:
+                    # 如果没有指定日期，清空所有退款记录（或者可以选择不清空）
+                    RefundRecord.delete().execute()
+
+                # 批量插入新数据
+                with get_db() as db:
+                    with db.atomic():
+                        RefundRecord.insert_many(refund_records_data).execute()
+                
+                print(f"成功批量插入 {len(refund_records_data)} 条退款记录")
         
 
     except Exception as e:
@@ -468,13 +518,6 @@ def sync_goods(sync_date, orders):
                     
                     # 获取商品其他信息 - 使用正确的英文字段名
                     item_name = goods_item.get('itemName', '未知商品')
-                    item_code = goods_item.get('itemCode', '')
-                    supplier_name = goods_item.get('supplierName', '')
-                    pic = goods_item.get('pic', '')
-                    properties = goods_item.get('properties', '')
-                    price = float(goods_item.get('price', 0) or 0)
-                    total_price = float(goods_item.get('totalPrice', 0) or 0)
-                    item_count = int(goods_item.get('itemCount', 1) or 1)
                     
                     # 如果指定了同步日期，使用该日期，否则使用订单创建日期
                     if sync_date:
@@ -523,13 +566,6 @@ def sync_goods(sync_date, orders):
                         'sales_amount': payAmount,    # 使用订单的payAmount
                         'refund_amount': refund_amount, # 使用计算的refund_amount
                         'sales_cost': drpAmount,      # 使用订单的drpAmount
-                        'item_count': item_count,
-                        'price': price,
-                        'total_price': total_price,
-                        'supplier_name': supplier_name,
-                        'pic': pic,
-                        'item_code': item_code,
-                        'properties': properties,
                         'creator': 'system',
                         'created_at': order_created_at,
                         'goodorder_time': order_datetime,  # 保留订单时间
@@ -551,9 +587,16 @@ def sync_goods(sync_date, orders):
             # 如果没有指定日期，删除所有数据重新插入（或可以考虑更精确的清理策略）
             Goods.delete().execute()
 
-        # 插入新的商品记录
-        for full_key, goods_data in goods_dict.items():
-            new_good = Goods.create(**goods_data)
+        # # 插入新的商品记录
+        # for full_key, goods_data in goods_dict.items():
+        #     new_good = Goods.create(**goods_data)
+
+        # 使用insert_many批量插入新的商品记录
+        goods_data_list = list(goods_dict.values())
+        if goods_data_list:
+            with get_db() as db:
+                with db.atomic():
+                    Goods.insert_many(goods_data_list).execute()
 
         # 计算利润相关指标并更新
         all_new_goods = list(Goods.select())
@@ -1627,167 +1670,167 @@ def read_pdd_products(skip: int = 0, limit: int = 100):
 
 # ****************** 不用了 ******************
 # 被取消数据-同步接口
-@router.post("/sync_cancel_data")
-def sync_cancel_data(request: dict = None):
-    """同步聚水潭取消订单数据到数据库，只保存包含"发货前售后"或"发货后售后"标签的订单"""
+# @router.post("/sync_cancel_data")
+# def sync_cancel_data(request: dict = None):
+#     """同步聚水潭取消订单数据到数据库，只保存包含"发货前售后"或"发货后售后"标签的订单"""
     
 
     
-    # 获取请求体中的同步日期
-    sync_date = request.get('sync_date') if request else None
+#     # 获取请求体中的同步日期
+#     sync_date = request.get('sync_date') if request else None
     
-    # 如果没有提供日期，默认使用今天
-    if not sync_date:
-        sync_date = date.today().strftime('%Y-%m-%d')
+#     # 如果没有提供日期，默认使用今天
+#     if not sync_date:
+#         sync_date = date.today().strftime('%Y-%m-%d')
     
-    # 使用单个日期作为查询参数
-    # 获取聚水潭API数据
-    api_response = get_cancel_jushuitan_from_allorders(date=sync_date)
-    if not api_response or 'data' not in api_response:
-        raise HTTPException(status_code=400, detail="获取聚水潭取消订单API数据失败")
+#     # 使用单个日期作为查询参数
+#     # 获取聚水潭API数据
+#     api_response = get_cancel_jushuitan_from_allorders(date=sync_date)
+#     if not api_response or 'data' not in api_response:
+#         raise HTTPException(status_code=400, detail="获取聚水潭取消订单API数据失败")
     
-    cancel_data_list = api_response.get('data', [])
+#     cancel_data_list = api_response.get('data', [])
     
-    if not cancel_data_list:
-        return {"message": "没有获取到符合条件的取消订单数据（包含'发货前售后'或'发货后售后'标签）"}
+#     if not cancel_data_list:
+#         return {"message": "没有获取到符合条件的取消订单数据（包含'发货前售后'或'发货后售后'标签）"}
     
-    processed_count = 0
+#     processed_count = 0
     
-    with get_db() as db:
-        # 检查数据库中是否已有同一天的数据，如果有则先删除
-        start_of_sync_day = datetime.strptime(sync_date, '%Y-%m-%d')
-        end_of_sync_day = datetime.strptime(sync_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+#     with get_db() as db:
+#         # 检查数据库中是否已有同一天的数据，如果有则先删除
+#         start_of_sync_day = datetime.strptime(sync_date, '%Y-%m-%d')
+#         end_of_sync_day = datetime.strptime(sync_date, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
         
-        # 查询当天的数据记录数量
-        existing_records = JushuitanCancelProduct.select().where(
-            (JushuitanCancelProduct.created_at >= start_of_sync_day) &
-            (JushuitanCancelProduct.created_at <= end_of_sync_day)
-        )
+#         # 查询当天的数据记录数量
+#         existing_records = JushuitanCancelProduct.select().where(
+#             (JushuitanCancelProduct.created_at >= start_of_sync_day) &
+#             (JushuitanCancelProduct.created_at <= end_of_sync_day)
+#         )
         
-        if existing_records.count() > 0:
-            # 如果发现同步时间与表里存的一样，删除之前的记录
-            deleted_count = JushuitanCancelProduct.delete().where(
-                (JushuitanCancelProduct.created_at >= start_of_sync_day) &
-                (JushuitanCancelProduct.created_at <= end_of_sync_day)
-            ).execute()
-            print(f"删除了 {deleted_count} 条日期为 {sync_date} 的取消订单数据")
+#         if existing_records.count() > 0:
+#             # 如果发现同步时间与表里存的一样，删除之前的记录
+#             deleted_count = JushuitanCancelProduct.delete().where(
+#                 (JushuitanCancelProduct.created_at >= start_of_sync_day) &
+#                 (JushuitanCancelProduct.created_at <= end_of_sync_day)
+#             ).execute()
+#             print(f"删除了 {deleted_count} 条日期为 {sync_date} 的取消订单数据")
         
-        # 批量新增数据
-        for item in cancel_data_list:
-            # 检查订单是否包含"发货前售后"或"发货后售后"标签
-            labels = item.get('labels', [])
-            if '发货前售后' not in labels and '发货后售后' not in labels:
-                continue  # 跳过不符合条件的订单
+#         # 批量新增数据
+#         for item in cancel_data_list:
+#             # 检查订单是否包含"发货前售后"或"发货后售后"标签
+#             labels = item.get('labels', [])
+#             if '发货前售后' not in labels and '发货后售后' not in labels:
+#                 continue  # 跳过不符合条件的订单
             
-            # 检查是否已存在相同的oid记录
-            existing_record = JushuitanCancelProduct.get_or_none(JushuitanCancelProduct.oid == item.get('oid'))
+#             # 检查是否已存在相同的oid记录
+#             existing_record = JushuitanCancelProduct.get_or_none(JushuitanCancelProduct.oid == item.get('oid'))
             
-            if existing_record:
-                # 如果存在相同oid的记录，先删除它（软删除）
-                existing_record.is_del = True
-                existing_record.save()
+#             if existing_record:
+#                 # 如果存在相同oid的记录，先删除它（软删除）
+#                 existing_record.is_del = True
+#                 existing_record.save()
             
-            # 将复杂的数据结构转换为JSON字符串
-            soIdList_json = json.dumps(item.get('soIdList', []), ensure_ascii=False) if item.get('soIdList') is not None else '[]'
-            disInnerOrderGoodsViewList_json = json.dumps(item.get('disInnerOrderGoodsViewList', []), ensure_ascii=False) if item.get('disInnerOrderGoodsViewList') is not None else '[]'
-            labels_json = json.dumps(item.get('labels', []), ensure_ascii=False) if item.get('labels') is not None else '[]'
+#             # 将复杂的数据结构转换为JSON字符串
+#             soIdList_json = json.dumps(item.get('soIdList', []), ensure_ascii=False) if item.get('soIdList') is not None else '[]'
+#             disInnerOrderGoodsViewList_json = json.dumps(item.get('disInnerOrderGoodsViewList', []), ensure_ascii=False) if item.get('disInnerOrderGoodsViewList') is not None else '[]'
+#             labels_json = json.dumps(item.get('labels', []), ensure_ascii=False) if item.get('labels') is not None else '[]'
             
-            # 插入新的取消订单记录
-            JushuitanCancelProduct.create(
-                oid=item.get('oid'),
-                isSuccess=item.get('isSuccess'),
-                msg=item.get('msg'),
-                purchaseAmt=item.get('purchaseAmt'),
-                totalAmt=item.get('totalAmt'),
-                discountAmt=item.get('discountAmt'),
-                commission=item.get('commission'),
-                freight=item.get('freight'),
-                payAmount=item.get('payAmount'),
-                paidAmount=item.get('paidAmount'),
-                totalPurchasePriceGoods=item.get('totalPurchasePriceGoods'),
-                smallProgramFreight=item.get('smallProgramFreight'),
-                totalTransactionPurchasePrice=item.get('totalTransactionPurchasePrice'),
-                smallProgramCommission=item.get('smallProgramCommission'),
-                smallProgramPaidAmount=item.get('smallProgramPaidAmount'),
-                freightCalcRule=item.get('freightCalcRule'),
-                oaId=item.get('oaId'),
-                soId=item.get('soId'),
-                rawSoId=item.get('rawSoId'),
-                mergeSoIds=item.get('mergeSoIds'),
-                soIdList=soIdList_json,  # 转换为JSON字符串
-                supplierCoId=item.get('supplierCoId'),
-                supplierName=item.get('supplierName'),
-                channelCoId=item.get('channelCoId'),
-                channelName=item.get('channelName'),
-                shopId=item.get('shopId'),
-                shopType=item.get('shopType'),
-                shopName=item.get('shopName'),
-                disInnerOrderGoodsViewList=disInnerOrderGoodsViewList_json,  # 转换为JSON字符串
-                orderTime=item.get('orderTime'),
-                payTime=item.get('payTime'),
-                deliveryDate=item.get('deliveryDate'),
-                expressCode=item.get('expressCode'),
-                expressCompany=item.get('expressCompany'),
-                trackNo=item.get('trackNo'),
-                orderStatus=item.get('orderStatus'),
-                errorMsg=item.get('errorMsg'),
-                errorDesc=item.get('errorDesc'),
-                labels=labels_json,  # 转换为JSON字符串
-                buyerMessage=item.get('buyerMessage'),
-                remark=item.get('remark'),
-                sellerFlag=item.get('sellerFlag'),
-                updated=item.get('updated'),
-                clientPaidAmt=item.get('clientPaidAmt'),
-                goodsQty=item.get('goodsQty'),
-                goodsAmt=item.get('goodsAmt'),
-                freeAmount=item.get('freeAmount'),
-                orderType=item.get('orderType'),
-                isSplit=item.get('isSplit', False),
-                isMerge=item.get('isMerge', False),
-                planDeliveryDate=item.get('planDeliveryDate'),
-                deliverTimeLeft=item.get('deliverTimeLeft'),
-                printCount=item.get('printCount'),
-                ioId=item.get('ioId'),
-                receiverState=item.get('receiverState'),
-                receiverCity=item.get('receiverCity'),
-                receiverDistrict=item.get('receiverDistrict'),
-                weight=item.get('weight'),
-                realWeight=item.get('realWeight'),
-                wmsCoId=item.get('wmsCoId'),
-                wmsCoName=item.get('wmsCoName'),
-                drpAmount=item.get('drpAmount'),
-                shopSite=item.get('shopSite'),
-                isDeliveryPrinted=item.get('isDeliveryPrinted'),
-                fullReceiveData=item.get('fullReceiveData'),
-                fuzzFullReceiverInfo=item.get('fuzzFullReceiverInfo'),
-                shopBuyerId=item.get('shopBuyerId'),
-                logisticsNos=item.get('logisticsNos'),
-                openId=item.get('openId'),
-                printedList=item.get('printedList'),
-                note=item.get('note'),
-                receiverTown=item.get('receiverTown'),
-                solution=item.get('solution'),
-                orderFrom=item.get('orderFrom'),
-                linkOid=item.get('linkOid'),
-                channelOid=item.get('channelOid'),
-                isSupplierInitiatedReissueOrExchange=item.get('isSupplierInitiatedReissueOrExchange'),
-                confirmDate=item.get('confirmDate'),
-                topDrpCoIdFrom=item.get('topDrpCoIdFrom'),
-                topDrpOrderId=item.get('topDrpOrderId'),
-                orderIdentity=item.get('orderIdentity'),
-                originalSoId=item.get('originalSoId'),
-                isVirtualShipment=item.get('isVirtualShipment', False),
-                relationshipBySoIdMd5=item.get('relationshipBySoIdMd5'),
-                online=item.get('online', False),
-                data_type='cancel',  # 标记为取消/退货数据
-                is_del=False
-            )
-            processed_count += 1
+#             # 插入新的取消订单记录
+#             JushuitanCancelProduct.create(
+#                 oid=item.get('oid'),
+#                 isSuccess=item.get('isSuccess'),
+#                 msg=item.get('msg'),
+#                 purchaseAmt=item.get('purchaseAmt'),
+#                 totalAmt=item.get('totalAmt'),
+#                 discountAmt=item.get('discountAmt'),
+#                 commission=item.get('commission'),
+#                 freight=item.get('freight'),
+#                 payAmount=item.get('payAmount'),
+#                 paidAmount=item.get('paidAmount'),
+#                 totalPurchasePriceGoods=item.get('totalPurchasePriceGoods'),
+#                 smallProgramFreight=item.get('smallProgramFreight'),
+#                 totalTransactionPurchasePrice=item.get('totalTransactionPurchasePrice'),
+#                 smallProgramCommission=item.get('smallProgramCommission'),
+#                 smallProgramPaidAmount=item.get('smallProgramPaidAmount'),
+#                 freightCalcRule=item.get('freightCalcRule'),
+#                 oaId=item.get('oaId'),
+#                 soId=item.get('soId'),
+#                 rawSoId=item.get('rawSoId'),
+#                 mergeSoIds=item.get('mergeSoIds'),
+#                 soIdList=soIdList_json,  # 转换为JSON字符串
+#                 supplierCoId=item.get('supplierCoId'),
+#                 supplierName=item.get('supplierName'),
+#                 channelCoId=item.get('channelCoId'),
+#                 channelName=item.get('channelName'),
+#                 shopId=item.get('shopId'),
+#                 shopType=item.get('shopType'),
+#                 shopName=item.get('shopName'),
+#                 disInnerOrderGoodsViewList=disInnerOrderGoodsViewList_json,  # 转换为JSON字符串
+#                 orderTime=item.get('orderTime'),
+#                 payTime=item.get('payTime'),
+#                 deliveryDate=item.get('deliveryDate'),
+#                 expressCode=item.get('expressCode'),
+#                 expressCompany=item.get('expressCompany'),
+#                 trackNo=item.get('trackNo'),
+#                 orderStatus=item.get('orderStatus'),
+#                 errorMsg=item.get('errorMsg'),
+#                 errorDesc=item.get('errorDesc'),
+#                 labels=labels_json,  # 转换为JSON字符串
+#                 buyerMessage=item.get('buyerMessage'),
+#                 remark=item.get('remark'),
+#                 sellerFlag=item.get('sellerFlag'),
+#                 updated=item.get('updated'),
+#                 clientPaidAmt=item.get('clientPaidAmt'),
+#                 goodsQty=item.get('goodsQty'),
+#                 goodsAmt=item.get('goodsAmt'),
+#                 freeAmount=item.get('freeAmount'),
+#                 orderType=item.get('orderType'),
+#                 isSplit=item.get('isSplit', False),
+#                 isMerge=item.get('isMerge', False),
+#                 planDeliveryDate=item.get('planDeliveryDate'),
+#                 deliverTimeLeft=item.get('deliverTimeLeft'),
+#                 printCount=item.get('printCount'),
+#                 ioId=item.get('ioId'),
+#                 receiverState=item.get('receiverState'),
+#                 receiverCity=item.get('receiverCity'),
+#                 receiverDistrict=item.get('receiverDistrict'),
+#                 weight=item.get('weight'),
+#                 realWeight=item.get('realWeight'),
+#                 wmsCoId=item.get('wmsCoId'),
+#                 wmsCoName=item.get('wmsCoName'),
+#                 drpAmount=item.get('drpAmount'),
+#                 shopSite=item.get('shopSite'),
+#                 isDeliveryPrinted=item.get('isDeliveryPrinted'),
+#                 fullReceiveData=item.get('fullReceiveData'),
+#                 fuzzFullReceiverInfo=item.get('fuzzFullReceiverInfo'),
+#                 shopBuyerId=item.get('shopBuyerId'),
+#                 logisticsNos=item.get('logisticsNos'),
+#                 openId=item.get('openId'),
+#                 printedList=item.get('printedList'),
+#                 note=item.get('note'),
+#                 receiverTown=item.get('receiverTown'),
+#                 solution=item.get('solution'),
+#                 orderFrom=item.get('orderFrom'),
+#                 linkOid=item.get('linkOid'),
+#                 channelOid=item.get('channelOid'),
+#                 isSupplierInitiatedReissueOrExchange=item.get('isSupplierInitiatedReissueOrExchange'),
+#                 confirmDate=item.get('confirmDate'),
+#                 topDrpCoIdFrom=item.get('topDrpCoIdFrom'),
+#                 topDrpOrderId=item.get('topDrpOrderId'),
+#                 orderIdentity=item.get('orderIdentity'),
+#                 originalSoId=item.get('originalSoId'),
+#                 isVirtualShipment=item.get('isVirtualShipment', False),
+#                 relationshipBySoIdMd5=item.get('relationshipBySoIdMd5'),
+#                 online=item.get('online', False),
+#                 data_type='cancel',  # 标记为取消/退货数据
+#                 is_del=False
+#             )
+#             processed_count += 1
     
-    return {
-        "message": f"成功同步取消订单数据，处理了 {processed_count} 条符合条件的记录（包含'发货前售后'或'发货后售后'标签）于日期 {sync_date}",
-        "processed_count": processed_count,
-        "sync_date": sync_date
-    }
+#     return {
+#         "message": f"成功同步取消订单数据，处理了 {processed_count} 条符合条件的记录（包含'发货前售后'或'发货后售后'标签）于日期 {sync_date}",
+#         "processed_count": processed_count,
+#         "sync_date": sync_date
+#     }
 
 
