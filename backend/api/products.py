@@ -326,55 +326,6 @@ def sync_jushuitan_data(request: dict = None):
         
         
         processed_count, _ = sync_goods(sync_date, new_data_list)
-
-
-        # 获取售后数据
-        shouhou_data = get_cancel_jushuitan_from_shouhou(date=sync_date.strftime('%Y-%m-%d') if sync_date else None)
-        
-        if shouhou_data and 'data' in shouhou_data:
-            refund_records_data = []
-            records = shouhou_data.get('data', [])
-            
-            for record in records:
-                # 遍历details列表
-                after_sale_goods = record.get('afterSaleOrderGoodsVO', {})
-                details = after_sale_goods.get('details', [])
-                
-                for detail in details:
-                    # 提取所需字段
-                    refund_record = {
-                        'good_id': detail.get('designCode'),  # 商品ID
-                        'store_id': record.get('shopId'),     # 店铺ID
-                        'order_id': record.get('oid'),        # 订单ID
-                        'refund_amount': detail.get('refundAmount', 0.0),  # 退款金额
-                        'refund_time': datetime.strptime(record.get('confirmDate'), '%Y-%m-%d %H:%M:%S') if record.get('confirmDate') else None,  # 退款时间
-                        'creator': 'system',
-                        'created_at': datetime.now(),
-                        'updated_at': datetime.now(),
-                        'is_del': False
-                    }
-                    refund_records_data.append(refund_record)
-            
-            # 批量插入退款记录
-            if refund_records_data:
-                # 先删除当天的退款记录（避免重复）
-                if sync_date:
-                    start_of_day = datetime.combine(sync_date, datetime.min.time())
-                    end_of_day = datetime.combine(sync_date, datetime.max.time())
-                    RefundRecord.delete().where(
-                        (RefundRecord.created_at >= start_of_day) & 
-                        (RefundRecord.created_at <= end_of_day)
-                    ).execute()
-                else:
-                    # 如果没有指定日期，清空所有退款记录（或者可以选择不清空）
-                    RefundRecord.delete().execute()
-
-                # 批量插入新数据
-                with get_db() as db:
-                    with db.atomic():
-                        RefundRecord.insert_many(refund_records_data).execute()
-                
-                print(f"成功批量插入 {len(refund_records_data)} 条退款记录")
         
 
     except Exception as e:
@@ -407,6 +358,43 @@ def sync_goods(sync_date, orders):
     """
 
     try:
+        # 获取售后数据
+        from ..spiders.jushuitan_api import get_cancel_jushuitan_from_shouhou
+        
+        shouhou_date_str = sync_date.strftime('%Y-%m-%d') if sync_date else None
+        print(f"正在获取售后数据，日期: {shouhou_date_str}")
+        
+        shouhou_data = get_cancel_jushuitan_from_shouhou(date=shouhou_date_str)
+        
+        # 构建退款金额映射表，按soId和商品关键字段关联
+        refund_amount_map = {}
+        if shouhou_data and 'data' in shouhou_data:
+            records = shouhou_data['data']
+            print(f"获取到 {len(records)} 条售后记录")
+            
+            for record in records:
+                # 遍历details列表
+                after_sale_goods = record.get('afterSaleOrderGoodsVO', {})
+                details = after_sale_goods.get('details', [])
+                
+                for detail in details:
+                    # 使用订单soId和designCode作为键
+                    so_id = record.get('soId')  # 使用soId而不是oid
+                    design_code = detail.get('designCode')
+                    
+                    if so_id and design_code:
+                        # 使用soId和设计码作为键
+                        key = f"{so_id}-{design_code}"
+                        refund_amount = detail.get('refundAmount', 0.0)
+                        refund_amount_map[key] = refund_amount
+        else:
+            print("没有获取到有效的售后数据")
+
+        print('refund_amount_map=========>', refund_amount_map)
+
+
+
+        # 之前从这开始
         if not orders:
             raise HTTPException(status_code=400, detail="没有提供订单数据")
 
@@ -421,6 +409,7 @@ def sync_goods(sync_date, orders):
                 # 从数据库获取的订单对象
                 order_dict = {
                     'oid': order.oid,
+                    'soId': order.soId,
                     'payAmount': order.payAmount,
                     'paidAmount': order.paidAmount,
                     'drpAmount': order.drpAmount,
@@ -465,7 +454,6 @@ def sync_goods(sync_date, orders):
                 goods_list_raw = order_dict.get('disInnerOrderGoodsViewList')
                 
                 # 解析JSON字符串
-                import json
                 try:
                     if isinstance(goods_list_raw, str):
                         goods_list = json.loads(goods_list_raw)
@@ -474,7 +462,7 @@ def sync_goods(sync_date, orders):
                 except json.JSONDecodeError:
                     print(f"无法解析disInnerOrderGoodsViewList: {goods_list_raw}")
                     continue
-                
+
                 # 根据项目规范，确保目标字段为list类型
                 if not isinstance(goods_list, list):
                     if goods_list is None:
@@ -526,34 +514,39 @@ def sync_goods(sync_date, orders):
                         # 获取订单创建时间并转换为日期对象
                         order_created_at = order.created_at
                     
-                    # 处理退款金额逻辑 - 检查订单标签是否包含售后相关信息
-                    order_labels_raw = getattr(order, 'labels', '[]') if hasattr(order, 'labels') else order.get('labels', [])
 
-                    # 解析labels字段
-                    import json
-                    try:
-                        if isinstance(order_labels_raw, str):
-                            # 如果是字符串，说明是从数据库中读取的JSON数据
-                            parsed_labels = json.loads(order_labels_raw)
-                        elif isinstance(order_labels_raw, list):
-                            # 如果已经是列表，直接使用
-                            parsed_labels = order_labels_raw
+
+
+
+                    # 处理退款金额逻辑 - 从售后数据中获取，使用soId进行匹配
+                    so_id = order_dict.get('soId')
+                    
+                    # 查找对应的退款金额 - 使用soId和styleCode进行匹配
+                    refund_amount = 0.0
+                    matched_key = None
+                    
+
+                    # 只使用styleCode进行匹配，这是最准确的字段
+                    style_code = goods_item.get('styleCode')
+                    
+                    if so_id and style_code:
+                        key = f"{so_id}-{style_code}"
+                        print(f"正在查找退款金额: soId={so_id}, styleCode={style_code}, 查找键={key}")
+                        
+                        if key in refund_amount_map:
+                        # if key in list(refund_amount_map.keys()):
+                            refund_amount = refund_amount_map[key]
+                            matched_key = key
+                            print(f"✓ 精确匹配到退款金额: soId={so_id}, styleCode={style_code}, 退款金额={refund_amount}")
                         else:
-                            # 其他情况，转换为列表
-                            parsed_labels = list(order_labels_raw) if order_labels_raw else []
-                    except json.JSONDecodeError:
-                        parsed_labels = []
-                        print(f"无法解析labels字段: {order_labels_raw}")
-                    except Exception as e:
-                        parsed_labels = []
-                        print(f"解析labels字段时发生错误: {e}")
-                        
-                        
-                    # 如果标签中包含发货前售后或发货后售后，则refund_amount为paidAmount，否则为0
-                    if '发货前售后' in parsed_labels or '发货后售后' in parsed_labels:
-                        refund_amount = paidAmount
+                            print(f"✗ 未找到匹配的退款金额")
                     else:
-                        refund_amount = 0.0
+                        print(f"缺少匹配字段: soId={so_id}, styleCode={style_code}")
+                    
+                    # 如果没有找到匹配项，打印调试信息
+                    if refund_amount == 0.0:
+                        print(f"✗ 未找到退款金额: soId={so_id}, styleCode={style_code}")
+                        print(f"  搜索的键: {so_id}-{style_code}")
                     
                     # 初始化商品数据结构
                     goods_dict[unique_key] = {
