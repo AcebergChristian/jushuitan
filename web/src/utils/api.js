@@ -74,6 +74,7 @@ export const login = async (username, password) => {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
+    credentials: 'include', // 包含cookies等凭证信息
     body: new URLSearchParams({
       username,
       password,
