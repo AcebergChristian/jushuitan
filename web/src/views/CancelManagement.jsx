@@ -247,7 +247,7 @@ const productColumns = [
 
 
 
-  // 同步退货数据
+  // 同步退货数据 【不用了】
   const syncReturnData = async () => {
   setSyncLoading(true);
   try {

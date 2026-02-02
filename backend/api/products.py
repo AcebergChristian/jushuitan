@@ -699,7 +699,7 @@ def get_goods_list(
 
 # 店铺管理分页查询接口
 @router.get("/stores_data/")
-def get_user_goods_stores_data(
+def get_store_goods(
     start_date: str = Query(None, description="开始日期，格式：YYYY-MM-DD"),
     end_date: str = Query(None, description="结束日期，格式：YYYY-MM-DD"),
     current_user = Depends(get_current_user)
@@ -735,22 +735,7 @@ def get_user_goods_stores_data(
         except ValueError:
             raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
     
-    # 查询退款数据
-    refund_query = JushuitanCancelProduct.select().where(
-        (JushuitanCancelProduct.is_del == False) &
-        (JushuitanCancelProduct.data_type == 'cancel')
-    )
-    
-    # 时间范围筛选
-    if start_date and end_date:
-        try:
-            start_dt = datetime.strptime(start_date, "%Y-%m-%d")
-            end_dt = datetime.strptime(end_date, "%Y-%m-%d").replace(hour=23, minute=59, second=59)
-            refund_query = refund_query.where((JushuitanCancelProduct.updated_at >= start_dt) & (JushuitanCancelProduct.updated_at <= end_dt))
-        except ValueError:
-            raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
-    
-    refund_records = list(refund_query)
+
     
     if is_admin:
         # 管理员查看所有商品数据，按店铺分组
@@ -777,8 +762,8 @@ def get_user_goods_stores_data(
             total_gross_profit_4 = sum(g.gross_profit_4 or 0.0 for g in goods_list)
             total_net_profit = sum(g.net_profit or 0.0 for g in goods_list)
             
-            # 计算该店铺的退款金额
-            store_refund_amount = sum(float(r.paidAmount or 0) for r in refund_records if r.shopId == store_id)
+            # 计算该店铺的退款金额 - 直接从goods表获取
+            store_refund_amount = sum(g.refund_amount or 0.0 for g in goods_list)
             
             # 重新计算比率（基于汇总数据）
             avg_gross_profit_1_rate = (
@@ -806,8 +791,8 @@ def get_user_goods_stores_data(
                 'goods_count': len(goods_list),  # 保留所有商品记录的数量（不是去重后的数量）
                 'payment_amount': total_payment_amount,
                 'sales_amount': total_sales_amount,
-                'sales_cost': total_sales_cost,
                 'refund_amount': store_refund_amount,  # 店铺退款金额
+                'sales_cost': total_sales_cost,
                 'gross_profit_1_occurred': total_gross_profit_1_occurred,
                 'gross_profit_1_rate': round(avg_gross_profit_1_rate, 2),
                 'advertising_expenses': total_advertising_expenses,
@@ -864,8 +849,8 @@ def get_user_goods_stores_data(
             total_gross_profit_4 = sum(g.gross_profit_4 or 0.0 for g in goods_list)
             total_net_profit = sum(g.net_profit or 0.0 for g in goods_list)
             
-            # 计算该店铺的退款金额
-            store_refund_amount = sum(float(r.paidAmount or 0) for r in refund_records if r.shopId == store_id)
+            # 计算该店铺的退款金额 - 直接从goods表获取
+            store_refund_amount = sum(g.refund_amount or 0.0 for g in goods_list)
             
             # 重新计算比率（基于汇总数据）
             avg_gross_profit_1_rate = (
@@ -892,8 +877,8 @@ def get_user_goods_stores_data(
                 'goods_count': len(goods_list),  # 保留所有商品记录的数量（不是去重后的数量）
                 'payment_amount': total_payment_amount,
                 'sales_amount': total_sales_amount,
-                'sales_cost': total_sales_cost,
                 'refund_amount': store_refund_amount,  # 店铺退款金额
+                'sales_cost': total_sales_cost,
                 'gross_profit_1_occurred': total_gross_profit_1_occurred,
                 'gross_profit_1_rate': round(avg_gross_profit_1_rate, 2),
                 'advertising_expenses': total_advertising_expenses,
@@ -1640,7 +1625,7 @@ def read_pdd_products(skip: int = 0, limit: int = 100):
 
 
 
-
+# ****************** 不用了 ******************
 # 被取消数据-同步接口
 @router.post("/sync_cancel_data")
 def sync_cancel_data(request: dict = None):

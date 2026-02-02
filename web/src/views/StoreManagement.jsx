@@ -284,7 +284,7 @@ const StoreManagement = () => {
       if (params.toString()) {
         url += '?' + params.toString();
       }
-      
+      console.log('URL:', url)
       const response = await apiRequest(url);
       const result = await response.json();
       
