@@ -12,7 +12,7 @@ from ..services import product_service
 from ..database import get_db
 from ..models.database import JushuitanProduct, Goods, RefundRecord, User
 from .auth import get_current_user
-from ..spiders.jushuitan_api import get_all_jushuitan_orders, get_cancel_jushuitan_from_shouhou
+from ..spiders.jushuitan_api import get_all_jushuitan_orders, get_cancel_jushuitan_from_shouhou, get_all_jushuitan_orders_with_refund
 
 
 
@@ -359,18 +359,19 @@ def sync_goods(sync_date, orders):
 
     try:
         # 获取售后数据
-        from ..spiders.jushuitan_api import get_cancel_jushuitan_from_shouhou
         
         shouhou_date_str = sync_date.strftime('%Y-%m-%d') if sync_date else None
         print(f"正在获取售后数据，日期: {shouhou_date_str}")
         
         shouhou_data = get_cancel_jushuitan_from_shouhou(date=shouhou_date_str)
         
+        # 获取包含退款信息的所有聚水潭订单数据
+        all_orders_with_refund = get_all_jushuitan_orders_with_refund(sync_date=sync_date)
+        
         # 构建退款金额映射表，按soId和商品关键字段关联
         refund_amount_map = {}
         if shouhou_data and 'data' in shouhou_data:
             records = shouhou_data['data']
-            print(f"获取到 {len(records)} 条售后记录")
             
             for record in records:
                 # 遍历details列表
@@ -383,33 +384,28 @@ def sync_goods(sync_date, orders):
                     design_code = detail.get('designCode')
                     
                     if so_id and design_code:
-                        # 使用soId和设计码作为键
+                        # 使用 - 连接的字符串格式作为键
                         key = f"{so_id}-{design_code}"
                         refund_amount = detail.get('refundAmount', 0.0)
                         refund_amount_map[key] = refund_amount
         else:
             print("没有获取到有效的售后数据")
 
-        print('refund_amount_map=========>', refund_amount_map)
-
-
-
-        # 之前从这开始
+        print('refund_amount_map', refund_amount_map)
         if not orders:
             raise HTTPException(status_code=400, detail="没有提供订单数据")
 
-
         # 用于存储商品数据的字典，以shopIid和订单时间为唯一键进行区分
         goods_dict = {}
-        print(orders[0])
+        print(f"开始处理 {len(orders)} 个订单")
         
-        for order in orders:
+        for order in all_orders_with_refund.get('data', []):
             # 如果是从数据库获取的订单对象，需要转换为字典
             if hasattr(order, 'disInnerOrderGoodsViewList'):
                 # 从数据库获取的订单对象
                 order_dict = {
                     'oid': order.oid,
-                    'soId': order.soId,
+                    'soId': order.soId,  # 添加soId
                     'payAmount': order.payAmount,
                     'paidAmount': order.paidAmount,
                     'drpAmount': order.drpAmount,
@@ -454,6 +450,7 @@ def sync_goods(sync_date, orders):
                 goods_list_raw = order_dict.get('disInnerOrderGoodsViewList')
                 
                 # 解析JSON字符串
+                import json
                 try:
                     if isinstance(goods_list_raw, str):
                         goods_list = json.loads(goods_list_raw)
@@ -462,7 +459,7 @@ def sync_goods(sync_date, orders):
                 except json.JSONDecodeError:
                     print(f"无法解析disInnerOrderGoodsViewList: {goods_list_raw}")
                     continue
-
+                
                 # 根据项目规范，确保目标字段为list类型
                 if not isinstance(goods_list, list):
                     if goods_list is None:
@@ -514,39 +511,29 @@ def sync_goods(sync_date, orders):
                         # 获取订单创建时间并转换为日期对象
                         order_created_at = order.created_at
                     
-
-
-
-
                     # 处理退款金额逻辑 - 从售后数据中获取，使用soId进行匹配
                     so_id = order_dict.get('soId')
                     
-                    # 查找对应的退款金额 - 使用soId和styleCode进行匹配
+                    # 查找对应的退款金额 - 使用soId和shopIid进行匹配
                     refund_amount = 0.0
                     matched_key = None
                     
-
-                    # 只使用styleCode进行匹配，这是最准确的字段
-                    style_code = goods_item.get('styleCode')
+                    # 使用shopIid进行匹配
+                    good_id = goods_item.get('shopIid')
                     
-                    if so_id and style_code:
-                        key = f"{so_id}-{style_code}"
-                        print(f"正在查找退款金额: soId={so_id}, styleCode={style_code}, 查找键={key}")
+                    if so_id and good_id:
+                        # 使用 - 连接的字符串格式作为键，与创建退款映射时保持一致
+                        key = f"{so_id}-{good_id}"
+                        print(f"正在查找退款金额: soId='{so_id}', good_id='{good_id}'")
                         
                         if key in refund_amount_map:
-                        # if key in list(refund_amount_map.keys()):
                             refund_amount = refund_amount_map[key]
                             matched_key = key
-                            print(f"✓ 精确匹配到退款金额: soId={so_id}, styleCode={style_code}, 退款金额={refund_amount}")
+                            print(f"✓ 精确匹配到退款金额: soId={so_id}, good_id={good_id}, 退款金额={refund_amount}")
                         else:
                             print(f"✗ 未找到匹配的退款金额")
                     else:
-                        print(f"缺少匹配字段: soId={so_id}, styleCode={style_code}")
-                    
-                    # 如果没有找到匹配项，打印调试信息
-                    if refund_amount == 0.0:
-                        print(f"✗ 未找到退款金额: soId={so_id}, styleCode={style_code}")
-                        print(f"  搜索的键: {so_id}-{style_code}")
+                        print(f"缺少匹配字段: soId={so_id}, good_id={good_id}")
                     
                     # 初始化商品数据结构
                     goods_dict[unique_key] = {
@@ -557,7 +544,7 @@ def sync_goods(sync_date, orders):
                         'order_id': order_dict.get('oid') or '',
                         'payment_amount': paidAmount,  # 使用订单的paidAmount
                         'sales_amount': payAmount,    # 使用订单的payAmount
-                        'refund_amount': refund_amount, # 使用计算的refund_amount
+                        'refund_amount': refund_amount, # 使用从售后数据获取的退款金额
                         'sales_cost': drpAmount,      # 使用订单的drpAmount
                         'creator': 'system',
                         'created_at': order_created_at,
@@ -579,10 +566,6 @@ def sync_goods(sync_date, orders):
         else:
             # 如果没有指定日期，删除所有数据重新插入（或可以考虑更精确的清理策略）
             Goods.delete().execute()
-
-        # # 插入新的商品记录
-        # for full_key, goods_data in goods_dict.items():
-        #     new_good = Goods.create(**goods_data)
 
         # 使用insert_many批量插入新的商品记录
         goods_data_list = list(goods_dict.values())
@@ -645,6 +628,10 @@ def sync_goods(sync_date, orders):
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
+
+
+
+
 
 
 

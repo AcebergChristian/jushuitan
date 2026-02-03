@@ -2,6 +2,7 @@ import requests
 import json
 from datetime import datetime, timedelta, date
 
+
 def get_jushuitan_orders(sync_date=None):
     """
     获取聚水潭订单数据，默认查询前一天的所有订单
@@ -23,7 +24,7 @@ def get_jushuitan_orders(sync_date=None):
     if sync_date is None:
         yesterday = datetime.now() - timedelta(days=1)
         sync_date = yesterday.strftime("%Y-%m-%d")
-    
+
     # 设置当天的开始和结束时间
     start_time = f"{sync_date} 00:00:00"
     end_time = f"{sync_date} 23:59:59"
@@ -69,20 +70,19 @@ def get_jushuitan_orders(sync_date=None):
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=15)
         resp.raise_for_status()
-        
+
         data = resp.json()
         order_count = len(data.get('data', []))
         print(f'成功获取聚水潭订单数据，共{order_count}条记录')
-        
+
         return data
-        
+
     except requests.exceptions.RequestException as e:
         print(f'请求聚水潭API失败: {e}')
         return None
     except Exception as e:
         print(f'处理聚水潭数据时发生错误: {e}')
         return None
-
 
 
 # 获取所有聚水潭订单数据
@@ -111,7 +111,7 @@ def get_all_jushuitan_orders(sync_date=None):
     elif isinstance(sync_date, date):
         # 如果传入的是date对象，转换为字符串
         sync_date = sync_date.strftime("%Y-%m-%d")
-    
+
     # 设置当天的开始和结束时间
     start_time = f"{sync_date} 00:00:00"
     end_time = f"{sync_date} 23:59:59"
@@ -121,7 +121,7 @@ def get_all_jushuitan_orders(sync_date=None):
         "endTime": end_time,
         "dateQueryType": "OrderDate",
         "orderTypeEnum": "ALL",
-        "orderStatus":["WaitConfirm","WaitOuterSent","Sent","Question","Delivering"],
+        "orderStatus": ["WaitConfirm", "WaitOuterSent", "Sent", "Question", "Delivering"],
         "noteType": "NOFILTER",
         "orderByKey": 0,
         "ascOrDesc": False,
@@ -131,25 +131,23 @@ def get_all_jushuitan_orders(sync_date=None):
         "pageSize": 9999,
         "searchType": 1
     }
-    
+
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=15)
         resp.raise_for_status()
-        
+
         data = resp.json()
         order_count = len(data.get('data', []))
         print(f'成功获取聚水潭订单数据，共{order_count}条记录')
-        
+
         return data
-        
+
     except requests.exceptions.RequestException as e:
         print(f'请求聚水潭API失败: {e}')
         return None
     except Exception as e:
         print(f'处理聚水潭数据时发生错误: {e}')
         return None
-  
-
 
 
 # 获取被取消的聚水潭订单数据
@@ -175,8 +173,7 @@ def get_cancel_jushuitan_from_allorders(date=None):
     if date is None:
         today = datetime.now()
         date = today.strftime("%Y-%m-%d")
-        
-    
+
     # 设置当天的开始和结束时间
     start_time = f"{date} 00:00:00"
     end_time = f"{date} 23:59:59"
@@ -186,7 +183,7 @@ def get_cancel_jushuitan_from_allorders(date=None):
         "endTime": end_time,
         "dateQueryType": "OrderDate",
         "orderTypeEnum": "ALL",
-        "orderStatus":["WaitConfirm","WaitOuterSent","Sent","Question","Delivering"],
+        "orderStatus": ["WaitConfirm", "WaitOuterSent", "Sent", "Question", "Delivering"],
         "noteType": "NOFILTER",
         "orderByKey": 0,
         "ascOrDesc": False,
@@ -201,13 +198,13 @@ def get_cancel_jushuitan_from_allorders(date=None):
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=15)
         resp.raise_for_status()
-        
+
         data = resp.json()
         order_count = len(data.get('data', []))
-        
+
         print("data.get('data', [])[0:1]", data.get('data', [])[0:1])
         return data
-        
+
     except requests.exceptions.RequestException as e:
         print(f'请求聚水潭API失败: {e}')
         return None
@@ -215,6 +212,73 @@ def get_cancel_jushuitan_from_allorders(date=None):
         print(f'处理聚水潭数据时发生错误: {e}')
         return None
 
+
+
+
+
+# 获取所有订单数据 用来与售后数据联查得到refund_amount
+def get_all_jushuitan_orders_with_refund(sync_date=None):
+    """
+    获取聚水潭订单数据，支持查询指定时间段内的所有订单
+    如果未提供日期范围，则默认查询最近7天的订单
+    """
+    url = "https://innerapi.scm121.com/api/inner/order/list"
+
+    headers = {
+        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMDExNjY1MSIsInJvbGVJZHMiOltdLCJ1c2VyX25hbWUiOiIxNTE3OTkwMzQ3NyIsImNvSWQiOiIxNDQ4MjExMyIsImV4cGlyYXRpb24iOjE3NzAzNjY2NzkyMDUsInVzZXIiOnsiY29JZCI6IjE0NDgyMTEzIiwiY29OYW1lIjoiMTc2NzkyOTYwNDIiLCJsb2dpbk5hbWUiOiIxNTE3OTkwMzQ3NyIsImxvZ2luV2F5IjoiVVNFUk5BTUUiLCJuaWNrTmFtZSI6IuiQjSIsInJvbGVJZHMiOiIxMSIsInVpZCI6IjIwMTE2NjUxIn0sImF1dGhvcml0aWVzIjpbIkpTVC1jaGFubmVsIiwibXVsdGlMb2dpbiIsIkpTVC1zdXBwbGllciJdLCJjbGllbnRfaWQiOiJwYyIsImp0aSI6Ijk1NzBmNTNkLWY5ODYtNDQ0YS1iYzZlLTJjY2UyYTk2YmQ3ZiIsImV4cCI6MTc3MDM2NjY3OX0.lhHgB_VpuzTBaxDqnBKlLyz5U5vTLn7tYFktr-tNpcU",
+        "content-type": "application/json;charset=UTF-8",
+        "origin": "https://innerorder.scm121.com",
+        "referer": "https://innerorder.scm121.com/distribute",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0.0.0 Safari/537.36",
+        "appcode": "sc.scm121.com",
+        "app-version": "TOWER_20260116204226",
+        "source": "SUPPLIER"
+    }
+
+    # 如果没有提供sync_date，则默认使用前一天的日期
+    if sync_date is None:
+        yesterday = datetime.now() - timedelta(days=1)
+        sync_date = yesterday.strftime("%Y-%m-%d")
+    elif isinstance(sync_date, date):
+        # 如果传入的是date对象，转换为字符串
+        sync_date = sync_date.strftime("%Y-%m-%d")
+
+    # 设置当天的开始和结束时间
+    start_time = f"{sync_date} 00:00:00"
+    end_time = f"{sync_date} 23:59:59"
+
+    payload = {
+        "startTime": start_time,
+        "endTime": end_time,
+        "dateQueryType": "OrderDate",
+        "orderTypeEnum": "ALL",
+        "noteType": "NOFILTER",
+        "orderByKey": 0,
+        "ascOrDesc": False,
+        "coId": "14482113",
+        "uid": "20116651",
+        "pageNum": 1,
+        "pageSize": 9999,
+        "searchType": 1
+    }
+
+
+    try:
+        resp = requests.post(url, headers=headers, json=payload, timeout=15)
+        resp.raise_for_status()
+
+        data = resp.json()
+        order_count = len(data.get('data', []))
+        print(f'成功获取聚水潭订单数据，共{order_count}条记录')
+
+        return data
+
+    except requests.exceptions.RequestException as e:
+        print(f'请求聚水潭API失败: {e}')
+        return None
+    except Exception as e:
+        print(f'处理聚水潭数据时发生错误: {e}')
+        return None
 
 
 
@@ -244,7 +308,7 @@ def get_cancel_jushuitan_from_shouhou(date=None):
     if date is None:
         today = datetime.now()
         date = today.strftime("%Y-%m-%d")
-        
+
     # 设置当天的开始和结束时间
     confirm_start_time = f"{date} 00:00:00"
     confirm_end_time = f"{date} 23:59:59"
@@ -253,8 +317,8 @@ def get_cancel_jushuitan_from_shouhou(date=None):
         "coId": "14482113",
         "uid": "20116651",
         "searchType": 1,
-        "confirmStartTime": confirm_start_time,
-        "confirmEndTime": confirm_end_time,
+        "orderDateStartTime": confirm_start_time,
+        "orderDateEndTime": confirm_end_time,
         "querySortDTO": {
             "shopEndDate": False
         },
@@ -268,20 +332,20 @@ def get_cancel_jushuitan_from_shouhou(date=None):
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=15)
         resp.raise_for_status()
-        
+
         data = resp.json()
+        print('dataaaaaaaaaaaaaaaaaaaa', data)
         order_count = len(data.get('data', []))
-        
+
         print(f"获取到 {order_count} 条售后订单记录")
         return data
-        
+
     except requests.exceptions.RequestException as e:
         print(f'请求聚水潭售后API失败: {e}')
         return None
     except Exception as e:
         print(f'处理聚水潭售后数据时发生错误: {e}')
         return None
-
 
 
 # 如果直接运行此脚本，则执行查询
