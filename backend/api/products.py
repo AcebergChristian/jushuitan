@@ -10,7 +10,7 @@ import traceback
 from .. import schemas
 from ..services import product_service
 from ..database import get_db
-from ..models.database import JushuitanProduct, Goods, RefundRecord, User
+from ..models.database import JushuitanProduct, Goods, User
 from .auth import get_current_user
 from ..spiders.jushuitan_api import get_all_jushuitan_orders, get_cancel_jushuitan_from_shouhou, get_all_jushuitan_orders_with_refund
 
