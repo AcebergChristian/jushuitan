@@ -377,21 +377,28 @@ def sync_goods(sync_date, orders):
                 # 遍历details列表
                 after_sale_goods = record.get('afterSaleOrderGoodsVO', {})
                 details = after_sale_goods.get('details', [])
-                
+
+
                 for detail in details:
                     # 使用订单soId和designCode作为键
                     so_id = record.get('soId')  # 使用soId而不是oid
                     design_code = detail.get('designCode')
+
                     
                     if so_id and design_code:
                         # 使用 - 连接的字符串格式作为键
                         key = f"{so_id}-{design_code}"
+                        if record.get('shopId') == "18386894":
+                            print('???????',  key)
+                    
                         refund_amount = detail.get('refundAmount', 0.0)
                         refund_amount_map[key] = refund_amount
+
+            print('refund_amount_map[key]', refund_amount_map)
+
         else:
             print("没有获取到有效的售后数据")
 
-        print('refund_amount_map', refund_amount_map)
         if not orders:
             raise HTTPException(status_code=400, detail="没有提供订单数据")
 
@@ -518,22 +525,26 @@ def sync_goods(sync_date, orders):
                     refund_amount = 0.0
                     matched_key = None
                     
-                    # 使用shopIid进行匹配
-                    good_id = goods_item.get('shopIid')
+                    # 使用designCode进行匹配，与退款映射创建时保持一致
+                    design_code = goods_item.get('designCode')
                     
-                    if so_id and good_id:
+                    if so_id and design_code:
                         # 使用 - 连接的字符串格式作为键，与创建退款映射时保持一致
-                        key = f"{so_id}-{good_id}"
-                        print(f"正在查找退款金额: soId='{so_id}', good_id='{good_id}'")
+                        key = f"{so_id}-{design_code}"
+                        if order_dict.get('shopId') == "18386894":
+                            print(f"正在查找退款金额: soId='{so_id}', design_code='{design_code}', key='{key}'")
+                        # print(f"正在查找退款金额: soId='{so_id}', design_code='{design_code}'")
                         
                         if key in refund_amount_map:
                             refund_amount = refund_amount_map[key]
                             matched_key = key
-                            print(f"✓ 精确匹配到退款金额: soId={so_id}, good_id={good_id}, 退款金额={refund_amount}")
+                            if order_dict.get('shopId') == "18386894":
+                                print(f"✓ 精确匹配到退款金额: soId={so_id}, design_code={design_code}, 退款金额={refund_amount}")
                         else:
-                            print(f"✗ 未找到匹配的退款金额")
+                            if order_dict.get('shopId') == "18386894":
+                                print(f"✗ 未找到匹配的退款金额，key='{key}' 不在映射表中")
                     else:
-                        print(f"缺少匹配字段: soId={so_id}, good_id={good_id}")
+                        print(f"缺少匹配字段: soId={so_id}, design_code={design_code}")
                     
                     # 初始化商品数据结构
                     goods_dict[unique_key] = {

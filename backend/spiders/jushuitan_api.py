@@ -317,8 +317,8 @@ def get_cancel_jushuitan_from_shouhou(date=None):
         "coId": "14482113",
         "uid": "20116651",
         "searchType": 1,
-        "orderDateStartTime": confirm_start_time,
-        "orderDateEndTime": confirm_end_time,
+        "confirmStartTime": confirm_start_time,
+        "confirmEndTime": confirm_end_time,
         "querySortDTO": {
             "shopEndDate": False
         },
@@ -328,13 +328,32 @@ def get_cancel_jushuitan_from_shouhou(date=None):
         "pageSize": 9999  # 获取所有记录
     }
 
-    print("获取售后订单请求参数:", payload)
+# {
+#     "coId": "14482113",
+#     "uid": "20116651",
+#     "searchType": 1,
+#     "confirmStartTime": "2026-01-26 00:00:00",
+#     "confirmEndTime": "2026-01-27 00:00:00",
+#     "querySortDTO": {
+#         "shopEndDate": false
+#     },
+#     "isWhite": 1,
+#     "afterSaleStatus": [
+#         "Confirmed"
+#     ],
+#     "shopCodeList": [
+#         "19179894"
+#     ],
+#     "pageNum": 1,
+#     "pageSize": 50
+# }
+
+
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=15)
         resp.raise_for_status()
 
         data = resp.json()
-        print('dataaaaaaaaaaaaaaaaaaaa', data)
         order_count = len(data.get('data', []))
 
         print(f"获取到 {order_count} 条售后订单记录")
