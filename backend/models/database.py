@@ -178,6 +178,36 @@ class Goods(BaseModel):
         table_name = 'goods'
 
 
+# 店铺表：以店铺为主键，聚合所有金额字段
+class Store(BaseModel):
+    id = AutoField(primary_key=True)
+    store_id = CharField(unique=True)  # 店铺ID，唯一标识
+    store_name = CharField(null=True)  # 店铺名称
+    total_payment_amount = FloatField(default=0.0)  # 总付款金额
+    total_sales_amount = FloatField(default=0.0)  # 总销售金额
+    total_refund_amount = FloatField(default=0.0)  # 总退款金额
+    total_sales_cost = FloatField(default=0.0)  # 总销售成本
+    total_gross_profit_1_occurred = FloatField(default=0.0)  # 总毛一利润(发生)
+    avg_gross_profit_1_rate = FloatField(default=0.0)  # 平均毛一利润率
+    total_advertising_expenses = FloatField(default=0.0)  # 总广告费
+    avg_advertising_ratio = FloatField(default=0.0)  # 平均广告占比
+    total_gross_profit_3 = FloatField(default=0.0)  # 总毛三利润
+    avg_gross_profit_3_rate = FloatField(default=0.0)  # 平均毛三利润率
+    total_gross_profit_4 = FloatField(default=0.0)  # 总毛四利润
+    avg_gross_profit_4_rate = FloatField(default=0.0)  # 平均毛四利润率
+    total_net_profit = FloatField(default=0.0)  # 总净利润
+    avg_net_profit_rate = FloatField(default=0.0)  # 平均净利率
+    goods_count = IntegerField(default=0)  # 商品数量
+    order_count = IntegerField(default=0)  # 订单数量
+    is_del = BooleanField(default=False)  # 逻辑删除标志
+    creator = CharField(null=True)  # 创建人
+    last_order_time = DateTimeField(null=True)  # 最后订单时间
+    created_at = DateTimeField(default=datetime.now)  # 创建时间
+    updated_at = DateTimeField(default=datetime.now)  # 更新时间
+
+    class Meta:
+        table_name = 'stores'
+
 
 
 class JushuitanCancelProduct(BaseModel):
@@ -307,4 +337,4 @@ class RefundRecord(BaseModel):
 # 创建所有表
 def create_tables():
     with database:
-        database.create_tables([User, JushuitanProduct, Goods, JushuitanCancelProduct, RefundRecord])
+        database.create_tables([User, JushuitanProduct, Goods, Store, JushuitanCancelProduct, RefundRecord])

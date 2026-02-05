@@ -10,7 +10,7 @@ import traceback
 from .. import schemas
 from ..services import product_service
 from ..database import get_db
-from ..models.database import JushuitanProduct, Goods, User
+from ..models.database import JushuitanProduct, Goods, User, Store
 from .auth import get_current_user
 from ..spiders.jushuitan_api import get_all_jushuitan_orders, get_cancel_jushuitan_from_shouhou, get_all_jushuitan_orders_with_refund
 
@@ -324,8 +324,8 @@ def sync_jushuitan_data(request: dict = None):
                 (JushuitanProduct.created_at <= end_of_day)
             )
         
-        
         processed_count, _ = sync_goods(sync_date, new_data_list)
+        store_processed_count, _ = sync_stores(sync_date, new_data_list)
         
 
     except Exception as e:
@@ -334,9 +334,10 @@ def sync_jushuitan_data(request: dict = None):
         raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
 
     return {
-        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条订单记录和 {processed_count} 条商品记录",
+        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条订单记录、{processed_count} 条商品记录和 {store_processed_count} 条店铺记录",
         "processed_count": processed_count,
-        "goods_processed_count": processed_count
+        "goods_processed_count": processed_count,
+        "stores_processed_count": store_processed_count
     }
 
 
@@ -388,13 +389,9 @@ def sync_goods(sync_date, orders):
                     if so_id and design_code:
                         # 使用 - 连接的字符串格式作为键
                         key = f"{so_id}-{design_code}"
-                        if record.get('shopId') == "18386894":
-                            print('???????',  key)
-                    
                         refund_amount = detail.get('refundAmount', 0.0)
                         refund_amount_map[key] = refund_amount
 
-            print('refund_amount_map[key]', refund_amount_map)
 
         else:
             print("没有获取到有效的售后数据")
@@ -457,7 +454,6 @@ def sync_goods(sync_date, orders):
                 goods_list_raw = order_dict.get('disInnerOrderGoodsViewList')
                 
                 # 解析JSON字符串
-                import json
                 try:
                     if isinstance(goods_list_raw, str):
                         goods_list = json.loads(goods_list_raw)
@@ -525,26 +521,23 @@ def sync_goods(sync_date, orders):
                     refund_amount = 0.0
                     matched_key = None
                     
-                    # 使用designCode进行匹配，与退款映射创建时保持一致
-                    design_code = goods_item.get('designCode')
-                    
-                    if so_id and design_code:
+                    # 使用shopIid进行匹配
+                    good_id_styleCode = goods_item.get('styleCode') # 如果shopIid是null 用这个字段
+ 
+                    if so_id and shop_iid and good_id_styleCode:
                         # 使用 - 连接的字符串格式作为键，与创建退款映射时保持一致
-                        key = f"{so_id}-{design_code}"
-                        if order_dict.get('shopId') == "18386894":
-                            print(f"正在查找退款金额: soId='{so_id}', design_code='{design_code}', key='{key}'")
-                        # print(f"正在查找退款金额: soId='{so_id}', design_code='{design_code}'")
+                        key = f"{so_id}-{shop_iid}"
+                        key_styleCode = f"{so_id}-{good_id_styleCode}"
                         
-                        if key in refund_amount_map:
-                            refund_amount = refund_amount_map[key]
+                        if key in refund_amount_map or key_styleCode in refund_amount_map:
+                            refund_amount = refund_amount_map[key] if key in refund_amount_map else refund_amount_map[key_styleCode]
                             matched_key = key
-                            if order_dict.get('shopId') == "18386894":
-                                print(f"✓ 精确匹配到退款金额: soId={so_id}, design_code={design_code}, 退款金额={refund_amount}")
                         else:
-                            if order_dict.get('shopId') == "18386894":
-                                print(f"✗ 未找到匹配的退款金额，key='{key}' 不在映射表中")
+                            # print(f"✗ 未找到匹配的退款金额")
+                            pass
+
                     else:
-                        print(f"缺少匹配字段: soId={so_id}, design_code={design_code}")
+                        print(f"缺少匹配字段: soId={so_id}, good_id={shop_iid}")
                     
                     # 初始化商品数据结构
                     goods_dict[unique_key] = {
@@ -564,7 +557,8 @@ def sync_goods(sync_date, orders):
                     }
         
             except Exception as e:
-                print(f"Error processing order {order_dict.get('id') if order_dict else 'unknown'}: {e}")
+                pass
+                # print(f"Error processing order {order_dict.get('id') if order_dict else 'unknown'}: {e}")
 
         # 删除之前同步的相同日期的数据（避免重复）
         if sync_date:
@@ -644,7 +638,285 @@ def sync_goods(sync_date, orders):
 
 
 
+# 批量新增店铺表数据
+def sync_stores(sync_date, orders):
+    """
+    同步订单数据中的店铺信息到stores表
+    - 按shopId聚合店铺数据
+    - 计算各种利润指标和汇总数据
+    - 支持按指定日期同步数据
+    """
+    
+    try:
+        # 获取售后数据
+        shouhou_date_str = sync_date.strftime('%Y-%m-%d') if sync_date else None
+        print(f"正在获取售后数据，日期: {shouhou_date_str}")
+        
+        shouhou_data = get_cancel_jushuitan_from_shouhou(date=shouhou_date_str)
+        
+        # 获取包含退款信息的所有聚水潭订单数据
+        all_orders_with_refund = get_all_jushuitan_orders_with_refund(sync_date=sync_date)
+        
+        # 构建退款金额映射表，按soId和商品关键字段关联
+        refund_amount_map = {}
+        if shouhou_data and 'data' in shouhou_data:
+            records = shouhou_data['data']
+            
+            for record in records:
+                # 遍历details列表
+                after_sale_goods = record.get('afterSaleOrderGoodsVO', {})
+                details = after_sale_goods.get('details', [])
 
+                for detail in details:
+                    # 使用订单soId和designCode作为键
+                    so_id = record.get('soId')  # 使用soId而不是oid
+                    design_code = detail.get('designCode')
+                    
+                    if so_id and design_code:
+                        # 使用 - 连接的字符串格式作为键
+                        key = f"{so_id}-{design_code}"
+                        refund_amount = detail.get('refundAmount', 0.0)
+                        refund_amount_map[key] = refund_amount
+        else:
+            print("没有获取到有效的售后数据")
+
+        if not orders:
+            raise HTTPException(status_code=400, detail="没有提供订单数据")
+
+        # 用于存储店铺数据的字典，以store_id为唯一键
+        stores_dict = {}
+        print(f"开始处理 {len(orders)} 个订单")
+        
+        for order in all_orders_with_refund.get('data', []):
+            # 如果是从数据库获取的订单对象，需要转换为字典
+            if hasattr(order, 'disInnerOrderGoodsViewList'):
+                # 从数据库获取的订单对象
+                order_dict = {
+                    'oid': order.oid,
+                    'soId': order.soId,
+                    'payAmount': order.payAmount,
+                    'paidAmount': order.paidAmount,
+                    'drpAmount': order.drpAmount,
+                    'shopId': order.shopId,
+                    'shopName': order.shopName,
+                    'orderTime': order.orderTime,
+                    'disInnerOrderGoodsViewList': order.disInnerOrderGoodsViewList,
+                    'created_at': order.created_at
+                }
+                order_obj = order
+            else:
+                # 从API获取的订单字典
+                order_dict = order
+                order_obj = None
+            
+            try:
+                # 如果指定了同步日期，则只处理该日期的订单
+                if sync_date and order_obj is None:  # 只有从API获取的订单需要检查时间
+                    order_time_str = order_dict.get('orderTime')
+                    if order_time_str:
+                        try:
+                            # 解析订单时间，提取日期部分
+                            if 'T' in order_time_str:
+                                order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
+                                order_date = order_datetime.date()
+                            else:
+                                # 如果只是日期字符串
+                                order_date = datetime.strptime(order_time_str.split(' ')[0], '%Y-%m-%d').date()
+                            
+                            # 只处理指定日期的订单
+                            if order_date != sync_date:
+                                continue
+                        except:
+                            # 如果解析失败，跳过该订单
+                            continue
+                
+                # 获取店铺信息
+                store_id = order_dict.get('shopId')
+                store_name = order_dict.get('shopName', '未知店铺')
+                
+                if not store_id:  # 如果没有店铺ID，则跳过
+                    continue
+                
+                payAmount = float(order_dict.get('payAmount', 0) or 0)
+                paidAmount = float(order_dict.get('paidAmount', 0) or 0)
+                drpAmount = float(order_dict.get('drpAmount', 0) or 0)
+
+                # 解析disInnerOrderGoodsViewList字段
+                goods_list_raw = order_dict.get('disInnerOrderGoodsViewList')
+                
+                # 解析JSON字符串
+                try:
+                    if isinstance(goods_list_raw, str):
+                        goods_list = json.loads(goods_list_raw)
+                    else:
+                        goods_list = goods_list_raw
+                except json.JSONDecodeError:
+                    print(f"无法解析disInnerOrderGoodsViewList: {goods_list_raw}")
+                    continue
+                
+                # 根据项目规范，确保目标字段为list类型
+                if not isinstance(goods_list, list):
+                    if goods_list is None:
+                        goods_list = []
+                    else:
+                        goods_list = [goods_list]  # 强制转换为list
+                
+                # 计算该订单的退款金额
+                order_refund_amount = 0.0
+                so_id = order_dict.get('soId')
+                
+                for goods_item in goods_list:
+                    if not isinstance(goods_item, dict):
+                        continue
+                    
+                    shop_iid = goods_item.get('shopIid')
+                    good_id_styleCode = goods_item.get('styleCode')
+                    
+                    if so_id and shop_iid and good_id_styleCode:
+                        key = f"{so_id}-{shop_iid}"
+                        key_styleCode = f"{so_id}-{good_id_styleCode}"
+                        
+                        if key in refund_amount_map:
+                            order_refund_amount += refund_amount_map[key]
+                        elif key_styleCode in refund_amount_map:
+                            order_refund_amount += refund_amount_map[key_styleCode]
+                
+                
+                # 获取订单时间
+                order_time_str = order_dict.get('orderTime')
+                order_datetime = None
+                if order_time_str:
+                    try:
+                        if 'T' in order_time_str:
+                            order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
+                        else:
+                            order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d %H:%M:%S')
+                    except ValueError:
+                        try:
+                            order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d')
+                        except ValueError:
+                            order_datetime = datetime.now()
+                else:
+                    order_datetime = datetime.now()
+                
+                # 如果指定了同步日期，使用该日期，否则使用订单创建日期
+                if sync_date:
+                    created_at = datetime.combine(sync_date, datetime.min.time())
+                else:
+                    created_at = order.created_at if order_obj else datetime.now()
+                
+                # 初始化或累加店铺数据
+                if store_id not in stores_dict:
+                    stores_dict[store_id] = {
+                        'store_id': store_id,
+                        'store_name': store_name,
+                        'total_payment_amount': 0.0,
+                        'total_sales_amount': 0.0,
+                        'total_refund_amount': 0.0,
+                        'total_sales_cost': 0.0,
+                        'total_gross_profit_1_occurred': 0.0,
+                        'total_advertising_expenses': 0.0,
+                        'total_gross_profit_3': 0.0,
+                        'total_gross_profit_4': 0.0,
+                        'total_net_profit': 0.0,
+                        'goods_count': 0,
+                        'order_count': 0,
+                        'creator': 'system',
+                        'last_order_time': order_datetime,
+                        'created_at': created_at,
+                        'updated_at': datetime.now()
+                    }
+                
+                # 累加店铺数据
+                store_data = stores_dict[store_id]
+                store_data['total_payment_amount'] += paidAmount
+                store_data['total_sales_amount'] += payAmount
+                store_data['total_refund_amount'] += order_refund_amount
+                store_data['total_sales_cost'] += drpAmount
+                store_data['goods_count'] += len(goods_list)
+                store_data['order_count'] += 1
+                
+                # 更新最后订单时间
+                if order_datetime and (not store_data['last_order_time'] or order_datetime > store_data['last_order_time']):
+                    store_data['last_order_time'] = order_datetime
+                
+            except Exception as e:
+                print(f"Error processing order {order_dict.get('oid') if order_dict else 'unknown'}: {e}")
+                continue
+
+        # 删除之前同步的相同日期的数据（避免重复）
+        if sync_date:
+            start_of_day = datetime.combine(sync_date, datetime.min.time())
+            end_of_day = datetime.combine(sync_date, datetime.max.time())
+            Store.delete().where(
+                (Store.created_at >= start_of_day) & 
+                (Store.created_at <= end_of_day)
+            ).execute()
+        else:
+            # 如果没有指定日期，删除所有数据重新插入
+            Store.delete().execute()
+
+        # 使用insert_many批量插入新的店铺记录
+        stores_data_list = list(stores_dict.values())
+        if stores_data_list:
+            with get_db() as db:
+                with db.atomic():
+                    Store.insert_many(stores_data_list).execute()
+
+        # 计算利润相关指标并更新
+        all_new_stores = list(Store.select())
+        
+        for store_record in all_new_stores:
+            # 确保所有数值字段都不为None
+            sales_amount = store_record.total_sales_amount or 0.0
+            cost_amount = store_record.total_sales_cost or 0.0
+            
+            # 计算各种利润指标
+            gross_profit_1_occurred = sales_amount - cost_amount
+            avg_gross_profit_1_rate = round(((sales_amount - cost_amount) / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            # 获取广告费用，如果为None则默认为0
+            ad_cost = store_record.total_advertising_expenses or 0
+            avg_advertising_ratio = round((ad_cost / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            gross_profit_3 = sales_amount - cost_amount - ad_cost
+            avg_gross_profit_3_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            gross_profit_4 = sales_amount - cost_amount - ad_cost
+            avg_gross_profit_4_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            net_profit = sales_amount - cost_amount - ad_cost
+            avg_net_profit_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            # 更新利润相关字段
+            store_record.total_gross_profit_1_occurred = gross_profit_1_occurred
+            store_record.avg_gross_profit_1_rate = avg_gross_profit_1_rate
+            store_record.avg_advertising_ratio = avg_advertising_ratio
+            store_record.total_gross_profit_3 = gross_profit_3
+            store_record.avg_gross_profit_3_rate = avg_gross_profit_3_rate
+            store_record.total_gross_profit_4 = gross_profit_4
+            store_record.avg_gross_profit_4_rate = avg_gross_profit_4_rate
+            store_record.total_net_profit = net_profit
+            store_record.avg_net_profit_rate = avg_net_profit_rate
+            store_record.updated_at = datetime.now()
+            store_record.save()
+        
+        # 统计处理结果
+        processed_count = len(stores_dict)
+        
+        # 根据是否指定了同步日期返回不同的消息
+        if sync_date:
+            message_text = f"成功同步指定日期 {sync_date} 的店铺数据，处理了 {processed_count} 条店铺记录"
+        else:
+            message_text = f"成功同步店铺数据，处理了 {processed_count} 条店铺记录"
+
+        return processed_count, message_text
+        
+    except Exception as e:
+        print(f"同步店铺数据时发生错误: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"同步店铺数据失败: {str(e)}")
 
 
 
@@ -739,9 +1011,9 @@ def get_store_goods(
     current_user = Depends(get_current_user)
 ):
     """
-    根据当前登录用户的goods_stores字段查询商品及店铺数据
+    根据当前登录用户的goods_stores字段查询店铺数据
     管理员可查看所有数据，普通用户只能查看自己的数据
-    按店铺维度返回汇总数据
+    直接查询店铺表，返回汇总数据
     返回包含销售金额、成本、利润等统计信息的数据
     支持按日期范围查询
     """
@@ -749,10 +1021,8 @@ def get_store_goods(
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
     
-    store_data = []
-    
     # 构建查询条件
-    query_conditions = [Goods.is_del == False]
+    query_conditions = [Store.is_del == False]
     
     # 如果提供了日期范围，则添加日期筛选条件
     if start_date and end_date:
@@ -762,86 +1032,18 @@ def get_store_goods(
             end_dt = datetime.strptime(end_date, "%Y-%m-%d")
             # 将开始日期设置为当天的开始（00:00:00）
             start_dt = start_dt.replace(hour=0, minute=0, second=0)
-            # 将结束日期设置为当天的结束（00:00:00），以包含整个结束日期
-            end_dt = end_dt.replace(hour=0, minute=0, second=0)
-            # 使用goodorder_time字段进行日期筛选（这是实际的订单时间）
-            query_conditions.append((Goods.goodorder_time >= start_dt) & (Goods.goodorder_time <= end_dt))
+            # 将结束日期设置为当天的结束（23:59:59），以包含整个结束日期
+            end_dt = end_dt.replace(hour=23, minute=59, second=59)
+            # 使用last_order_time字段进行日期筛选
+            query_conditions.append((Store.last_order_time >= start_dt) & (Store.last_order_time <= end_dt))
         except ValueError:
             raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
     
-
-    
     if is_admin:
-        # 管理员查看所有商品数据，按店铺分组
-        goods_records = Goods.select().where(*query_conditions)
-        
-        # 按店铺ID分组
-        stores_dict = {}
-        for record in goods_records:
-            store_id = record.store_id
-            if store_id not in stores_dict:
-                stores_dict[store_id] = []
-            stores_dict[store_id].append(record)
-        
-        # 为每个店铺生成汇总数据
-        for store_id, goods_list in stores_dict.items():
-            # 不再进行商品去重，而是保留每个订单项的完整信息
-            # 计算店铺汇总数据
-            total_payment_amount = sum(g.payment_amount or 0.0 for g in goods_list)
-            total_sales_amount = sum(g.sales_amount or 0.0 for g in goods_list)
-            total_sales_cost = sum(g.sales_cost or 0.0 for g in goods_list)
-            total_gross_profit_1_occurred = sum(g.gross_profit_1_occurred or 0.0 for g in goods_list)
-            total_advertising_expenses = sum(g.advertising_expenses or 0.0 for g in goods_list)
-            total_gross_profit_3 = sum(g.gross_profit_3 or 0.0 for g in goods_list)
-            total_gross_profit_4 = sum(g.gross_profit_4 or 0.0 for g in goods_list)
-            total_net_profit = sum(g.net_profit or 0.0 for g in goods_list)
-            
-            # 计算该店铺的退款金额 - 直接从goods表获取
-            store_refund_amount = sum(g.refund_amount or 0.0 for g in goods_list)
-            
-            # 重新计算比率（基于汇总数据）
-            avg_gross_profit_1_rate = (
-                (total_gross_profit_1_occurred / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            total_advertising_ratio = (
-                (total_advertising_expenses / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            avg_gross_profit_3_rate = (
-                (total_gross_profit_3 / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            avg_gross_profit_4_rate = (
-                (total_gross_profit_4 / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            avg_net_profit_rate = (
-                (total_net_profit / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            
-            # 获取店铺名称（使用第一个商品的店铺名称）
-            store_name = goods_list[0].store_name if goods_list else ""
-            
-            store_data.append({
-                'store_id': store_id,
-                'store_name': store_name,
-                'goods_count': len(goods_list),  # 保留所有商品记录的数量（不是去重后的数量）
-                'payment_amount': total_payment_amount,
-                'sales_amount': total_sales_amount,
-                'refund_amount': store_refund_amount,  # 店铺退款金额
-                'sales_cost': total_sales_cost,
-                'gross_profit_1_occurred': total_gross_profit_1_occurred,
-                'gross_profit_1_rate': round(avg_gross_profit_1_rate, 2),
-                'advertising_expenses': total_advertising_expenses,
-                'advertising_ratio': round(total_advertising_ratio, 2),
-                'gross_profit_3': total_gross_profit_3,
-                'gross_profit_3_rate': round(avg_gross_profit_3_rate, 2),
-                'gross_profit_4': total_gross_profit_4,
-                'gross_profit_4_rate': round(avg_gross_profit_4_rate, 2),
-                'net_profit': total_net_profit,
-                'net_profit_rate': round(avg_net_profit_rate, 2),
-                'created_at': goods_list[0].created_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].created_at else "",
-                'updated_at': goods_list[0].updated_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].updated_at else ""
-            })
+        # 管理员查看所有店铺数据
+        store_records = Store.select().where(*query_conditions)
     else:
-        # 普通用户查看自己关联的商品和店铺信息
+        # 普通用户查看自己关联的店铺信息
         user_goods_stores = current_user.get_goods_stores()
         
         if not user_goods_stores:
@@ -851,81 +1053,60 @@ def get_store_goods(
                 "summary": {}
             }
         
-        # 提取商品ID列表
+        # 提取商品ID列表，然后通过商品表找到对应的店铺ID
         goods_ids = [item.get('good_id') for item in user_goods_stores if item.get('good_id')]
         
-        # 构建查询条件（包含日期筛选）
-        user_query_conditions = query_conditions.copy()
-        if goods_ids:
-            user_query_conditions.append(Goods.goods_id.in_(goods_ids))
+        if not goods_ids:
+            return {
+                "message": "当前用户未关联任何有效商品",
+                "data": [],
+                "summary": {}
+            }
         
-        # 查询对应的商品数据
-        goods_records = Goods.select().where(*user_query_conditions)
+        # 通过商品表获取用户关联的店铺ID
+        user_store_ids = list(set([
+            goods.store_id for goods in Goods.select(Goods.store_id).where(
+                (Goods.goods_id.in_(goods_ids)) & (Goods.is_del == False)
+            ) if goods.store_id
+        ]))
         
-        # 按店铺ID分组
-        stores_dict = {}
-        for record in goods_records:
-            store_id = record.store_id
-            if store_id not in stores_dict:
-                stores_dict[store_id] = []
-            stores_dict[store_id].append(record)
+        if not user_store_ids:
+            return {
+                "message": "当前用户关联的商品未找到对应店铺",
+                "data": [],
+                "summary": {}
+            }
         
-        # 为每个店铺生成汇总数据
-        for store_id, goods_list in stores_dict.items():
-            # 不再进行商品去重，而是保留每个订单项的完整信息
-            # 计算店铺汇总数据
-            total_payment_amount = sum(g.payment_amount or 0.0 for g in goods_list)
-            total_sales_amount = sum(g.sales_amount or 0.0 for g in goods_list)
-            total_sales_cost = sum(g.sales_cost or 0.0 for g in goods_list)
-            total_gross_profit_1_occurred = sum(g.gross_profit_1_occurred or 0.0 for g in goods_list)
-            total_advertising_expenses = sum(g.advertising_expenses or 0.0 for g in goods_list)
-            total_gross_profit_3 = sum(g.gross_profit_3 or 0.0 for g in goods_list)
-            total_gross_profit_4 = sum(g.gross_profit_4 or 0.0 for g in goods_list)
-            total_net_profit = sum(g.net_profit or 0.0 for g in goods_list)
-            
-            # 计算该店铺的退款金额 - 直接从goods表获取
-            store_refund_amount = sum(g.refund_amount or 0.0 for g in goods_list)
-            
-            # 重新计算比率（基于汇总数据）
-            avg_gross_profit_1_rate = (
-                (total_gross_profit_1_occurred / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            total_advertising_ratio = (
-                (total_advertising_expenses / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            avg_gross_profit_3_rate = (
-                (total_gross_profit_3 / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            avg_gross_profit_4_rate = (
-                (total_gross_profit_4 / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            avg_net_profit_rate = (
-                (total_net_profit / total_sales_amount * 100) if total_sales_amount != 0 else 0
-            )
-            
-            store_name = goods_list[0].store_name if goods_list else ""
-            
-            store_data.append({
-                'store_id': store_id,
-                'store_name': store_name,
-                'goods_count': len(goods_list),  # 保留所有商品记录的数量（不是去重后的数量）
-                'payment_amount': total_payment_amount,
-                'sales_amount': total_sales_amount,
-                'refund_amount': store_refund_amount,  # 店铺退款金额
-                'sales_cost': total_sales_cost,
-                'gross_profit_1_occurred': total_gross_profit_1_occurred,
-                'gross_profit_1_rate': round(avg_gross_profit_1_rate, 2),
-                'advertising_expenses': total_advertising_expenses,
-                'advertising_ratio': round(total_advertising_ratio, 2),
-                'gross_profit_3': total_gross_profit_3,
-                'gross_profit_3_rate': round(avg_gross_profit_3_rate, 2),
-                'gross_profit_4': total_gross_profit_4,
-                'gross_profit_4_rate': round(avg_gross_profit_4_rate, 2),
-                'net_profit': total_net_profit,
-                'net_profit_rate': round(avg_net_profit_rate, 2),
-                'created_at': goods_list[0].created_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].created_at else "",
-                'updated_at': goods_list[0].updated_at.strftime("%Y-%m-%d %H:%M:%S") if goods_list and goods_list[0].updated_at else ""
-            })
+        # 添加店铺ID筛选条件
+        query_conditions.append(Store.store_id.in_(user_store_ids))
+        store_records = Store.select().where(*query_conditions)
+    
+    # 构建返回数据
+    store_data = []
+    for store in store_records:
+        store_data.append({
+            'store_id': store.store_id,
+            'store_name': store.store_name,
+            'goods_count': store.goods_count,
+            'order_count': store.order_count,
+            'payment_amount': store.total_payment_amount,
+            'sales_amount': store.total_sales_amount,
+            'refund_amount': store.total_refund_amount,
+            'sales_cost': store.total_sales_cost,
+            'gross_profit_1_occurred': store.total_gross_profit_1_occurred,
+            'gross_profit_1_rate': store.avg_gross_profit_1_rate,
+            'advertising_expenses': store.total_advertising_expenses,
+            'advertising_ratio': store.avg_advertising_ratio,
+            'gross_profit_3': store.total_gross_profit_3,
+            'gross_profit_3_rate': store.avg_gross_profit_3_rate,
+            'gross_profit_4': store.total_gross_profit_4,
+            'gross_profit_4_rate': store.avg_gross_profit_4_rate,
+            'net_profit': store.total_net_profit,
+            'net_profit_rate': store.avg_net_profit_rate,
+            'last_order_time': store.last_order_time.strftime("%Y-%m-%d %H:%M:%S") if store.last_order_time else "",
+            'created_at': store.created_at.strftime("%Y-%m-%d %H:%M:%S") if store.created_at else "",
+            'updated_at': store.updated_at.strftime("%Y-%m-%d %H:%M:%S") if store.updated_at else ""
+        })
     
     # 计算汇总统计数据
     summary = {}
@@ -934,14 +1115,15 @@ def get_store_goods(
             'total_payment_amount': sum(item['payment_amount'] for item in store_data),
             'total_sales_amount': sum(item['sales_amount'] for item in store_data),
             'total_sales_cost': sum(item['sales_cost'] for item in store_data),
-            'total_refund_amount': sum(item.get('refund_amount', 0) for item in store_data),  # 总退款金额
+            'total_refund_amount': sum(item['refund_amount'] for item in store_data),
             'total_gross_profit_1_occurred': sum(item['gross_profit_1_occurred'] for item in store_data),
             'total_advertising_expenses': sum(item['advertising_expenses'] for item in store_data),
             'total_gross_profit_3': sum(item['gross_profit_3'] for item in store_data),
             'total_gross_profit_4': sum(item['gross_profit_4'] for item in store_data),
             'total_net_profit': sum(item['net_profit'] for item in store_data),
             'total_stores': len(store_data),
-            'total_goods': sum(item['goods_count'] for item in store_data)
+            'total_goods': sum(item['goods_count'] for item in store_data),
+            'total_orders': sum(item['order_count'] for item in store_data)
         }
         
         # 重新计算总体比率
