@@ -49,6 +49,7 @@ class User(BaseModel):
                 data[field.name] = field_value
         return data
 
+
 class JushuitanProduct(BaseModel):
     id = AutoField(primary_key=True)
     oid = CharField(null=True)  # 订单ID
@@ -338,3 +339,8 @@ class RefundRecord(BaseModel):
 def create_tables():
     with database:
         database.create_tables([User, JushuitanProduct, Goods, Store, JushuitanCancelProduct, RefundRecord])
+
+
+
+
+

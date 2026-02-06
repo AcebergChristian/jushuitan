@@ -21,7 +21,7 @@ router = APIRouter()
 
 # 聚水潭数据相关路由
 @router.get("/jushuitan_products/")
-def read_jushuitan_products(skip: int = 0, limit: int = 100, search: str = ""):
+def read_jushuitan_products(search: str = ""):
     """获取聚水潭商品数据列表"""
     db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
     if not os.path.exists(db_path):
@@ -30,37 +30,24 @@ def read_jushuitan_products(skip: int = 0, limit: int = 100, search: str = ""):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
     
-    # 首先找出最新的日期
-    cursor.execute('SELECT MAX(created_at) FROM jushuitan_products WHERE is_del = 0')
-    latest_date_result = cursor.fetchone()
-    if latest_date_result and latest_date_result[0]:
-        latest_date = latest_date_result[0].split(' ')[0]  # 取日期部分，去掉时间
-        
-        # 查询最新日期的数据总数
-        if search:
-            cursor.execute('''SELECT COUNT(*) FROM jushuitan_products 
-                             WHERE is_del = 0 
-                             AND substr(created_at, 1, 10) = ?
-                             AND disInnerOrderGoodsViewList LIKE ?''', (latest_date, f'%{search}%'))
-        else:
-            cursor.execute('SELECT COUNT(*) FROM jushuitan_products WHERE is_del = 0 AND substr(created_at, 1, 10) = ?', (latest_date,))
-        
-        total_count = cursor.fetchone()[0]
-        
-        # 查询最新日期的数据
-        if search:
-            cursor.execute('''SELECT * FROM jushuitan_products 
-                             WHERE is_del = 0 
-                             AND substr(created_at, 1, 10) = ?
-                             AND disInnerOrderGoodsViewList LIKE ? 
-                             ORDER BY created_at DESC
-                             LIMIT ? OFFSET ?''', (latest_date, f'%{search}%', limit, skip))
-        else:
-            cursor.execute('SELECT * FROM jushuitan_products WHERE is_del = 0 AND substr(created_at, 1, 10) = ? ORDER BY created_at DESC LIMIT ? OFFSET ?', (latest_date, limit, skip))
+    # 查询所有未删除的数据总数
+    if search:
+        cursor.execute('''SELECT COUNT(*) FROM jushuitan_products 
+                         WHERE is_del = 0 
+                         AND disInnerOrderGoodsViewList LIKE ?''', (f'%{search}%',))
     else:
-        # 如果没有数据，返回空结果
-        total_count = 0
-        cursor.execute('SELECT * FROM jushuitan_products WHERE 1=0')  # 返回空结果集
+        cursor.execute('SELECT COUNT(*) FROM jushuitan_products WHERE is_del = 0')
+    
+    total_count = cursor.fetchone()[0]
+    
+    # 查询所有未删除的数据
+    if search:
+        cursor.execute('''SELECT * FROM jushuitan_products 
+                         WHERE is_del = 0 
+                         AND disInnerOrderGoodsViewList LIKE ? 
+                         ORDER BY created_at DESC''', (f'%{search}%',))
+    else:
+        cursor.execute('SELECT * FROM jushuitan_products WHERE is_del = 0 ORDER BY created_at DESC')
     
     records = cursor.fetchall()
     
@@ -80,10 +67,11 @@ def read_jushuitan_products(skip: int = 0, limit: int = 100, search: str = ""):
     # 返回包含数据和总数的对象
     return {
         "data": result,
-        "total": total_count,
-        "skip": skip,
-        "limit": limit
+        "total": total_count
     }
+
+
+
 
 # 根据ID获取聚水潭商品数据
 @router.get("/jushuitan_products/{record_id}")
@@ -680,12 +668,9 @@ def sync_stores(sync_date, orders):
         else:
             print("没有获取到有效的售后数据")
 
-        if not orders:
-            raise HTTPException(status_code=400, detail="没有提供订单数据")
-
-        # 用于存储店铺数据的字典，以store_id为唯一键
+        # 用于存储店铺数据的字典，以store_id和日期为唯一键
         stores_dict = {}
-        print(f"开始处理 {len(orders)} 个订单")
+        print(f"开始处理订单数据")
         
         for order in all_orders_with_refund.get('data', []):
             # 如果是从数据库获取的订单对象，需要转换为字典
@@ -736,6 +721,13 @@ def sync_stores(sync_date, orders):
                 
                 if not store_id:  # 如果没有店铺ID，则跳过
                     continue
+                
+                # 如果指定了同步日期，将日期加入store_id以确保唯一性
+                # 格式: shopId_YYYYMMDD
+                if sync_date:
+                    unique_store_id = f"{store_id}_{sync_date.strftime('%Y%m%d')}"
+                else:
+                    unique_store_id = store_id
                 
                 payAmount = float(order_dict.get('payAmount', 0) or 0)
                 paidAmount = float(order_dict.get('paidAmount', 0) or 0)
@@ -806,9 +798,9 @@ def sync_stores(sync_date, orders):
                     created_at = order.created_at if order_obj else datetime.now()
                 
                 # 初始化或累加店铺数据
-                if store_id not in stores_dict:
-                    stores_dict[store_id] = {
-                        'store_id': store_id,
+                if unique_store_id not in stores_dict:
+                    stores_dict[unique_store_id] = {
+                        'store_id': unique_store_id,
                         'store_name': store_name,
                         'total_payment_amount': 0.0,
                         'total_sales_amount': 0.0,
@@ -828,7 +820,7 @@ def sync_stores(sync_date, orders):
                     }
                 
                 # 累加店铺数据
-                store_data = stores_dict[store_id]
+                store_data = stores_dict[unique_store_id]
                 store_data['total_payment_amount'] += paidAmount
                 store_data['total_sales_amount'] += payAmount
                 store_data['total_refund_amount'] += order_refund_amount
@@ -848,12 +840,24 @@ def sync_stores(sync_date, orders):
         if sync_date:
             start_of_day = datetime.combine(sync_date, datetime.min.time())
             end_of_day = datetime.combine(sync_date, datetime.max.time())
+            
+            # 获取该日期已存在的店铺ID列表
+            existing_store_ids = set()
+            existing_stores = Store.select().where(
+                (Store.created_at >= start_of_day) & 
+                (Store.created_at <= end_of_day)
+            )
+            for store in existing_stores:
+                existing_store_ids.add(store.store_id)
+            
+            # 删除该日期的所有店铺记录
             Store.delete().where(
                 (Store.created_at >= start_of_day) & 
                 (Store.created_at <= end_of_day)
             ).execute()
         else:
             # 如果没有指定日期，删除所有数据重新插入
+            existing_store_ids = set()
             Store.delete().execute()
 
         # 使用insert_many批量插入新的店铺记录

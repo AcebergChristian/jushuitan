@@ -3,6 +3,9 @@ import json
 from datetime import datetime, timedelta, date
 
 
+authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMDExNjY1MSIsInJvbGVJZHMiOltdLCJ1c2VyX25hbWUiOiIxNTE3OTkwMzQ3NyIsImNvSWQiOiIxNDQ4MjExMyIsImV4cGlyYXRpb24iOjE3NzEyNTM5ODQyMzcsInVzZXIiOnsiY29JZCI6IjE0NDgyMTEzIiwiY29OYW1lIjoiMTc2NzkyOTYwNDIiLCJsb2dpbk5hbWUiOiIxNTE3OTkwMzQ3NyIsImxvZ2luV2F5IjoiVVNFUk5BTUUiLCJuaWNrTmFtZSI6IuiQjSIsInJvbGVJZHMiOiIxMSIsInVpZCI6IjIwMTE2NjUxIn0sImF1dGhvcml0aWVzIjpbIkpTVC1jaGFubmVsIiwiSlNULXN1cHBsaWVyIiwibXVsdGlMb2dpbiJdLCJjbGllbnRfaWQiOiJwYyIsImp0aSI6IjEyZGM5OTg5LTBiYmMtNDNiNC1hOTVmLTEzOWVhNjY1MWYwMSIsImV4cCI6MTc3MTI1Mzk4NH0.B4kGmFATvSDNJEpGfdHqOmFzAz8lZ5N52ivGAyfWBA0"
+
+
 def get_jushuitan_orders(sync_date=None):
     """
     获取聚水潭订单数据，默认查询前一天的所有订单
@@ -10,7 +13,7 @@ def get_jushuitan_orders(sync_date=None):
     url = "https://innerapi.scm121.com/api/inner/order/list"
 
     headers = {
-        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMjIyNzI4MiIsInJvbGVJZHMiOltdLCJ1c2VyX25hbWUiOiIxNzYwNzk5MjUyNiIsImNvSWQiOiIxNDQ4MjExMyIsImV4cGlyYXRpb24iOjE3Njk1MTk3NDA4NTMsInVzZXIiOnsiY29JZCI6IjE0NDgyMTEzIiwiY29OYW1lIjoiMTc2NzkyOTYwNDIiLCJsb2dpbk5hbWUiOiIxNzYwNzk5MjUyNiIsImxvZ2luV2F5IjoiVVNFUk5BTUUiLCJuaWNrTmFtZSI6Iua1i-ivlWVycCIsInJvbGVJZHMiOiIxMDMiLCJ1aWQiOiIyMjIyNzI4MiJ9LCJhdXRob3JpdGllcyI6WyJKU1QtY2hhbm5lbCIsIm11bHRpTG9naW4iLCJKU1Qtc3VwcGxpZXIiXSwiY2xpZW50X2lkIjoicGMiLCJqdGkiOiI4YzMxNTM3Yi0wY2M4LTQ2NGUtODA0Zi0yNzkzYWZmODM0MjQiLCJleHAiOjE3Njk1MTk3NDB9.wHfimSEOLEF607G0UoVmBfPV0ZZW3lJAP_JQp1qhHp0",
+        "authorization": authorization,
         "content-type": "application/json;charset=UTF-8",
         "origin": "https://innerorder.scm121.com",
         "referer": "https://innerorder.scm121.com/distribute",
@@ -94,7 +97,7 @@ def get_all_jushuitan_orders(sync_date=None):
     url = "https://innerapi.scm121.com/api/inner/order/list"
 
     headers = {
-        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMDExNjY1MSIsInJvbGVJZHMiOltdLCJ1c2VyX25hbWUiOiIxNTE3OTkwMzQ3NyIsImNvSWQiOiIxNDQ4MjExMyIsImV4cGlyYXRpb24iOjE3NzAzNjY2NzkyMDUsInVzZXIiOnsiY29JZCI6IjE0NDgyMTEzIiwiY29OYW1lIjoiMTc2NzkyOTYwNDIiLCJsb2dpbk5hbWUiOiIxNTE3OTkwMzQ3NyIsImxvZ2luV2F5IjoiVVNFUk5BTUUiLCJuaWNrTmFtZSI6IuiQjSIsInJvbGVJZHMiOiIxMSIsInVpZCI6IjIwMTE2NjUxIn0sImF1dGhvcml0aWVzIjpbIkpTVC1jaGFubmVsIiwibXVsdGlMb2dpbiIsIkpTVC1zdXBwbGllciJdLCJjbGllbnRfaWQiOiJwYyIsImp0aSI6Ijk1NzBmNTNkLWY5ODYtNDQ0YS1iYzZlLTJjY2UyYTk2YmQ3ZiIsImV4cCI6MTc3MDM2NjY3OX0.lhHgB_VpuzTBaxDqnBKlLyz5U5vTLn7tYFktr-tNpcU",
+        "authorization": authorization,
         "content-type": "application/json;charset=UTF-8",
         "origin": "https://innerorder.scm121.com",
         "referer": "https://innerorder.scm121.com/distribute",
@@ -159,7 +162,7 @@ def get_cancel_jushuitan_from_allorders(date=None):
     url = "https://innerapi.scm121.com/api/inner/order/list"
 
     headers = {
-        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMDExNjY1MSIsInJvbGVJZHMiOltdLCJ1c2VyX25hbWUiOiIxNTE3OTkwMzQ3NyIsImNvSWQiOiIxNDQ4MjExMyIsImV4cGlyYXRpb24iOjE3NzAzNjY2NzkyMDUsInVzZXIiOnsiY29JZCI6IjE0NDgyMTEzIiwiY29OYW1lIjoiMTc2NzkyOTYwNDIiLCJsb2dpbk5hbWUiOiIxNTE3OTkwMzQ3NyIsImxvZ2luV2F5IjoiVVNFUk5BTUUiLCJuaWNrTmFtZSI6IuiQjSIsInJvbGVJZHMiOiIxMSIsInVpZCI6IjIwMTE2NjUxIn0sImF1dGhvcml0aWVzIjpbIkpTVC1jaGFubmVsIiwibXVsdGlMb2dpbiIsIkpTVC1zdXBwbGllciJdLCJjbGllbnRfaWQiOiJwYyIsImp0aSI6Ijk1NzBmNTNkLWY5ODYtNDQ0YS1iYzZlLTJjY2UyYTk2YmQ3ZiIsImV4cCI6MTc3MDM2NjY3OX0.lhHgB_VpuzTBaxDqnBKlLyz5U5vTLn7tYFktr-tNpcU",
+        "authorization": authorization,
         "content-type": "application/json;charset=UTF-8",
         "origin": "https://innerorder.scm121.com",
         "referer": "https://innerorder.scm121.com/distribute",
@@ -216,6 +219,10 @@ def get_cancel_jushuitan_from_allorders(date=None):
 
 
 
+
+
+
+
 # 获取所有订单数据 用来与售后数据联查得到refund_amount
 def get_all_jushuitan_orders_with_refund(sync_date=None):
     """
@@ -225,7 +232,7 @@ def get_all_jushuitan_orders_with_refund(sync_date=None):
     url = "https://innerapi.scm121.com/api/inner/order/list"
 
     headers = {
-        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMDExNjY1MSIsInJvbGVJZHMiOltdLCJ1c2VyX25hbWUiOiIxNTE3OTkwMzQ3NyIsImNvSWQiOiIxNDQ4MjExMyIsImV4cGlyYXRpb24iOjE3NzAzNjY2NzkyMDUsInVzZXIiOnsiY29JZCI6IjE0NDgyMTEzIiwiY29OYW1lIjoiMTc2NzkyOTYwNDIiLCJsb2dpbk5hbWUiOiIxNTE3OTkwMzQ3NyIsImxvZ2luV2F5IjoiVVNFUk5BTUUiLCJuaWNrTmFtZSI6IuiQjSIsInJvbGVJZHMiOiIxMSIsInVpZCI6IjIwMTE2NjUxIn0sImF1dGhvcml0aWVzIjpbIkpTVC1jaGFubmVsIiwibXVsdGlMb2dpbiIsIkpTVC1zdXBwbGllciJdLCJjbGllbnRfaWQiOiJwYyIsImp0aSI6Ijk1NzBmNTNkLWY5ODYtNDQ0YS1iYzZlLTJjY2UyYTk2YmQ3ZiIsImV4cCI6MTc3MDM2NjY3OX0.lhHgB_VpuzTBaxDqnBKlLyz5U5vTLn7tYFktr-tNpcU",
+        "authorization": authorization,
         "content-type": "application/json;charset=UTF-8",
         "origin": "https://innerorder.scm121.com",
         "referer": "https://innerorder.scm121.com/distribute",
@@ -291,7 +298,7 @@ def get_cancel_jushuitan_from_shouhou(date=None):
     url = "https://innerapi.scm121.com/api/inner/after-sale/page/list"
 
     headers = {
-        "authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMDExNjY1MSIsInJvbGVJZHMiOltdLCJ1c2VyX25hbWUiOiIxNTE3OTkwMzQ3NyIsImNvSWQiOiIxNDQ4MjExMyIsImV4cGlyYXRpb24iOjE3NzAzNjY2NzkyMDUsInVzZXIiOnsiY29JZCI6IjE0NDgyMTEzIiwiY29OYW1lIjoiMTc2NzkyOTYwNDIiLCJsb2dpbk5hbWUiOiIxNTE3OTkwMzQ3NyIsImxvZ2luV2F5IjoiVVNFUk5BTUUiLCJuaWNrTmFtZSI6IuiQjSIsInJvbGVJZHMiOiIxMSIsInVpZCI6IjIwMTE2NjUxIn0sImF1dGhvcml0aWVzIjpbIkpTVC1jaGFubmVsIiwibXVsdGlMb2dpbiIsIkpTVC1zdXBwbGllciJdLCJjbGllbnRfaWQiOiJwYyIsImp0aSI6Ijk1NzBmNTNkLWY5ODYtNDQ0YS1iYzZlLTJjY2UyYTk2YmQ3ZiIsImV4cCI6MTc3MDM2NjY3OX0.lhHgB_VpuzTBaxDqnBKlLyz5U5vTLn7tYFktr-tNpcU",
+        "authorization": authorization,
         "content-type": "application/json;charset=UTF-8",
         "origin": "https://innerorder.scm121.com",
         "referer": "https://innerorder.scm121.com/afterSales",
