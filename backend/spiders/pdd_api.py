@@ -1,15 +1,13 @@
 import time
-import random
-import requests
 from datetime import datetime
+import json
+import gzip
+from io import BytesIO
 from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-
-
-PDD_API_URL = "https://yingxiao.pinduoduo.com/mms-gateway/venus/api/goods/promotion/v2/list"
 
 
 # ===============================
@@ -20,7 +18,6 @@ def create_driver(profile_name):
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_argument("--start-maximized")
 
-    # 👇 每个账号一个独立用户目录
     chrome_options.add_argument(
         f"--user-data-dir=/Users/Aceberg/chrome_profiles/{profile_name}"
     )
@@ -31,123 +28,58 @@ def create_driver(profile_name):
 
 
 # ===============================
-# 2️⃣ 等待你手动/自动登录
+# 2️⃣ 等你手动登录
 # ===============================
 def wait_for_login(driver):
     driver.get("https://yingxiao.pinduoduo.com/")
 
     print("🟡 请在浏览器中手动登录拼多多商家后台")
     print("🟢 登录完成后，回到终端，按【回车】继续...")
-
-    input()  # ⬅️ 阻塞，直到你按回车
-
-    # 给页面一点缓冲时间
-    time.sleep(2)
-
-    print("✅ 已确认登录，继续执行")
-
-
-# ===============================
-# 3️⃣ 前端触发一次请求并抓参数
-# ===============================
-def get_once_request_params(driver):
-    driver.requests.clear()
-
-    # ⚠️ 关键：通过 JS 触发前端请求（模拟翻页）
-    driver.execute_script("""
-        const evt = new Event('scroll');
-        window.dispatchEvent(evt);
-    """)
+    input()
 
     time.sleep(2)
-
-    for req in driver.requests:
-        if req.response and "promotion/v2/list" in req.url:
-            print("✅ 捕获到 promotion 请求")
-            return {
-                "crawlerInfo": req.params.get("crawlerInfo"),
-                "anti_content": req.headers.get("anti-content"),
-                "user_agent": req.headers.get("user-agent"),
-                "cookies": driver.get_cookies(),
-            }
-
-    raise RuntimeError("❌ 未捕获到 promotion 接口请求")
+    print("✅ 已确认登录")
 
 
 # ===============================
-# 4️⃣ 用这一套参数请求一页
+# 3️⃣ 等推广页面加载完成
 # ===============================
-def request_one_page(params, date_str):
-    session = requests.Session()
+def wait_promotion_page_ready(driver, timeout=30):
+    print("🚀 自动进入推广页面")
 
-    for c in params["cookies"]:
-        session.cookies.set(c["name"], c["value"], domain=c.get("domain"))
+    driver.get("https://yingxiao.pinduoduo.com/goods/promotion/list")
 
-    headers = {
-        "user-agent": params["user_agent"],
-        "anti-content": params["anti_content"],
-        "content-type": "application/json",
-        "referer": "https://yingxiao.pinduoduo.com/",
-        "origin": "https://yingxiao.pinduoduo.com",
-    }
-
-    payload = {
-        "crawlerInfo": params["crawlerInfo"],
-        "clientType": 1,
-        "blockType": 3,
-        "withTagsInfo": True,
-        "beginDate": date_str,
-        "endDate": date_str,
-        "pageNumber": 1,   # 🔥 永远是 1
-        "pageSize": 50,
-        "sortBy": 9999,
-        "orderBy": 9999,
-        "filter": {},
-        "scenesMode": 1
-    }
-
-    resp = session.post(PDD_API_URL, headers=headers, json=payload, timeout=15)
-    resp.raise_for_status()
-    return resp.json()
-
-
-# 点击下一页，不要用pagenumber
-def click_next_page(driver):
-    next_btn = WebDriverWait(driver, 20).until(
-        EC.element_to_be_clickable((
-            By.XPATH,
-            '//*[@id="odinTable"]/div[3]/ul/li[11]/button'
-        ))
+    # 等表格主体出现（而不是只等页面 load）
+    WebDriverWait(driver, 30).until(
+        EC.presence_of_element_located((By.ID, "odinTable"))
     )
-    next_btn.click()
+
+    print("✅ 推广页面已打开")
+    time.sleep(2)
 
 
+# ===============================
+# 4️⃣ 解析 promotion 响应（支持 gzip）
+# ===============================
+def parse_promotion_response(req):
+    body = req.response.body
+    encoding = req.response.headers.get("Content-Encoding", "")
 
-def wait_for_promotion_response(driver, timeout=15):
-    start = time.time()
-    while time.time() - start < timeout:
-        for req in driver.requests:
-            if req.response and "promotion/v2/list" in req.url:
-                try:
-                    import json
-                    data = json.loads(req.response.body.decode("utf-8"))
-                    if data.get("success"):
-                        return data.get("result", {}).get("adInfos", [])
-                except Exception:
-                    pass
-        time.sleep(0.3)
-    return []
+    if "gzip" in encoding:
+        body = gzip.GzipFile(fileobj=BytesIO(body)).read()
+
+    return json.loads(body.decode("utf-8"))
 
 
-
-# 获取当前页面数据
-def get_current_page_data(driver):
-    for req in driver.requests:
+# 获取最后一个promotion
+def get_latest_promotion_from_requests(driver):
+    """
+    用于第一页：从已有 requests 中，拿最近一次 promotion 响应
+    """
+    for req in reversed(driver.requests):
         if req.response and "promotion/v2/list" in req.url:
-            body = req.response.body
             try:
-                import json
-                data = json.loads(body.decode("utf-8"))
+                data = parse_promotion_response(req)
                 if data.get("success"):
                     return data.get("result", {}).get("adInfos", [])
             except Exception:
@@ -157,38 +89,144 @@ def get_current_page_data(driver):
 
 
 # ===============================
-# 5️⃣ 正确分页（一页一参数）
+# 5️⃣ 等“下一次新的 promotion 请求”
 # ===============================
-def get_all_promotion_data(driver):
-    all_data = []
+def wait_next_promotion(driver, since_ts, timeout=20):
+    """
+    只返回：since_ts 之后产生的 promotion 请求
+    """
+    start = time.time()
+
+    # ✅ 关键修复：float → datetime
+    since_dt = datetime.fromtimestamp(since_ts)
+
+    while time.time() - start < timeout:
+        for req in driver.requests:
+            if (
+                req.response
+                and "promotion/v2/list" in req.url
+                and req.date
+                and req.date >= since_dt
+            ):
+                try:
+                    data = parse_promotion_response(req)
+                    if data.get("success"):
+                        return data.get("result", {}).get("adInfos", [])
+                except Exception:
+                    pass
+        time.sleep(0.3)
+
+    return []
+
+
+# ===============================
+# 6️⃣ 点击“下一页”
+# ===============================
+def click_next_page(driver):
+    """
+    只负责尝试触发下一页
+    任意异常 = 已到最后一页
+    """
+    try:
+        next_li = driver.find_elements(
+            By.XPATH,
+            "//li[contains(@class,'anq-pagination-next')]"
+        )
+
+        if not next_li:
+            return False
+
+        # 判断 aria-disabled（唯一可靠信号）
+        if next_li[0].get_attribute("aria-disabled") == "true":
+            return False
+
+        btn = next_li[0].find_element(By.TAG_NAME, "button")
+        driver.execute_script("arguments[0].click();", btn)
+        return True
+
+    except Exception:
+        return False
+
+
+
+
+
+
+# ===============================
+# 7️⃣ 从当前页面状态开始爬
+# ===============================
+def crawl_from_current_page(driver):
+    all_items = []
+    seen_ids = set()
+
+    print("⏳ 读取当前页 promotion 请求（第一页）")
+
+    # ✅ 第 1 页：直接从历史 requests 中取
+    first_items = get_latest_promotion_from_requests(driver)
+
+    if not first_items:
+        print("❌ 当前页未捕获到 promotion 数据")
+        return all_items
+
+    for it in first_items:
+        gid = it.get("goodsId")
+        if gid and gid not in seen_ids:
+            seen_ids.add(gid)
+            all_items.append(it)
+
     page = 1
+    print(f"✅ 第 1 页获取 {len(first_items)} 条")
 
     while True:
-        print(f"📄 浏览器抓取第 {page} 页")
+        print(f"📄 翻到第 {page + 1} 页")
 
-        if page == 1:
-            # 第 1 页：不要 clear，等首次请求
-            items = wait_for_promotion_response(driver)
-        else:
-            # 第 2 页开始：翻页 → 新请求
-            driver.requests.clear()
-            click_next_page(driver)
-            items = wait_for_promotion_response(driver)
+        # ✅ 等表格稳定（避免点到中间态）
+        time.sleep(1)
 
-        if not items:
-            print("⚠️ 本页无数据或失败，停止")
+        since_ts = time.time()
+
+        if not click_next_page(driver):
+            print("✅ 已到最后一页，结束")
             break
 
-        all_data.extend(items)
+        # 点击下一页后 休息
+        time.sleep(2)
+
+
+        items = wait_next_promotion(driver, since_ts)
+
+        if not items:
+            print("⚠️ 本页未捕获到 promotion 请求，结束")
+            break
+
+        new_count = 0
+        for it in items:
+            gid = it.get("goodsId")
+            if gid and gid not in seen_ids:
+                seen_ids.add(gid)
+                all_items.append(it)
+                new_count += 1
+
+        print(f"✅ 本页新增 {new_count} 条")
+
+        if new_count == 0:
+            print("⚠️ 数据未推进，结束")
+            break
 
         if len(items) < 50:
-            print("✅ 已到最后一页")
+            print("✅ 返回数量不足 50，已到最后一页")
             break
 
         page += 1
-        time.sleep(random.uniform(1.5, 2.5))
+        time.sleep(1.2)
 
-    return all_data
+    return all_items
+
+
+
+
+
+
 
 
 
@@ -198,14 +236,12 @@ def get_all_promotion_data(driver):
 
 
 # ===============================
-# 6️⃣ 主入口
+# 8️⃣ 主入口
 # ===============================
 if __name__ == "__main__":
 
     SHOP_PROFILES = [
         "pdd_shop_001",
-        # "pdd_shop_002",
-        # "pdd_shop_003",
     ]
 
     for shop in SHOP_PROFILES:
@@ -214,12 +250,15 @@ if __name__ == "__main__":
 
         try:
             wait_for_login(driver)
-            time.sleep(5)  # 等页面初始化
 
-            today = datetime.now().strftime("%Y-%m-%d")
-            data = get_all_promotion_data(driver)
+            print("👉 请手动进入【推广页面】")
+            input("确认后按回车开始抓取...")
 
-            print(f"✅ {shop} 抓取 {len(data)} 条")
+            wait_promotion_page_ready(driver)
+
+            data = crawl_from_current_page(driver)
+
+            print(f"\n🎉 抓取完成，共 {len(data)} 条 promotion 数据")
 
         finally:
             driver.quit()
