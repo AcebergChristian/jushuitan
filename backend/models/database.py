@@ -333,12 +333,155 @@ class RefundRecord(BaseModel):
 )
 
 
+# pdd table - 拼多多广告推广数据表
+class PddTable(BaseModel):
+    id = AutoField(primary_key=True)
+    
+    # 基础广告信息
+    ad_id = CharField(unique=True, index=True)  # 广告ID
+    ad_name = CharField(null=True)  # 广告名称
+    ad_status = IntegerField(null=True)  # 广告状态
+    plan_id = CharField(null=True, index=True)  # 计划ID
+    goods_id = CharField(null=True, index=True)  # 商品ID
+    mall_id = CharField(null=True, index=True)  # 店铺ID
+    
+    # 商品信息
+    goods_name = CharField(null=True)  # 商品名称
+    thumb_url = TextField(null=True)  # 商品缩略图URL
+    cat_id = CharField(null=True)  # 类目ID
+    min_on_sale_group_price = FloatField(null=True)  # 最低在售拼团价
+    
+    # 出价和预算信息
+    bid_type = IntegerField(null=True)  # 出价类型
+    agent_bid = FloatField(null=True)  # 代理出价
+    optimization_bid = FloatField(null=True)  # 优化出价
+    target_roi = FloatField(null=True)  # 目标ROI
+    daily_cost = FloatField(null=True)  # 日消耗
+    max_cost = FloatField(null=True)  # 最大消耗
+    cost_type = IntegerField(null=True)  # 消耗类型
+    
+    # 建议信息
+    suggest_value = FloatField(null=True)  # 建议出价值
+    suggest_level = IntegerField(null=True)  # 建议等级
+    suggest_min_value = FloatField(null=True)  # 建议最小值
+    suggest_max_value = FloatField(null=True)  # 建议最大值
+    suggest_max_cost = FloatField(null=True)  # 建议最大消耗
+    
+    # 报表数据 - 核心指标
+    impression = IntegerField(default=0)  # 曝光量
+    click = IntegerField(default=0)  # 点击量
+    spend = FloatField(default=0.0)  # 花费
+    ctr = FloatField(default=0.0)  # 点击率
+    cvr = FloatField(default=0.0)  # 转化率
+    
+    # 订单相关
+    order_num = IntegerField(default=0)  # 订单数
+    direct_order_num = IntegerField(default=0)  # 直接订单数
+    indirect_order_num = IntegerField(default=0)  # 间接订单数
+    net_order_num = IntegerField(default=0)  # 净订单数
+    settlement_order = IntegerField(default=0)  # 结算订单数
+    cost_per_order = FloatField(default=0.0)  # 订单成本
+    
+    # GMV相关
+    gmv = FloatField(default=0.0)  # GMV
+    direct_gmv = FloatField(default=0.0)  # 直接GMV
+    indirect_gmv = FloatField(default=0.0)  # 间接GMV
+    net_gmv = FloatField(default=0.0)  # 净GMV
+    settlement_gmv = FloatField(default=0.0)  # 结算GMV
+    net_gmv_rate = FloatField(default=0.0)  # 净GMV率
+    settlement_gmv_rate = FloatField(default=0.0)  # 结算GMV率
+    
+    # 退款相关
+    refund_order_30d = IntegerField(default=0)  # 30天退款订单数
+    refund_gmv_30d = FloatField(default=0.0)  # 30天退款GMV
+    refund_order_rate_30d = FloatField(default=0.0)  # 30天退款订单率
+    refund_gmv_rate_30d = FloatField(default=0.0)  # 30天退款GMV率
+    exempt_refund_order_30d = IntegerField(default=0)  # 30天免责退款订单数
+    exempt_refund_gmv_30d = FloatField(default=0.0)  # 30天免责退款GMV
+    exempt_refund_order_rate_30d = FloatField(default=0.0)  # 30天免责退款订单率
+    exempt_refund_gmv_rate_30d = FloatField(default=0.0)  # 30天免责退款GMV率
+    quick_refund_order_num = IntegerField(default=0)  # 快速退款订单数
+    quick_refund_gmv = FloatField(default=0.0)  # 快速退款GMV
+    
+    # ROI相关
+    order_spend_roi_unified = FloatField(default=0.0)  # 统一订单花费ROI
+    order_spend_net_roi = FloatField(default=0.0)  # 净订单花费ROI
+    settlement_roi = FloatField(default=0.0)  # 结算ROI
+    
+    # 平均金额
+    avg_pay_amount = FloatField(default=0.0)  # 平均支付金额
+    avg_direct_pay_amount = FloatField(default=0.0)  # 平均直接支付金额
+    avg_indirect_pay_amount = FloatField(default=0.0)  # 平均间接支付金额
+    
+    # 多目标数据
+    multi_goal_goods_fav_num = IntegerField(default=0)  # 商品收藏数
+    multi_goal_mall_fav_num = IntegerField(default=0)  # 店铺收藏数
+    multi_goal_inquiry_num = IntegerField(default=0)  # 咨询数
+    multi_goal_cost_per_goods_fav = FloatField(default=0.0)  # 商品收藏成本
+    multi_goal_cost_per_mall_fav = FloatField(default=0.0)  # 店铺收藏成本
+    multi_goal_cost_per_inquiry = FloatField(default=0.0)  # 咨询成本
+    
+    # 状态和标签
+    data_operate_status = IntegerField(null=True)  # 数据操作状态
+    data_accumulation_status = IntegerField(null=True)  # 数据积累状态
+    scenes_type = IntegerField(null=True)  # 场景类型
+    scenes_mode = IntegerField(null=True)  # 场景模式
+    ad_tag_code_list = TextField(null=True)  # 广告标签代码列表(JSON)
+    
+    # 排除退款相关
+    exclude_refund_status = IntegerField(null=True)  # 排除退款状态
+    exclude_refund_force_switch_finish_time = DateTimeField(null=True)  # 排除退款强制切换完成时间
+    
+    # 广告组信息
+    ad_group_id = CharField(null=True)  # 广告组ID
+    ad_group_name = CharField(null=True)  # 广告组名称
+    
+    # 时间信息
+    create_time = DateTimeField(null=True)  # 创建时间
+    
+    # 其他标志
+    is_stick = BooleanField(default=False)  # 是否置顶
+    is_traffic_card_ad = BooleanField(default=False)  # 是否流量卡广告
+    disable_switch_to_roi = BooleanField(default=False)  # 禁用切换到ROI
+    
+    # 预算变更
+    budget_changed_number_today = IntegerField(default=0)  # 今日预算变更次数
+    available_budget_change_number_today = IntegerField(default=0)  # 今日可用预算变更次数
+    
+    # 原始JSON数据(可选,用于存储完整的API响应)
+    raw_data = TextField(null=True)  # 原始JSON数据
+    
+    # 系统字段
+    is_del = BooleanField(default=False)  # 逻辑删除标志
+    created_at = DateTimeField(default=datetime.now)  # 记录创建时间
+    updated_at = DateTimeField(default=datetime.now)  # 记录更新时间
+    
+    class Meta:
+        table_name = 'pdd_ads'
+    
+    def set_raw_data(self, data_dict):
+        """设置原始JSON数据"""
+        self.raw_data = json.dumps(data_dict, ensure_ascii=False)
+    
+    def get_raw_data(self):
+        """获取原始JSON数据"""
+        try:
+            return json.loads(self.raw_data) if self.raw_data else {}
+        except json.JSONDecodeError:
+            return {}
+    
+    def save(self, *args, **kwargs):
+        """保存时自动更新updated_at"""
+        self.updated_at = datetime.now()
+        super().save(*args, **kwargs)
+
+
 
 
 # 创建所有表
 def create_tables():
     with database:
-        database.create_tables([User, JushuitanProduct, Goods, Store, JushuitanCancelProduct, RefundRecord])
+        database.create_tables([User, JushuitanProduct, Goods, Store, JushuitanCancelProduct, RefundRecord, PddTable])
 
 
 
