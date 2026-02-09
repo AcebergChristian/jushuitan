@@ -335,26 +335,6 @@ def get_cancel_jushuitan_from_shouhou(date=None):
         "pageSize": 9999  # 获取所有记录
     }
 
-# {
-#     "coId": "14482113",
-#     "uid": "20116651",
-#     "searchType": 1,
-#     "confirmStartTime": "2026-01-26 00:00:00",
-#     "confirmEndTime": "2026-01-27 00:00:00",
-#     "querySortDTO": {
-#         "shopEndDate": false
-#     },
-#     "isWhite": 1,
-#     "afterSaleStatus": [
-#         "Confirmed"
-#     ],
-#     "shopCodeList": [
-#         "19179894"
-#     ],
-#     "pageNum": 1,
-#     "pageSize": 50
-# }
-
 
     try:
         resp = requests.post(url, headers=headers, json=payload, timeout=15)
@@ -372,6 +352,71 @@ def get_cancel_jushuitan_from_shouhou(date=None):
     except Exception as e:
         print(f'处理聚水潭售后数据时发生错误: {e}')
         return None
+
+
+
+# 查售后订单数据 获取acqiure接口数据 参数日期和oidlist
+def acquire_all_simple_orders(oid_list):
+    """
+    获取售后订单的详细数据
+    
+    参数:
+        oid_list: 订单ID列表
+        page_num: 页码，默认为1
+        page_size: 每页数量，默认为50
+    
+    返回:
+        订单详细数据
+    """
+    url = "https://innerapi.scm121.com/api/inner/order/acquireAllSimpleOrders"
+    
+    headers = {
+        "accept": "application/json",
+        "accept-language": "zh-CN,zh;q=0.9",
+        "app-version": "TOWER_20260205204706",
+        "appcode": "sc.scm121.com",
+        "authorization": authorization,
+        "content-type": "application/json;charset=UTF-8",
+        "gwfp": "180fcdc0c0f8aa459761e4b59acf09a5",
+        "origin": "https://innerorder.scm121.com",
+        "referer": "https://innerorder.scm121.com/afterSales",
+        "sec-ch-ua": '"Not(A:Brand";v="8", "Chromium";v="144", "Google Chrome";v="144"',
+        "sec-ch-ua-mobile": "?0",
+        "sec-ch-ua-platform": '"macOS"',
+        "sec-fetch-dest": "empty",
+        "sec-fetch-mode": "cors",
+        "sec-fetch-site": "same-site",
+        "source": "SUPPLIER",
+        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36"
+    }
+    
+    payload = {
+        "oidList": oid_list,
+        "pageSize": 1,
+        "pageNum": 9999
+    }
+    
+    try:
+        resp = requests.post(url, headers=headers, json=payload, timeout=15)
+        resp.raise_for_status()
+        
+        data = resp.json()
+        order_count = len(data.get('data', []))
+        print(f'成功获取售后订单详细数据，共{order_count}条记录')
+        
+        return data
+        
+    except requests.exceptions.RequestException as e:
+        print(f'请求聚水潭售后订单详细API失败: {e}')
+        return None
+    except Exception as e:
+        print(f'处理聚水潭售后订单详细数据时发生错误: {e}')
+        return None
+
+
+
+
+
 
 
 # 如果直接运行此脚本，则执行查询

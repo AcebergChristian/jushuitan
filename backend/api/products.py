@@ -13,6 +13,7 @@ from ..database import get_db
 from ..models.database import JushuitanProduct, Goods, User, Store
 from .auth import get_current_user
 from ..spiders.jushuitan_api import get_all_jushuitan_orders, get_cancel_jushuitan_from_shouhou, get_all_jushuitan_orders_with_refund
+from ..spiders.pdd_api import get_pdd_promotion_data
 
 
 
@@ -2011,3 +2012,41 @@ def read_pdd_products(skip: int = 0, limit: int = 100):
 #     }
 
 
+
+
+# 拼多多推广数据相关路由
+@router.post("/pdd/promotion")
+def get_pdd_promotion(request: dict):
+    """
+    获取拼多多推广数据
+    
+    请求参数:
+        date: 日期字符串，格式为 YYYY-MM-DD
+    
+    返回:
+        {
+            "success": bool,
+            "data": list,
+            "total": int,
+            "message": str
+        }
+    """
+    # 获取请求中的日期参数
+    date_str = request.get('date')
+    
+    if not date_str:
+        raise HTTPException(status_code=400, detail="缺少日期参数")
+    
+    # 验证日期格式
+    try:
+        datetime.strptime(date_str, '%Y-%m-%d')
+    except ValueError:
+        raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
+    
+    # 调用拼多多API获取数据
+    result = get_pdd_promotion_data(date_str)
+    
+    if not result['success']:
+        raise HTTPException(status_code=500, detail=result['message'])
+    
+    return result

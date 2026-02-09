@@ -1,51 +1,163 @@
+import time
+import random
 import requests
-import json
+from datetime import datetime
+from seleniumwire import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-url = "https://yingxiao.pinduoduo.com/mms-gateway/venus/api/goods/promotion/v1/list"
 
-headers = {
-    "accept": "application/json, text/plain, */*",
-    "accept-language": "zh-CN,zh;q=0.9",
-    "content-type": "application/json",
-    "origin": "https://yingxiao.pinduoduo.com",
-    "referer": "https://yingxiao.pinduoduo.com/goods/promotion/list?msfrom=mms_sidenav",
-    "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
-    
-    # 🔥 关键反爬参数
-    "anti-content": "0asAfqn55iQoU99xvHB2Jm_fMX5BlJudACW0TS8a2Xkf2VOzfK40YZbiCSi40Cx-hCw66pj4aCnJ28u5tlf1xa9-hC2Y6OhRAzi3tvU_et7w-yZw2TWTDZVb7VnQk3gnQ_7QGgq39gmmRr6XsIoC9htTNVSGgL0Af_9dV0gDUxigMSIkWarEv5RJQJkkAYFvpjWXG4BgXP-nIw0IBcB1kULXFdv7zYGYUM-rH7DyXjmzZiOWUXeN82wT_2IAyXk4V3Q5UgYsP_22P2l0YC9Pxm77py6tF6gq0deOtZ9wvv7v9jUzbjGcJy9Bfywd4W0BmN2k3PNf297HPfR27IAqshThNU8Lyp2F46IMgvlUHc2oijkyLbcun6x_w2jII1U8-ubWhhh3-QB-K-878AIVS7DrA3ehYOui_I5dcUKa_YWhbOyajvLUYi_1wRHaJoH9k8Jboa",
+PDD_API_URL = "https://yingxiao.pinduoduo.com/mms-gateway/venus/api/goods/promotion/v2/list"
 
-    # ⚠️ 营销系统上下文
-    "adbiz-front-trace-id": "cGNfMTc2ODk2MzcwOTI1OF9wcm9tb3Rpb25fNWI1M2Y0OWQtNzY2Ny00ZGRjLTk5NDYtZTQ5OWU3MGU5Yzg4",
-    "adbiz-page-enter-time": "1768963708590",
-    "adbiz-page-version": "v20260119.17.16.44-1113",
-    
-    # 🔐 安全相关头部
-    "priority": "u=1, i",
-    "sec-ch-ua": '"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"',
-    "sec-ch-ua-mobile": "?0",
-    "sec-ch-ua-platform": '"macOS"',
-    "sec-fetch-dest": "empty",
-    "sec-fetch-mode": "cors",
-    "sec-fetch-site": "same-origin",
 
-    # 🍪 Cookie 原样
-    "cookie": "_a42=386ba908-471c-4b9d-af6d-4a6bdb864a66; _bee=hLBIWqdPbG9KmuR61y1cMuEu1YCxYQ7b; _f77=6e928cbe-c1ca-443d-b1f0-b17187327621; _nano_fp=Xpmjl0CJlpXJlpTbXo_FIMEr7tOdempOVQeEZl1q; api_uid=Ck9MdGlvHC1LLQBZQjvSAg==; rckk=hLBIWqdPbG9KmuR61y1cMuEu1YCxYQ7b; ru1k=6e928cbe-c1ca-443d-b1f0-b17187327621; ru2k=386ba908-471c-4b9d-af6d-4a6bdb864a66; SUB_PASS_ID=eyJ0IjoiRmp6SjJQbEg0YWgzQWZYNG9Dbkd6c3MxaERWUkl6N1NSU21kYUNLc29xcUJTV0NnWVRrT0xLbHpZU1YvWTh0VyIsInYiOjEsInMiOjcsIm0iOjI2MzU2NDc4OSwidSI6MTczNzA1NTIyfQ; SUB_SYSTEM_ID=7; windows_app_shop_token_23=eyJ0IjoiSFhuNXNjQjhrNDlqNXVKajY3QVJEaVNDU1UySS94czk1NER6cUZRUmFVODEzUS9CMzFkS3c3TG5RdGhuV0p5ZSIsInYiOjEsInMiOjIzLCJtIjoyNjM1NjQ3ODksInUiOjE3MzcwNTUyMn0"
-}
+# ===============================
+# 1️⃣ 启动 Selenium（真实浏览器）
+# ===============================
+def create_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.add_argument("--start-maximized")
 
-payload = {
-    "crawlerInfo": "0asAfqn55iQoU99xvHB2Jm_fMX5BlJudACW0TS8a2Xkf2VOzfK40YZbiCSi40Cx-hCw66pj4aCnJ28u5tlf1xa9-hC2Y6OhRAzi3tvU_et7w-yZw2TWTDZVb7VnQk3gnQ_7QGgq39gmmRr6XsIoC9htTNVSGgL0Af_9dV0gDUxigMSIkWarEv5RJQJkkAYFvpjWXG4BgXP-nIw0IBcB1kULXFdv7zYGYUM-rH7DyXjmzZiOWUXeN82wT_2IAyXk4V3Q5UgYsP_22P2l0YC9Pxm77py6tF6gq0deOtZ9wvv7v9jUzbjGcJy9Bfywd4W0BmN2k3PNf297HPfR27IAqshThNU8Lyp2F46IMgvlUHc2oijkyLbcun6x_w2jII1U8-ubWhhh3-QB-K-878AIVS7DrA3ehYOui_I5dcUKa_YWhbOyajvLUYi_1wRHaJoH9k8Jboa",
-    "clientType": 1,
-    "blockType": 3,
-    "beginDate": "2026-01-21",
-    "endDate": "2026-01-21",
-    "pageNumber": 1,
-    "pageSize": 50,
-    "sortBy": 9999,
-    "orderBy": 9999,
-    "filter": {},
-    "scenesMode": 1
-}
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.set_page_load_timeout(30)
+    return driver
 
-resp = requests.post(url, headers=headers, json=payload, timeout=15)
-print(resp.status_code)
-print(len(resp.json().get('result').get('adInfos')))
+
+# ===============================
+# 2️⃣ 等待你手动/自动登录
+# ===============================
+def wait_for_login(driver):
+    driver.get("https://yingxiao.pinduoduo.com/")
+
+    print("🟡 请登录拼多多商家后台，登录完成后等待页面加载...")
+    WebDriverWait(driver, 300).until(
+        EC.presence_of_element_located((By.TAG_NAME, "body"))
+    )
+    time.sleep(5)
+    print("✅ 登录完成")
+
+
+# ===============================
+# 3️⃣ 前端触发一次请求并抓参数
+# ===============================
+def get_once_request_params(driver):
+    driver.requests.clear()
+
+    # ⚠️ 关键：通过 JS 触发前端请求（模拟翻页）
+    driver.execute_script("""
+        const evt = new Event('scroll');
+        window.dispatchEvent(evt);
+    """)
+
+    time.sleep(2)
+
+    for req in driver.requests:
+        if req.response and "promotion/v2/list" in req.url:
+            print("✅ 捕获到 promotion 请求")
+            return {
+                "crawlerInfo": req.params.get("crawlerInfo"),
+                "anti_content": req.headers.get("anti-content"),
+                "user_agent": req.headers.get("user-agent"),
+                "cookies": driver.get_cookies(),
+            }
+
+    raise RuntimeError("❌ 未捕获到 promotion 接口请求")
+
+
+# ===============================
+# 4️⃣ 用这一套参数请求一页
+# ===============================
+def request_one_page(params, date_str, page_number):
+    session = requests.Session()
+
+    for c in params["cookies"]:
+        session.cookies.set(
+            c["name"],
+            c["value"],
+            domain=c.get("domain")
+        )
+
+    headers = {
+        "user-agent": params["user_agent"],
+        "anti-content": params["anti_content"],
+        "content-type": "application/json",
+        "referer": "https://yingxiao.pinduoduo.com/",
+        "origin": "https://yingxiao.pinduoduo.com",
+    }
+
+    payload = {
+        "crawlerInfo": params["crawlerInfo"],
+        "clientType": 1,
+        "blockType": 3,
+        "withTagsInfo": True,
+        "beginDate": date_str,
+        "endDate": date_str,
+        "pageNumber": page_number,
+        "pageSize": 50,
+        "sortBy": 9999,
+        "orderBy": 9999,
+        "filter": {},
+        "scenesMode": 1
+    }
+
+    resp = session.post(
+        PDD_API_URL,
+        headers=headers,
+        json=payload,
+        timeout=15
+    )
+    resp.raise_for_status()
+    return resp.json()
+
+
+# ===============================
+# 5️⃣ 正确分页（一页一参数）
+# ===============================
+def get_all_promotion_data(driver, date_str):
+    all_data = []
+    page = 1
+
+    while True:
+        print(f"📄 抓取第 {page} 页")
+
+        params = get_once_request_params(driver)
+        result = request_one_page(params, date_str, page)
+
+        if not result.get("success"):
+            print("⚠️ 接口返回失败，停止")
+            break
+
+        items = result.get("result", {}).get("adInfos", [])
+        if not items:
+            print("✅ 无更多数据")
+            break
+
+        all_data.extend(items)
+
+        if len(items) < 50:
+            print("✅ 已到最后一页")
+            break
+
+        page += 1
+        time.sleep(random.uniform(1.5, 3.0))
+
+    return all_data
+
+
+# ===============================
+# 6️⃣ 主入口
+# ===============================
+if __name__ == "__main__":
+    driver = create_driver()
+    try:
+        wait_for_login(driver)
+
+        today = datetime.now().strftime("%Y-%m-%d")
+        data = get_all_promotion_data(driver, today)
+
+        print(f"\n🎉 抓取完成，总条数: {len(data)}")
+
+    finally:
+        driver.quit()

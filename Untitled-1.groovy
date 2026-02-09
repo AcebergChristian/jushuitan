@@ -111,3 +111,15195 @@ order========> {'oid': '3239345',
 'totalAmt': None, 
 'discountAmt': None, 
 'commission': 0.0, 'freight': 0.0, 'payAmount': 7.8, 'paidAmount': 7.8, 'totalPurchasePriceGoods': None, 'smallProgramFreight': None, 'totalTransactionPurchasePrice': None, 'smallProgramCommission': None, 'smallProgramPaidAmount': None, 'freightCalcRule': None, 'oaId': None, 'soId': '260126-241801695520380', 'rawSoId': '260126-241801695520380', 'mergeSoIds': None, 'soIdList': ['260126-241801695520380'], 'supplierCoId': '10361546', 'supplierName': '义乌市昀晗供应链管理有限公司', 'channelCoId': '0', 'channelName': None, 'shopId': '18386894', 'shopType': None, 'shopName': '飞流直上三千尺', 'disInnerOrderGoodsViewList': [{'parentOiId': None, 'oiId': '3360970', 'outerOiId': '260126-241801695520380_1853927373400', 'supplierId': '10361546', 'supplierName': '义乌市昀晗供应链管理有限公司', 'pic': 'https://img.pddpic.com/mms-goods-image/2025-10-15/2d92f006-2763-4717-92c6-c7a769d1045d.jpeg.a.jpeg', 'styleCode': '3724977062386204929', 'itemCode': 'CHAOQIUSENG-10', 'itemName': '全新料塑料捆扎绳小卷尼龙捆扎绳子绑东西捆绑带捆扎啤酒带包批发', 'itemCount': 1, 'properties': '全新升级【结实不易断】随机颜色发,全新料：1卷【50米】升级加粗', 'unitPrice': None, 'price': 7.8, 'totalPrice': 7.8, 'referrerId': None, 'referrerName': None, 'isGift': False, 'refundStatus': 'success', 'skuType': 'normal', 'drpPrice': 0.93, 'status': 'Cancelled', 'transactionPurchasePrice': None, 'isNoStock': False, 'isAllowDeletion': False, 'shopSkuId': '1853927373400', 'shopIid': '837342179896', 'shopId': '18386894', 'isChangeThePrice': None, 'originalSoId': '18386894:260126-241801695520380', 'itemLabels': []}], 'orderTime': '2026-01-26 12:54:43', 'payTime': '2026-01-26 12:54:43', 'deliveryDate': None, 'expressCode': None, 'expressCompany': None, 'trackNo': None, 'orderStatus': 'Cancelled', 'errorMsg': None, 'errorDesc': None, 'labels': ['发货前售后', '已成团'], 'buyerMessage': None, 'remark': None, 'sellerFlag': 0, 'updated': '2026-01-26 12:55:40', 'clientPaidAmt': 7.8, 'goodsQty': 1, 'goodsAmt': 7.8, 'freeAmount': 0.0, 'orderType': '普通订单,分销Plus', 'isSplit': False, 'isMerge': False, 'planDeliveryDate': '2026-01-28 12:54:43', 'deliverTimeLeft': None, 'printCount': None, 'ioId': None, 'receiverState': '上海市', 'receiverCity': '上海市', 'receiverDistrict': '浦东新区', 'weight': '0', 'realWeight': None, 'wmsCoId': '0', 'wmsCoName': '{未设定发货仓库}', 'drpAmount': 0.93, 'shopSite': '拼多多', 'isDeliveryPrinted': None, 'fullReceiveData': '{"ReceiverAddress":"~AgAAAAPpyGQIdZRR9wFH9cx1hq2TCdMbd7/E16gq2sTeNGZlgR59w9GsRq3wnG2UXFkJbSKY51cPH7Q32xmJf02Ed5wpLPaGXEccL4R/RcDO2LpjKAeNOfV/tREjy24V~3~","ReceiverName":"~AgAAAAPpyGQFdZRR9wCWMOzkHFHA4zP8Tp8HwubI66s=~3~","ReceiverPhone":"$AgAAAAPpyGQGdZRR9wBU0jpLqpjqypoeVvM1uics9pk=$3$","MaskPhone":"***********","MaskName":"陶**","MaskAddress":"上海市浦东新区***********","Channel":"Unknown"}', 'fuzzFullReceiverInfo': '{"receiver_address":"050:***********","receiver_name":"050:陶**","receiver_phone":"","receiver_mobile":"050:***********","shop_buyer_id":"陶**_***********","fuzz_receiver_mobile":"***********","fuzz_receiver_name":"陶**","fuzz_receiver_address":"上海市浦东新区***********","fuzz_shop_buyer_id":"陶**_***********"}', 'shopBuyerId': '陶**_***********', 'logisticsNos': None, 'openId': 'fslD13sslVR4JRL5IOLZnR1rXtmqrhyn8RUiSe5h9ISWcnJYsvAtqUIVKNQYkU9e', 'printedList': None, 'note': None, 'receiverTown': None, 'solution': None, 'orderFrom': 'PINDUODUO', 'linkOid': None, 'channelOid': None, 'isSupplierInitiatedReissueOrExchange': None, 'confirmDate': None, 'topDrpCoIdFrom': '0', 'topDrpOrderId': '0', 'orderIdentity': None, 'isVirtualShipment': False, 'originalSoId': '260126-241801695520380', 'relationshipBySoIdMd5': 'be240b5836d1983743ba2549ae6f1467', 'online': True}
+
+
+
+
+
+
+
+
+
+
+
+拼多多数据：
+
+{
+    "result": {
+        "adStatus2AdCountStatistic": null,
+        "totalAdNum": 371,
+        "sumReportInfo": {
+            "refundGmv30d": 0,
+            "avgPayAmount": 0.0,
+            "orderSpendNetRoi": 0.0,
+            "netGmv": 0,
+            "settlementGmvRate": 0.0,
+            "enblExldRfndGmv": 0,
+            "exemptRefundGmvRate30d": 0.0,
+            "orderSpendNetCostPerOrder": 0.0,
+            "multiGoalCostPerGoodsFav": 0.0,
+            "multiGoalMallFavNum": 0,
+            "multiGoalCostPerMallFav": 0.0,
+            "multiGoalCostPerInquiry": 0.0,
+            "ctr": 0.0,
+            "mallFavSpend": 0,
+            "inquirySpend": 0,
+            "exemptRefundGmv30d": 0,
+            "enblExldRfndMallDutyFullrfndOrder": 0,
+            "exemptRefundOrderRate30d": 0.0,
+            "exemptRefundOrderV2": 0,
+            "click": 0,
+            "exemptRefundOrderV3": 0,
+            "directGmv": 0,
+            "enblExldRfndFullrfndOrder": 0,
+            "exemptRefundGmvV2": 0,
+            "impression": 0,
+            "netOrderNum": 0,
+            "costPerOrder": 0.0,
+            "exemptRefundGmvV3": 0,
+            "goodsFavSpend": 0,
+            "mallDutyRefundGmv": 0,
+            "orderSpendRoiUnified": 0.0,
+            "exemptMallDutyRefundOrderV3": 0,
+            "orderNum": 0,
+            "refundOrder30d": 0,
+            "tempNetRefundOrder": 0,
+            "gmv": 0,
+            "settlementGmv": 0,
+            "avgDirectPayAmount": 0.0,
+            "settlementOrderSpend": 0,
+            "quickRefundOrderNum": 0,
+            "spend": 0,
+            "settlementRoi": 0.0,
+            "tempExemptRefundCompensateAmount": 0,
+            "indirectGmv": 0,
+            "multiGoalGoodsFavNum": 0,
+            "orderSpend": 0,
+            "exemptMallDutyRefundGmvV3": 0,
+            "cvr": 0.0,
+            "tempNetRefundGmv": 0,
+            "indirectOrderNum": 0,
+            "costPerSettlementOrderForDeal": 0.0,
+            "quickRefundGmv": 0,
+            "refundOrderRate30d": 0.0,
+            "exemptRefundCompensateAmount30d": 0,
+            "exemptRefundOrder30d": 0,
+            "settlementOrderRate": 0.0,
+            "avgIndirectPayAmount": 0.0,
+            "netGmvRate": 0.0,
+            "mallDutyRefundOrderNum": 0,
+            "settlementOrder": 0,
+            "directOrderNum": 0,
+            "multiGoalInquiryNum": 0,
+            "enblExldRfndMallDutyGmv": 0,
+            "refundGmvRate30d": 0.0
+        },
+        "adInfos": [
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 217,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 543,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547522
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215934,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "260.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.34",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.34",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547522,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547522,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "7.55",
+                        "unitCode": 1
+                    },
+                    "catId": 26047,
+                    "goodsId": 884716713749,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/a70ed1ae8ef151b01e8385e16a27e261.jpeg",
+                    "goodsName": "伊丽莎白圈狗狗猫咪项圈脖套防舔防抓咬耻辱圈宠物头套绝育防护圈"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884716713749,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "伊丽莎白圈狗狗猫咪项圈脖套防舔防抓咬耻辱圈宠物头套绝育防护圈",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 197,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 491,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547523
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215935,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "360.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.89",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.89",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547523,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547523,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "6.99",
+                        "unitCode": 1
+                    },
+                    "catId": 11965,
+                    "goodsId": 884716427753,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/e6751cf4ee346e1a9992d55d5b4199b9.jpeg",
+                    "goodsName": "口哨户外救生哨地震洪水求生哨铝金属高音高频训练鸟鸽子儿童哨子"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884716427753,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "口哨户外救生哨地震洪水求生哨铝金属高音高频训练鸟鸽子儿童哨子",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547524
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215936,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.03",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.03",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547524,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547524,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 2837,
+                    "goodsId": 884716416264,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/400b421f689895f45709aa028df61c3c.jpeg",
+                    "goodsName": "办公手握打孔机学生a4纸文具手动单孔活页打孔器金属夹子收纳夹子"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884716416264,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "办公手握打孔机学生a4纸文具手动单孔活页打孔器金属夹子收纳夹子",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 219,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 547,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.60",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547525
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215937,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "260.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.49",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.49",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547525,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547525,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.99",
+                        "unitCode": 1
+                    },
+                    "catId": 8037,
+                    "goodsId": 884716235431,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/4d9441353a576d2e43938bcdf7054756.jpeg",
+                    "goodsName": "汽车轻微划痕修复蜡抛光增亮车漆轻微刮痕护理保护车漆提升光泽"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884716235431,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "汽车轻微划痕修复蜡抛光增亮车漆轻微刮痕护理保护车漆提升光泽",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 219,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 548,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547526
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215938,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "330.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.91",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.91",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547526,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547526,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 16870,
+                    "goodsId": 884716177648,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/af1f221a94debc93e3a1ecc8264c7ed2.jpeg",
+                    "goodsName": "不伤衣物裤脚防拖地夹子隐形边无痕固定夹收口裤腿挽裤子改短扣"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884716177648,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "不伤衣物裤脚防拖地夹子隐形边无痕固定夹收口裤腿挽裤子改短扣",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547527
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215939,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "330.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 1,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.10",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.10",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        1,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547527,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547527,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "16.46",
+                        "unitCode": 1
+                    },
+                    "catId": 16969,
+                    "goodsId": 884715846451,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/c47d7017ab95b77cbfbf958a494104ed.jpeg",
+                    "goodsName": "皮袖套防水防油套袖男女软皮套袖工作厨房劳保袖头秋冬季耐磨护袖"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884715846451,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "皮袖套防水防油套袖男女软皮套袖工作厨房劳保袖头秋冬季耐磨护袖",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "125.90",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "42.32",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.60",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547528
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215940,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "200.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.02",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.02",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547528,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547528,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "5.97",
+                        "unitCode": 1
+                    },
+                    "catId": 6307,
+                    "goodsId": 884714990364,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/211b5c5ee842dea8f55b103968804d31.jpeg",
+                    "goodsName": "家用万能螺丝刀套装磁吸透明柄维修手机电脑眼镜十字一字小起子"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884714990364,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "家用万能螺丝刀套装磁吸透明柄维修手机电脑眼镜十字一字小起子",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 218,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 544,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.53",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547529
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215941,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.87",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.87",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547529,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547529,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.66",
+                        "unitCode": 1
+                    },
+                    "catId": 12061,
+                    "goodsId": 884714927451,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/a048e09bcbdaaeb27a4c47ddb254a7d5.jpeg",
+                    "goodsName": "通用螺纹盖饮水机桶盖矿泉水桶装水盖通用型饮水桶盖子纯净水桶盖"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884714927451,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "通用螺纹盖饮水机桶盖矿泉水桶装水盖通用型饮水桶盖子纯净水桶盖",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 182,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 456,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547530
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215942,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.62",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.62",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547530,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547530,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 15238,
+                    "goodsId": 884714883587,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/051a5e62b68ea10f6dfd5978e575a13a.jpeg",
+                    "goodsName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884714883587,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 187,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 467,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547531
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215943,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.73",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.73",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547531,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547531,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "17.50",
+                        "unitCode": 1
+                    },
+                    "catId": 15242,
+                    "goodsId": 884714490928,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/1e7b7d5e1b05c69c06e89e0712350882.jpeg",
+                    "goodsName": "超好玩的纸飞机折纸大全教程书世界经典儿童玩具手工益智折叠彩纸"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884714490928,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "超好玩的纸飞机折纸大全教程书世界经典儿童玩具手工益智折叠彩纸",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 181,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 453,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547532
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215944,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "250.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.63",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.63",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547532,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547532,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "14.90",
+                        "unitCode": 1
+                    },
+                    "catId": 8089,
+                    "goodsId": 884714281351,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/e26cf9190e2bb657a55d626464fd001f.jpeg",
+                    "goodsName": "金属壁虎贴3D立体贴纸划痕遮挡遮盖装饰用品其他贴饰"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884714281351,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "金属壁虎贴3D立体贴纸划痕遮挡遮盖装饰用品其他贴饰",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 184,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 459,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547533
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215945,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "500.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.06",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.06",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547533,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547533,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "14.40",
+                        "unitCode": 1
+                    },
+                    "catId": 6176,
+                    "goodsId": 884714145080,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/9f7cd2acfaac9e1c98b43bf2f34f459d.jpeg",
+                    "goodsName": "刮毛器家用毛球修剪器衣服起球衣物去球除毛器毛呢大衣剃毛机神器"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884714145080,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "刮毛器家用毛球修剪器衣服起球衣物去球除毛器毛呢大衣剃毛机神器",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 193,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 483,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.47",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547534
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215946,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "210.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.61",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.61",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547534,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547534,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 11894,
+                    "goodsId": 884713843250,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/d089d25bba16a1074088a790de7b8ca9.jpeg",
+                    "goodsName": "儿童捞鱼网密网家用迷你便携小金鱼网兜不伤鱼苗鱼缸清洁捞鱼屎"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884713843250,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "儿童捞鱼网密网家用迷你便携小金鱼网兜不伤鱼苗鱼缸清洁捞鱼屎",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 215,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 538,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.47",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547535
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215947,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "280.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.79",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.79",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547535,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547535,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 21386,
+                    "goodsId": 884713678999,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/b72780a1eb59765964a3a0b2d0f5d2bf.jpeg",
+                    "goodsName": "绿植保温袋绿植物防冻塑料膜花卉盆栽过冬保护罩树木透明平口袋"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884713678999,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "绿植保温袋绿植物防冻塑料膜花卉盆栽过冬保护罩树木透明平口袋",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 201,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 502,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.53",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547536
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215948,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.66",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.66",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547536,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547536,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "6.54",
+                        "unitCode": 1
+                    },
+                    "catId": 15538,
+                    "goodsId": 884709608567,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/1573383ebd05fd8674d8e25ca8356815.jpeg",
+                    "goodsName": "水龙头特价清仓水龙头自来水普通耐用长款户外龙头防冻全自动家用"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884709608567,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "水龙头特价清仓水龙头自来水普通耐用长款户外龙头防冻全自动家用",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8922547537
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6228215949,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "240.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.32",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.32",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8922547537,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8922547537,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 2828,
+                    "goodsId": 884708398612,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-03/472febb1be1194e9eac3aeecfc5c067a.jpeg",
+                    "goodsName": "小鼻嘎贴纸儿童手帐贴纸diy素材装饰贴镭射迷你贴纸立体款男女孩"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884708398612,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "小鼻嘎贴纸儿童手帐贴纸diy素材装饰贴镭射迷你贴纸立体款男女孩",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-03 20:05:34",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 206,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 515,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.50",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915870183
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.69",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906296,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "260.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.69",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.69",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.69",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915870183,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915870183,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.99",
+                        "unitCode": 1
+                    },
+                    "catId": 8037,
+                    "goodsId": 884145491248,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/7637491012dff5dfdc33c4ab21f22c3c.jpeg",
+                    "goodsName": "汽车轻微划痕修复蜡抛光增亮车漆轻微刮痕护理保护车漆提升光泽"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884145491248,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.67",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "汽车轻微划痕修复蜡抛光增亮车漆轻微刮痕护理保护车漆提升光泽",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:33",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 183,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 458,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.60",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869781
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906016,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "220.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.19",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.19",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869781,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869781,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "7.90",
+                        "unitCode": 1
+                    },
+                    "catId": 15137,
+                    "goodsId": 884147327532,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/afd391496a54ff4fe702e2455d78083d.jpeg",
+                    "goodsName": "雪花片儿童益智拼装拼插玩具男孩女孩3幼儿园6岁生日礼物"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884147327532,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "雪花片儿童益智拼装拼插玩具男孩女孩3幼儿园6岁生日礼物",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 218,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 544,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869782
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906017,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.06",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.06",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869782,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869782,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "16.68",
+                        "unitCode": 1
+                    },
+                    "catId": 8667,
+                    "goodsId": 884146369344,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/c32fa0a7ad6e66ca489225d6c458ce70.jpeg",
+                    "goodsName": "马卡龙色系隐形眼镜盒ins风高颜值便携简约美瞳伴侣盒收纳护理盒"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884146369344,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "马卡龙色系隐形眼镜盒ins风高颜值便携简约美瞳伴侣盒收纳护理盒",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869783
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906018,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.92",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.92",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869783,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869783,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 2837,
+                    "goodsId": 884146153035,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/a98decfa3b1b0238da672c80920c917f.jpeg",
+                    "goodsName": "金属打孔器手动单孔活页装订机学生用A4纸打洞神器耐用便携迷你#9"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884146153035,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "金属打孔器手动单孔活页装订机学生用A4纸打洞神器耐用便携迷你#9",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 194,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 486,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869784
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906019,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.64",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.64",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869784,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869784,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "17.50",
+                        "unitCode": 1
+                    },
+                    "catId": 15242,
+                    "goodsId": 884146149271,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/6f7652fb83d97c0a0ffc5bb8683c0fd6.jpeg",
+                    "goodsName": "超好玩的纸飞机折纸大全教程书世界经典儿童玩具手工益智折叠彩纸"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884146149271,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "超好玩的纸飞机折纸大全教程书世界经典儿童玩具手工益智折叠彩纸",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 182,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 454,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869785
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906020,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "260.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.56",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.56",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869785,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869785,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "15.00",
+                        "unitCode": 1
+                    },
+                    "catId": 12216,
+                    "goodsId": 884145652382,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/c0a74b95e4eac5b5cec3c45c1d67079a.jpeg",
+                    "goodsName": "新款爆炸骰子创意魔术搞笑一变近景撩妹道具神器节日才艺礼物#9"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884145652382,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "新款爆炸骰子创意魔术搞笑一变近景撩妹道具神器节日才艺礼物#9",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 195,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 488,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.60",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869786
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906021,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "200.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.09",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.09",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869786,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869786,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "5.97",
+                        "unitCode": 1
+                    },
+                    "catId": 6307,
+                    "goodsId": 884145537044,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/5e1d5b7393757c26be25add8729b2574.jpeg",
+                    "goodsName": "家用万能螺丝刀套装磁吸透明柄维修手机电脑眼镜十字一字小起子"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884145537044,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "家用万能螺丝刀套装磁吸透明柄维修手机电脑眼镜十字一字小起子",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 180,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 451,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869787
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906022,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "330.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.85",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.85",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869787,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869787,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "17.90",
+                        "unitCode": 1
+                    },
+                    "catId": 23315,
+                    "goodsId": 884145279081,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/f544efe3ccf128ded475cdadce85ab92.jpeg",
+                    "goodsName": "手持美甲灯一字灯便携充电蓄电聚光速干迷你光疗甲片不黑手专用"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884145279081,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "手持美甲灯一字灯便携充电蓄电聚光速干迷你光疗甲片不黑手专用",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 202,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 506,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869788
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906023,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "340.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.80",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.80",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869788,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869788,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "10.90",
+                        "unitCode": 1
+                    },
+                    "catId": 12694,
+                    "goodsId": 884144723150,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/a816249f8acb2f08dbc478ca9c43edbf.jpeg",
+                    "goodsName": "关东煮竹签网红冰糖葫芦专用铁炮串烧烤串串香麻辣烫带手柄竹签子"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884144723150,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "关东煮竹签网红冰糖葫芦专用铁炮串烧烤串串香麻辣烫带手柄竹签子",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 214,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 535,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.53",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869789
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906024,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.82",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.82",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869789,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869789,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.66",
+                        "unitCode": 1
+                    },
+                    "catId": 12061,
+                    "goodsId": 884144501209,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/09dd83de997d7b7ca203ea3a8adca7e4.jpeg",
+                    "goodsName": "通用螺纹盖饮水机桶盖矿泉水桶装水盖通用型饮水桶盖子纯净水桶盖"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884144501209,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "通用螺纹盖饮水机桶盖矿泉水桶装水盖通用型饮水桶盖子纯净水桶盖",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 192,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 481,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869790
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906025,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.50",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.50",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869790,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869790,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.54",
+                        "unitCode": 1
+                    },
+                    "catId": 15238,
+                    "goodsId": 884144393550,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/522cab5d11bc383b3ce4f9549a13e6ab.jpeg",
+                    "goodsName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884144393550,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 216,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 539,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869791
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906026,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "260.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.37",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.37",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869791,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869791,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "7.55",
+                        "unitCode": 1
+                    },
+                    "catId": 26047,
+                    "goodsId": 884144361008,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/dd33a8429a2741290effafbb6ce6a93b.jpeg",
+                    "goodsName": "伊丽莎白圈狗狗猫咪项圈脖套防舔防抓咬耻辱圈宠物头套绝育防护圈"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884144361008,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "伊丽莎白圈狗狗猫咪项圈脖套防舔防抓咬耻辱圈宠物头套绝育防护圈",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 192,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 480,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869792
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906027,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "400.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.94",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.94",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869792,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869792,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "13.80",
+                        "unitCode": 1
+                    },
+                    "catId": 12424,
+                    "goodsId": 884144207519,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/b76a43f1e13c22fcb82cae178803d26a.jpeg",
+                    "goodsName": "竞速跳绳专业训练中考专用绳子学生成人减肥燃脂健身运动钢丝耐磨"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884144207519,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "竞速跳绳专业训练中考专用绳子学生成人减肥燃脂健身运动钢丝耐磨",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 188,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 470,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8915869793
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6222906028,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "250.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.75",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.75",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8915869793,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8915869793,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "12.90",
+                        "unitCode": 1
+                    },
+                    "catId": 8089,
+                    "goodsId": 884143582579,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-02/11e66a4e589b4fd26c96394668e6f5de.jpeg",
+                    "goodsName": "金属壁虎贴3D立体贴纸划痕遮挡遮盖装饰用品其他贴饰"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 884143582579,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "金属壁虎贴3D立体贴纸划痕遮挡遮盖装饰用品其他贴饰",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-02 20:47:24",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 180,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 451,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932446
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180908,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "350.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.25",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.25",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932446,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932446,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "9.90",
+                        "unitCode": 1
+                    },
+                    "catId": 16934,
+                    "goodsId": 883620879200,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/0e43dbacbd714662e6678b7b11943358.jpeg",
+                    "goodsName": "沐浴球大号浴花长条搓澡巾拉背条搓背神器洗澡巾起泡丰富"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883620879200,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "沐浴球大号浴花长条搓澡巾拉背条搓背神器洗澡巾起泡丰富",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932447
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180909,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.72",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.72",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932447,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932447,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 2837,
+                    "goodsId": 883620676921,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/dc1b22b520a91d5d741f4cde3eba95e3.jpeg",
+                    "goodsName": "金属打孔器手动单孔活页装订机学生用A4纸打洞神器耐用便携迷你#9"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883620676921,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "金属打孔器手动单孔活页装订机学生用A4纸打洞神器耐用便携迷你#9",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 194,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 485,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.53",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932448
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180910,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.94",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "5.94",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932448,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932448,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.66",
+                        "unitCode": 1
+                    },
+                    "catId": 12061,
+                    "goodsId": 883618419706,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/77304981aa0421403645bca09f1ac892.jpeg",
+                    "goodsName": "通用螺纹盖饮水机桶盖矿泉水桶装水盖通用型饮水桶盖子纯净水桶盖"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883618419706,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "通用螺纹盖饮水机桶盖矿泉水桶装水盖通用型饮水桶盖子纯净水桶盖",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 206,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 514,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932449
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180911,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "250.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.40",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.40",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932449,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932449,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "10.90",
+                        "unitCode": 1
+                    },
+                    "catId": 8089,
+                    "goodsId": 883618312944,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/e1140fd1e281f92466c390f0bbf07167.jpeg",
+                    "goodsName": "金属壁虎贴3D立体贴纸划痕遮挡遮盖装饰用品其他贴饰"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883618312944,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "金属壁虎贴3D立体贴纸划痕遮挡遮盖装饰用品其他贴饰",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "137.51",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "46.22",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.60",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932450
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180912,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "200.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.00",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.00",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932450,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932450,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "5.97",
+                        "unitCode": 1
+                    },
+                    "catId": 6307,
+                    "goodsId": 883618101875,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/9c6d4d8552cac01d553eda278882509d.jpeg",
+                    "goodsName": "家用万能螺丝刀套装磁吸透明柄维修手机电脑眼镜十字一字小起子"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883618101875,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "家用万能螺丝刀套装磁吸透明柄维修手机电脑眼镜十字一字小起子",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 199,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 499,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932451
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180913,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.39",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.39",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932451,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932451,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "3.61",
+                        "unitCode": 1
+                    },
+                    "catId": 20173,
+                    "goodsId": 883617978403,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/6b2d8c6b87e622343fc4e8d99fd8166a.jpeg",
+                    "goodsName": "彩虹镭射自封袋吧唧阴阳袋饰品包装袋全息铝箔膜防水防潮密封袋#9"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883617978403,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "彩虹镭射自封袋吧唧阴阳袋饰品包装袋全息铝箔膜防水防潮密封袋#9",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 194,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 484,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932452
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180914,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.14",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.14",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932452,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932452,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "15.50",
+                        "unitCode": 1
+                    },
+                    "catId": 15242,
+                    "goodsId": 883617296327,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/1eba55c67aae18166333c00a6c5da53e.jpeg",
+                    "goodsName": "超好玩的纸飞机折纸大全教程书世界经典儿童玩具手工益智折叠彩纸"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883617296327,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "超好玩的纸飞机折纸大全教程书世界经典儿童玩具手工益智折叠彩纸",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 202,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 505,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.47",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932453
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180915,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "230.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.37",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.37",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932453,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932453,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "5.60",
+                        "unitCode": 1
+                    },
+                    "catId": 20486,
+                    "goodsId": 883617262674,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/704d37e20f1f18540b75281eefed7003.jpeg",
+                    "goodsName": "牛仔裤扩腰神器裤腰扩大手缝安装牢固腰围改大水洗不掉调节延长"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883617262674,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "牛仔裤扩腰神器裤腰扩大手缝安装牢固腰围改大水洗不掉调节延长",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 181,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 451,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932454
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180916,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "400.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.71",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.71",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932454,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932454,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "6.66",
+                        "unitCode": 1
+                    },
+                    "catId": 11961,
+                    "goodsId": 883617178369,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/8d1321232493fb74d15f351fe30e1326.jpeg",
+                    "goodsName": "安全防护应急毯轻便便携户外旅行急救保温毯防水防潮地震救援装备"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883617178369,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "安全防护应急毯轻便便携户外旅行急救保温毯防水防潮地震救援装备",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 202,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 505,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932455
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180917,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "390.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.22",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.22",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932455,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932455,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "5.00",
+                        "unitCode": 1
+                    },
+                    "catId": 21440,
+                    "goodsId": 883616780663,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/ca4e21689596e6ec6ae766205555c02b.jpeg",
+                    "goodsName": "防滑耐磨橡胶雨鞋套男女通用户外施工雨天防水防泥便携加长筒靴套"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883616780663,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "防滑耐磨橡胶雨鞋套男女通用户外施工雨天防水防泥便携加长筒靴套",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932456
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180918,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.19",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.19",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932456,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932456,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "12.40",
+                        "unitCode": 1
+                    },
+                    "catId": 6176,
+                    "goodsId": 883616651319,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/2a241b645c8f5277aaaed46baf322cc1.jpeg",
+                    "goodsName": "刮毛器家用毛球修剪器衣服起球衣物去球除毛器毛呢大衣剃毛机神器"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883616651319,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "刮毛器家用毛球修剪器衣服起球衣物去球除毛器毛呢大衣剃毛机神器",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 208,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 521,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.47",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932457
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180919,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "290.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.74",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.74",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932457,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932457,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "3.20",
+                        "unitCode": 1
+                    },
+                    "catId": 21386,
+                    "goodsId": 883616459322,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/a94e7a6110ce1ee57100331bf286f932.jpeg",
+                    "goodsName": "绿植保温袋绿植物防冻塑料膜花卉盆栽过冬保护罩树木透明平口袋"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883616459322,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "绿植保温袋绿植物防冻塑料膜花卉盆栽过冬保护罩树木透明平口袋",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "161.03",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "54.13",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.60",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932458
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180920,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "260.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.56",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.56",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932458,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932458,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.99",
+                        "unitCode": 1
+                    },
+                    "catId": 8037,
+                    "goodsId": 883616333293,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/0750d038f41797f65e08d6eebbd4c9f0.jpeg",
+                    "goodsName": "汽车轻微划痕修复蜡抛光增亮车漆轻微刮痕护理保护车漆提升光泽"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883616333293,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "汽车轻微划痕修复蜡抛光增亮车漆轻微刮痕护理保护车漆提升光泽",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 183,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 457,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932459
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180921,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.79",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.79",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932459,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932459,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.54",
+                        "unitCode": 1
+                    },
+                    "catId": 15238,
+                    "goodsId": 883616236113,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/3fefccce818a547a77be894509ff3b51.jpeg",
+                    "goodsName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883616236113,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 213,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 533,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932460
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180922,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "260.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.42",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.42",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932460,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932460,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "7.55",
+                        "unitCode": 1
+                    },
+                    "catId": 26047,
+                    "goodsId": 883615916855,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/acdb15d3824753fd1526310d74e49dda.jpeg",
+                    "goodsName": "伊丽莎白圈狗狗猫咪项圈脖套防舔防抓咬耻辱圈宠物头套绝育防护圈"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883615916855,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "伊丽莎白圈狗狗猫咪项圈脖套防舔防抓咬耻辱圈宠物头套绝育防护圈",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.53",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932461
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180923,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "320.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.49",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "3.49",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932461,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932461,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "6.90",
+                        "unitCode": 1
+                    },
+                    "catId": 3075,
+                    "goodsId": 883615880936,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/7a485321ff5a3786384342a03e1212f7.jpeg",
+                    "goodsName": "平板ipad绘画细头触屏电容笔通用vivo华为苹果小米OPPO手机手写笔"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883615880936,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "平板ipad绘画细头触屏电容笔通用vivo华为苹果小米OPPO手机手写笔",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 185,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 463,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932462
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180924,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.53",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.53",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932462,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932462,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.54",
+                        "unitCode": 1
+                    },
+                    "catId": 15238,
+                    "goodsId": 883615865986,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/f1eb960736e8f0e8ed6160c8575b4723.jpeg",
+                    "goodsName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883615865986,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "创意彩色夜景刮刮画炫彩12张刮画纸手刮画6有图案DIY创意制作礼物",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 181,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 452,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932463
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180925,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "330.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.91",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.91",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932463,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932463,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "17.90",
+                        "unitCode": 1
+                    },
+                    "catId": 23315,
+                    "goodsId": 883615827024,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/09d84c0c7a529126831e26f8fb15cad8.jpeg",
+                    "goodsName": "手持美甲灯一字灯便携充电蓄电聚光速干迷你光疗甲片不黑手专用"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883615827024,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "手持美甲灯一字灯便携充电蓄电聚光速干迷你光疗甲片不黑手专用",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "60.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 0,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 0,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "35.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.47",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932464
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180926,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "210.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.59",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "2.59",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932464,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932464,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "4.90",
+                        "unitCode": 1
+                    },
+                    "catId": 11894,
+                    "goodsId": 883615677993,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/6cce160c545c6c38c23959d81163264f.jpeg",
+                    "goodsName": "儿童捞鱼网密网家用迷你便携小金鱼网兜不伤鱼苗鱼缸清洁捞鱼屎"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883615677993,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "儿童捞鱼网密网家用迷你便携小金鱼网兜不伤鱼苗鱼缸清洁捞鱼屎",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 6,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            },
+            {
+                "defaultSuggestInfo": {
+                    "effectIntervalData": {
+                        "orderCntIntervalMax": 0,
+                        "impressionDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCntIntervalMin": 0,
+                        "orderDiffIntervalMax": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMin": 205,
+                        "orderDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "impressionCntIntervalMax": 513,
+                        "impressionDiffIntervalMin": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        }
+                    },
+                    "orderDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "impressionCnt": 0,
+                    "impressionDiff": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "suggestValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.43",
+                        "unitCode": 1
+                    },
+                    "orderCnt": 0,
+                    "suggestLevel": 3,
+                    "effectEstimationStatus": 0
+                },
+                "adStatus": 2,
+                "isTrafficCardAd": false,
+                "adGroupInfo": {
+                    "groupName": "未分组推广",
+                    "groupId": 0
+                },
+                "dropLogs": [],
+                "increaseTrafficLabel": 0,
+                "systemEnableExcludeRefundTime": null,
+                "maxSwitchPlanStrategyTimes": 3,
+                "excludeRefundSuggestLimitInfo": null,
+                "dailyCost": {
+                    "unit": "YUAN",
+                    "value": "0.00",
+                    "unitCode": 1
+                },
+                "expeditedApproveStatus": null,
+                "excludeRefundDataVO": {
+                    "reducedSpendRatio": {
+                        "unit": "PERCENT",
+                        "value": "0.00",
+                        "unitCode": 100
+                    },
+                    "adId": 8908932465
+                },
+                "costType": 2,
+                "targetRoi": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "maxCost": {
+                    "unit": "YUAN",
+                    "value": "1000000.00",
+                    "unitCode": 1
+                },
+                "planId": 6217180927,
+                "reportInfo": {
+                    "refundGmv30d": 0,
+                    "avgPayAmount": 0.0,
+                    "orderSpendNetRoi": 0.0,
+                    "netGmv": 0,
+                    "settlementGmvRate": 0.0,
+                    "enblExldRfndGmv": 0,
+                    "exemptRefundGmvRate30d": 0.0,
+                    "orderSpendNetCostPerOrder": 0.0,
+                    "multiGoalCostPerGoodsFav": 0.0,
+                    "multiGoalMallFavNum": 0,
+                    "multiGoalCostPerMallFav": 0.0,
+                    "multiGoalCostPerInquiry": 0.0,
+                    "ctr": 0.0,
+                    "mallFavSpend": 0,
+                    "inquirySpend": 0,
+                    "exemptRefundGmv30d": 0,
+                    "enblExldRfndMallDutyFullrfndOrder": 0,
+                    "exemptRefundOrderRate30d": 0.0,
+                    "exemptRefundOrderV2": 0,
+                    "click": 0,
+                    "exemptRefundOrderV3": 0,
+                    "directGmv": 0,
+                    "enblExldRfndFullrfndOrder": 0,
+                    "exemptRefundGmvV2": 0,
+                    "impression": 0,
+                    "netOrderNum": 0,
+                    "costPerOrder": 0.0,
+                    "exemptRefundGmvV3": 0,
+                    "goodsFavSpend": 0,
+                    "mallDutyRefundGmv": 0,
+                    "orderSpendRoiUnified": 0.0,
+                    "exemptMallDutyRefundOrderV3": 0,
+                    "orderNum": 0,
+                    "refundOrder30d": 0,
+                    "tempNetRefundOrder": 0,
+                    "gmv": 0,
+                    "settlementGmv": 0,
+                    "avgDirectPayAmount": 0.0,
+                    "settlementOrderSpend": 0,
+                    "quickRefundOrderNum": 0,
+                    "spend": 0,
+                    "settlementRoi": 0.0,
+                    "tempExemptRefundCompensateAmount": 0,
+                    "indirectGmv": 0,
+                    "multiGoalGoodsFavNum": 0,
+                    "orderSpend": 0,
+                    "exemptMallDutyRefundGmvV3": 0,
+                    "cvr": 0.0,
+                    "tempNetRefundGmv": 0,
+                    "indirectOrderNum": 0,
+                    "costPerSettlementOrderForDeal": 0.0,
+                    "quickRefundGmv": 0,
+                    "refundOrderRate30d": 0.0,
+                    "exemptRefundCompensateAmount30d": 0,
+                    "exemptRefundOrder30d": 0,
+                    "settlementOrderRate": 0.0,
+                    "avgIndirectPayAmount": 0.0,
+                    "netGmvRate": 0.0,
+                    "mallDutyRefundOrderNum": 0,
+                    "settlementOrder": 0,
+                    "directOrderNum": 0,
+                    "multiGoalInquiryNum": 0,
+                    "enblExldRfndMallDutyGmv": 0,
+                    "refundGmvRate30d": 0.0
+                },
+                "scenesMode": 1,
+                "maxCostSuggestVO": {
+                    "effectEstimationInfo": {
+                        "impressionDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderDiff": {
+                            "unit": "PERCENT",
+                            "value": "0.00",
+                            "unitCode": 100
+                        },
+                        "orderCnt": null,
+                        "impressionCnt": null
+                    },
+                    "suggestType": 2,
+                    "effectEstimationFetchType": 2,
+                    "suggestMaxCost": {
+                        "unit": "YUAN",
+                        "value": "300.00",
+                        "unitCode": 1
+                    },
+                    "suggestChargeBalance": null
+                },
+                "suggestLimitInfo": {
+                    "bidLimitReferenceDataType": 2,
+                    "minValue": {
+                        "unit": "PER_ONE",
+                        "value": "1.00",
+                        "unitCode": 1
+                    },
+                    "speedUpAdvancedLimitValue": {
+                        "unit": "PER_ONE",
+                        "value": "4.36",
+                        "unitCode": 1
+                    },
+                    "maxValue": {
+                        "unit": "PER_ONE",
+                        "value": "4.36",
+                        "unitCode": 1
+                    },
+                    "limitLastChangeTime": "2026-02-07 00:00:00",
+                    "limitNextChangeTime": "2026-02-14 00:00:00",
+                    "bidLimitStrategyTags": [
+                        2,
+                        4
+                    ]
+                },
+                "dataOperateStatus": 2,
+                "budgetChangedNumberToday": 0,
+                "agentBid": {
+                    "unit": "PER_ONE",
+                    "value": "1.80",
+                    "unitCode": 1
+                },
+                "hasCustomCreativePrivilege": null,
+                "bidType": 1,
+                "showUploadQualiEntry": null,
+                "speedUpAdvancedReducedSpendVO": null,
+                "adId": 8908932465,
+                "excludeRefundGuideInfo": {
+                    "inExcludeRefundPrepareBlackList": null,
+                    "showEnableExcludeRefundGuideInDetail": null,
+                    "prepareBlackListOnlineTime": null,
+                    "systemDisableExcludeRefundTime": null,
+                    "enabledAdvanceExcludeRefund": true,
+                    "enabledExcludeRefund": true
+                },
+                "disableSwitchToRoi": false,
+                "adAssistAdvancedInfo": {
+                    "adId": 8908932465,
+                    "isAdvertiserEnableAdvanced": true,
+                    "endTime": null,
+                    "assistAdvancedStatus": 1
+                },
+                "goodsInfo": {
+                    "minOnSaleGroupPrice": {
+                        "unit": "YUAN",
+                        "value": "19.18",
+                        "unitCode": 1
+                    },
+                    "catId": 6268,
+                    "goodsId": 883615677319,
+                    "catName": null,
+                    "thumbUrl": "https://img.pddpic.com/gaudit-image/2026-01-01/cbfadfc1db43c5e67e2881f881385206.jpeg",
+                    "goodsName": "智能输液报警器充电款防回血提醒器打点滴吊针挂水低药量提示#9"
+                },
+                "mallAdditionalMaxCostInfo": {
+                    "mallAdditionalMaxCostShowType": null,
+                    "displayAdditionalMaxCostProposal": false
+                },
+                "availableSwitchPlanStrategyTimes": 3,
+                "goodsId": 883615677319,
+                "mallId": 263564789,
+                "adTagCodeList": [
+                    2,
+                    4,
+                    7
+                ],
+                "reservedSecondStageInfo": {
+                    "reservedSecondStageStatus": 2,
+                    "showIncreaseGuideBar": false,
+                    "reservedSecondStageOptimizationBid": null,
+                    "reservedSecondStageTargetRoi": {
+                        "unit": "PER_ONE",
+                        "value": "1.80",
+                        "unitCode": 1
+                    },
+                    "reservedSecondStageSuggestValue": null
+                },
+                "punishReason": null,
+                "scenesType": 9,
+                "inheritHistoryPromotionData": null,
+                "remainMaxCostRatio": null,
+                "adAssistInfo": {
+                    "isAdvertiserEnable": false,
+                    "assistStatus": 3,
+                    "beginTime": null,
+                    "endTime": null
+                },
+                "maxCostAlertVO": {
+                    "arrearageNeedChargeBalance": null,
+                    "alertMaxCostThreshold": {
+                        "unit": "YUAN",
+                        "value": "100.00",
+                        "unitCode": 1
+                    },
+                    "maxCostAlertType": 0,
+                    "arrearageAlertMaxCost": null,
+                    "alertBalanceThreshold": {
+                        "unit": "YUAN",
+                        "value": "0.00",
+                        "unitCode": 1
+                    }
+                },
+                "useNewDataAccumulationStrategy": true,
+                "excludeRefundForceSwitchFinishTime": "2025-10-15 09:42:02",
+                "adName": "智能输液报警器充电款防回血提醒器打点滴吊针挂水低药量提示#9",
+                "dataAccumulationStatus": 2,
+                "availableBudgetChangeNumberToday": 5,
+                "hasMallCustomCreativePrivilege": null,
+                "smartAdAssistAdvancedInfo": null,
+                "bidAlertInfo": null,
+                "effectEstimationFetchType": 5,
+                "optimizationBid": null,
+                "createTime": "2026-01-01 20:34:52",
+                "isStick": false,
+                "excludeRefundStatus": 7,
+                "optionalOptimizationMessageList": null
+            }
+        ],
+        "smartPromotionAssistInfo": null
+    },
+    "trace": "0844e6069d6019cc521f077553b85040",
+    "success": true,
+    "errorCode": 1000,
+    "errorMsg": null
+}
