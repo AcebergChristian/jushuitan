@@ -17,7 +17,6 @@ shopdict = {
 
 
 
-
 PDD_API_URL = "https://yingxiao.pinduoduo.com/mms-gateway/venus/api/goods/promotion/v2/list"
 
 
