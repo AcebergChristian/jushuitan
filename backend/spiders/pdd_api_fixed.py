@@ -9,6 +9,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
+# 店铺映射
+shopdict = {
+    '19536518704': '19250015'
+
+}
+
+
+
+
 PDD_API_URL = "https://yingxiao.pinduoduo.com/mms-gateway/venus/api/goods/promotion/v2/list"
 
 
