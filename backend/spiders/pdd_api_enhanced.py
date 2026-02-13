@@ -361,8 +361,9 @@ def get_bill_outcome_amount(driver, begin_time, end_time):
         # 等待对账中心页面加载完成
         print("⏳ 等待对账中心页面加载...")
         WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, ".anq-picker-input"))
+            EC.presence_of_element_located((By.CSS_SELECTOR, "#root > div > div.Container_container__6H_RU > div > div:nth-child(1) > div > div:nth-child(3) > div"))
         )
+
         print("✅ 对账中心页面已加载")
         time.sleep(2)
         
@@ -375,23 +376,39 @@ def get_bill_outcome_amount(driver, begin_time, end_time):
         
         print("📅 自动设置筛选条件...")
         
-        # 1. 点击时间范围选择器
+        # 1. 设置时间范围
         try:
+            # 格式化日期字符串
+            date_str = datetime.fromtimestamp(begin_time).strftime('%Y-%m-%d')
+            start_datetime = f"{date_str} 00:00:00"
+            end_datetime = f"{date_str} 23:59:59"
+            date_range_value = f"{start_datetime} ~ {end_datetime}"
+            
+            print(f"📅 设置时间范围: {date_range_value}")
+            
+            # 找到时间输入框
             time_input = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[2]/div/div[1]/div/div[3]/div/div[2]/div[2]/div/div[1]/div/div/div[1]/div/div/div/div/div/div[1]/input'))
+                EC.presence_of_element_located((By.XPATH, '//*[@id="root"]/div/div[2]/div/div[1]/div/div[3]/div/div[2]/div[2]/div/div[1]/div/div/div[1]/div/div/div/div/div/div[1]/input'))
             )
-            driver.execute_script("arguments[0].click();", time_input)
-            print("✅ 已点击时间选择器")
+            
+            # 使用JavaScript直接设置value属性
+            driver.execute_script(f"arguments[0].value = '{date_range_value}';", time_input)
+            
+            # 触发change事件，让页面识别到值的变化
+            driver.execute_script("arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", time_input)
+            driver.execute_script("arguments[0].dispatchEvent(new Event('change', { bubbles: true }));", time_input)
+            
+            print(f"✅ 时间范围已设置: {date_range_value}")
             time.sleep(1)
         except Exception as e:
-            print(f"⚠️ 点击时间选择器失败: {e}")
+            print(f"⚠️ 设置时间范围失败: {e}")
             print("   请手动操作后按回车继续...")
             input()
         
         # 2. 点击【展开高级选项】
         try:
             advanced_option = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[2]/div/div[1]/div/div[3]/div/div[2]/div[2]/div/div[1]/div/div/div[2]/div'))
+                EC.element_to_be_clickable((By.XPATH, '//*[@id="root"]/div/div[2]/div/div[1]/div/div[3]/div/div[2]/div[2]/div/div[1]/div/div/div[2]/div/a'))
             )
             driver.execute_script("arguments[0].click();", advanced_option)
             print("✅ 已展开高级选项")
@@ -444,37 +461,107 @@ def get_bill_outcome_amount(driver, begin_time, end_time):
         print("⏳ 等待账单API响应...")
         time.sleep(3)
         
-        # 从请求中查找账单统计数据
-        found_request = False
-        for req in reversed(driver.requests):
-            if req.response and "queryBillStatistics" in req.url:
-                found_request = True
-                print(f"✅ 找到账单API请求: {req.url}")
-                try:
-                    body = req.response.body
-                    encoding = req.response.headers.get("Content-Encoding", "")
-                    
-                    if "gzip" in encoding:
-                        body = gzip.GzipFile(fileobj=BytesIO(body)).read()
-                    
-                    data = json.loads(body.decode("utf-8"))
-                    
-                    if data.get("success"):
-                        result = data.get("result", {})
-                        outcome_amount = result.get("outcomeAmount", 0)
-                        print(f"✅ 获取到退款金额: {outcome_amount / 100:.2f} 元")
-                        return outcome_amount / 100, data  # 转换为元，并返回原始数据
-                    else:
-                        print(f"⚠️ API返回失败: {data.get('errorMsg', '未知错误')}")
-                        
-                except Exception as e:
-                    print(f"⚠️ 解析账单数据失败: {e}")
-                    import traceback
-                    traceback.print_exc()
-                    continue
+        # 从请求中查找账单统计数据和明细数据
+        found_statistics = False
+        found_details = False
+        outcome_amount = 0
+        statistics_data = None
+        bill_details = []
         
-        if not found_request:
-            print("❌ 未找到账单统计API请求")
+        # 查找两个API请求
+        for req in reversed(driver.requests):
+            if not req.response:
+                continue
+                
+            try:
+                body = req.response.body
+                encoding = req.response.headers.get("Content-Encoding", "")
+                
+                if "gzip" in encoding:
+                    body = gzip.GzipFile(fileobj=BytesIO(body)).read()
+                
+                data = json.loads(body.decode("utf-8"))
+                
+                # 1. 查找账单统计API
+                if "queryBillStatistics" in req.url and data.get("success"):
+                    found_statistics = True
+                    print(f"✅ 找到账单统计API: {req.url}")
+                    result = data.get("result", {})
+                    outcome_amount = result.get("outcomeAmount", 0)
+                    statistics_data = data
+                    print(f"✅ 获取到退款金额: {outcome_amount / 100:.2f} 元")
+                
+                # 2. 查找账单明细API
+                if "pagingQueryMallBalanceBillListForMms" in req.url and data.get("success"):
+                    found_details = True
+                    print(f"✅ 找到账单明细API: {req.url}")
+                    result = data.get("result", {})
+                    bill_list = result.get("billList", [])
+                    print(f"✅ 获取到 {len(bill_list)} 条账单明细")
+                    bill_details = bill_list
+                    
+            except Exception as e:
+                continue
+        
+        # 如果找到明细数据，保存到数据库
+        if found_details and bill_details:
+            try:
+                from backend.models.database import PddBillDetail, database
+                from datetime import datetime, date
+                
+                saved_count = 0
+                with database.atomic():
+                    for bill in bill_details:
+                        try:
+                            # 检查是否已存在
+                            existing = PddBillDetail.select().where(
+                                PddBillDetail.bill_id == bill.get("billId")
+                            ).first()
+                            
+                            if existing:
+                                print(f"⚠️ 账单 {bill.get('billId')} 已存在，跳过")
+                                continue
+                            
+                            # 创建新记录
+                            amount_fen = bill.get("amount", 0)
+                            amount_yuan = amount_fen / 100.0
+                            
+                            PddBillDetail.create(
+                                bill_id=bill.get("billId"),
+                                mall_id=bill.get("mallId"),
+                                order_sn=bill.get("orderSn"),
+                                amount=amount_fen,
+                                amount_yuan=amount_yuan,
+                                created_at_timestamp=bill.get("createdAt"),
+                                bill_type=bill.get("type"),
+                                class_id=bill.get("classId"),
+                                class_id_desc=bill.get("classIdDesc"),
+                                finance_id=bill.get("financeId"),
+                                finance_id_desc=bill.get("financeIdDesc"),
+                                note=bill.get("note"),
+                                bill_out_biz_code=bill.get("billOutBizCode"),
+                                bill_out_biz_desc=bill.get("billOutBizDesc"),
+                                bill_biz_code=bill.get("billBizCode"),
+                                shop_profile=profile_name,
+                                bill_date=date.fromtimestamp(start_timestamp),
+                                raw_data=json.dumps(bill, ensure_ascii=False)
+                            )
+                            saved_count += 1
+                            print(f"✅ 保存账单: {bill.get('orderSn')} - {amount_yuan:.2f}元")
+                            
+                        except Exception as e:
+                            print(f"⚠️ 保存账单失败: {e}")
+                            continue
+                
+                print(f"✅ 成功保存 {saved_count} 条账单明细到数据库")
+                
+            except Exception as e:
+                print(f"⚠️ 保存账单明细到数据库失败: {e}")
+                import traceback
+                traceback.print_exc()
+        
+        if not found_statistics and not found_details:
+            print("❌ 未找到账单API请求")
             print("   可能原因:")
             print("   1. 页面未正确加载")
             print("   2. 筛选条件未正确设置")
@@ -497,11 +584,15 @@ def get_bill_outcome_amount(driver, begin_time, end_time):
                         if data.get("success"):
                             result = data.get("result", {})
                             outcome_amount = result.get("outcomeAmount", 0)
+                            statistics_data = data
                             print(f"✅ 获取到退款金额: {outcome_amount / 100:.2f} 元")
-                            return outcome_amount / 100, data
+                            break
                             
                     except Exception as e:
                         continue
+        
+        if found_statistics or found_details:
+            return outcome_amount / 100, statistics_data
         
         print("❌ 未找到账单统计数据")
         return None, None
@@ -620,3 +711,8 @@ if __name__ == "__main__":
             
         finally:
             driver.quit()
+
+
+
+
+

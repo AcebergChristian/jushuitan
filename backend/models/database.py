@@ -358,6 +358,44 @@ class PddBillRecord(BaseModel):
         super().save(*args, **kwargs)
 
 
+class PddBillDetail(BaseModel):
+    """
+    拼多多账单明细表 - 存储每条账单的详细信息
+    """
+    id = AutoField(primary_key=True)
+    bill_id = CharField(max_length=255, unique=True, verbose_name="账单ID")  # 账单ID
+    mall_id = BigIntegerField(null=True, verbose_name="商家ID")  # 商家ID
+    order_sn = CharField(max_length=255, index=True, verbose_name="订单号")  # 订单号
+    amount = FloatField(verbose_name="金额(分)")  # 金额(分)
+    amount_yuan = FloatField(verbose_name="金额(元)")  # 金额(元)
+    created_at_timestamp = BigIntegerField(null=True, verbose_name="账单创建时间戳")  # 账单创建时间戳
+    bill_type = IntegerField(null=True, verbose_name="账单类型")  # 账单类型
+    class_id = IntegerField(null=True, verbose_name="分类ID")  # 分类ID
+    class_id_desc = CharField(max_length=255, null=True, verbose_name="分类描述")  # 分类描述
+    finance_id = IntegerField(null=True, verbose_name="财务ID")  # 财务ID
+    finance_id_desc = CharField(max_length=255, null=True, verbose_name="财务描述")  # 财务描述
+    note = TextField(null=True, verbose_name="备注")  # 备注
+    bill_out_biz_code = CharField(max_length=255, null=True, verbose_name="业务代码")  # 业务代码
+    bill_out_biz_desc = CharField(max_length=255, null=True, verbose_name="业务描述")  # 业务描述
+    bill_biz_code = CharField(max_length=255, null=True, verbose_name="账单业务代码")  # 账单业务代码
+    shop_profile = CharField(max_length=255, null=True, verbose_name="店铺配置名")  # 店铺配置名
+    bill_date = DateField(null=True, verbose_name="账单日期")  # 账单日期
+    raw_data = TextField(null=True, verbose_name="原始数据")  # 原始JSON数据
+    is_del = BooleanField(default=False, verbose_name="是否删除")  # 软删除标志
+    created_at = DateTimeField(default=datetime.now, verbose_name="创建时间")  # 创建时间
+    updated_at = DateTimeField(default=datetime.now, verbose_name="更新时间")  # 更新时间
+
+    class Meta:
+        table_name = 'pdd_bill_details'
+        indexes = (
+            (('order_sn', 'bill_type'), False),  # 订单号+类型索引
+        )
+
+    def save(self, *args, **kwargs):
+        self.updated_at = datetime.now()
+        super().save(*args, **kwargs)
+
+
 # pdd table - 拼多多广告推广数据表
 class PddTable(BaseModel):
     id = AutoField(primary_key=True)
@@ -408,7 +446,7 @@ class PddTable(BaseModel):
 # 创建所有表
 def create_tables():
     with database:
-        database.create_tables([User, JushuitanProduct, Goods, Store, JushuitanCancelProduct, RefundRecord, PddTable, PddBillRecord])
+        database.create_tables([User, JushuitanProduct, Goods, Store, JushuitanCancelProduct, RefundRecord, PddTable, PddBillRecord, PddBillDetail])
 
 
 
