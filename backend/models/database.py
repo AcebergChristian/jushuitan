@@ -211,197 +211,13 @@ class Store(BaseModel):
 
 
 
-class JushuitanCancelProduct(BaseModel):
-    id = AutoField(primary_key=True)
-    oid = CharField(null=True)  # 订单ID
-    isSuccess = CharField(null=True)  # 是否成功
-    msg = CharField(null=True)  # 消息
-    purchaseAmt = FloatField(null=True)  # 采购金额
-    totalAmt = FloatField(null=True)  # 总金额
-    discountAmt = FloatField(null=True)  # 折扣金额
-    commission = FloatField(null=True)  # 佣金
-    freight = FloatField(null=True)  # 运费
-    payAmount = FloatField(null=True)  # 支付金额
-    paidAmount = FloatField(null=True)  # 已支付金额
-    totalPurchasePriceGoods = FloatField(null=True)  # 商品总采购价
-    smallProgramFreight = FloatField(null=True)  # 小程序运费
-    totalTransactionPurchasePrice = FloatField(null=True)  # 交易总采购价
-    smallProgramCommission = FloatField(null=True)  # 小程序佣金
-    smallProgramPaidAmount = FloatField(null=True)  # 小程序已支付金额
-    freightCalcRule = CharField(null=True)  # 运费计算规则
-    oaId = CharField(null=True)  # OA ID
-    soId = CharField(null=True)  # SO ID
-    rawSoId = CharField(null=True)  # 原始SO ID
-    mergeSoIds = CharField(null=True)  # 合并的SO IDs
-    soIdList = CharField(null=True)  # SO ID列表
-    supplierCoId = CharField(null=True)  # 供应商公司ID
-    supplierName = CharField(null=True)  # 供应商名称
-    channelCoId = CharField(null=True)  # 渠道公司ID
-    channelName = CharField(null=True)  # 渠道名称
-    shopId = CharField(null=True)  # 店铺ID
-    shopType = CharField(null=True)  # 店铺类型
-    shopName = CharField(null=True)  # 店铺名称
-    disInnerOrderGoodsViewList = CharField(null=True)  # 内部订单商品视图列表
-    orderTime = CharField(null=True)  # 下单时间
-    payTime = CharField(null=True)  # 支付时间
-    deliveryDate = CharField(null=True)  # 发货日期
-    expressCode = CharField(null=True)  # 快递编码
-    expressCompany = CharField(null=True)  # 快递公司
-    trackNo = CharField(null=True)  # 快递单号
-    orderStatus = CharField(null=True)  # 订单状态
-    errorMsg = CharField(null=True)  # 错误消息
-    errorDesc = CharField(null=True)  # 错误描述
-    labels = CharField(null=True)  # 标签
-    buyerMessage = CharField(null=True)  # 买家留言
-    remark = CharField(null=True)  # 备注
-    sellerFlag = IntegerField(null=True)  # 卖家标记
-    updated = CharField(null=True)  # 更新时间
-    clientPaidAmt = FloatField(null=True)  # 客户已支付金额
-    goodsQty = IntegerField(null=True)  # 商品数量
-    goodsAmt = FloatField(null=True)  # 商品金额
-    freeAmount = FloatField(null=True)  # 免费金额
-    orderType = CharField(null=True)  # 订单类型
-    isSplit = BooleanField(null=True)  # 是否拆分
-    isMerge = BooleanField(null=True)  # 是否合并
-    planDeliveryDate = CharField(null=True)  # 计划发货日期
-    deliverTimeLeft = CharField(null=True)  # 剩余发货时间
-    printCount = IntegerField(null=True)  # 打印次数
-    ioId = CharField(null=True)  # IO ID
-    receiverState = CharField(null=True)  # 收件人省份
-    receiverCity = CharField(null=True)  # 收件人城市
-    receiverDistrict = CharField(null=True)  # 收件人区县
-    weight = CharField(null=True)  # 重量
-    realWeight = CharField(null=True)  # 实际重量
-    wmsCoId = CharField(null=True)  # WMS公司ID
-    wmsCoName = CharField(null=True)  # WMS公司名称
-    drpAmount = FloatField(null=True)  # 分销金额
-    shopSite = CharField(null=True)  # 店铺站点
-    isDeliveryPrinted = CharField(null=True)  # 是否打印发货
-    fullReceiveData = CharField(null=True)  # 完整收货数据
-    fuzzFullReceiverInfo = CharField(null=True)  # 模糊收件人信息
-    shopBuyerId = CharField(null=True)  # 店铺买家ID
-    logisticsNos = CharField(null=True)  # 物流单号
-    openId = CharField(null=True)  # 开放ID
-    printedList = CharField(null=True)  # 已打印列表
-    note = CharField(null=True)  # 注释
-    receiverTown = CharField(null=True)  # 收件人乡镇
-    solution = CharField(null=True)  # 解决方案
-    orderFrom = CharField(null=True)  # 订单来源
-    linkOid = CharField(null=True)  # 关联订单ID
-    channelOid = CharField(null=True)  # 渠道订单ID
-    isSupplierInitiatedReissueOrExchange = CharField(null=True)  # 供应商发起退换货
-    confirmDate = CharField(null=True)  # 确认日期
-    topDrpCoIdFrom = CharField(null=True)  # 顶级分销商公司ID
-    topDrpOrderId = CharField(null=True)  # 顶级分销商订单ID
-    orderIdentity = CharField(null=True)  # 订单身份
-    originalSoId = CharField(null=True)  # 原始SO ID
-    isVirtualShipment = BooleanField(null=True)  # 是否虚拟发货
-    relationshipBySoIdMd5 = CharField(null=True)  # SO ID关系MD5
-    online = BooleanField(null=True)  # 是否在线
-    data_type = CharField(null=True)  # 数据类型 (regular/cancel)
-    is_del = BooleanField(default=False)  # 逻辑删除标志
-    created_at = DateTimeField(default=datetime.now)  # 创建时间
-    updated_at = DateTimeField(default=datetime.now)
-
-    class Meta:
-        table_name = 'jushuitan_cancel_products'
-
-
-
-class RefundRecord(BaseModel):
-    """
-    退款记录表
-    """
-    id = AutoField(primary_key=True)
-    good_id = CharField(max_length=255, null=True, verbose_name="商品ID")  # 商品ID
-    store_id = CharField(max_length=255, null=True, verbose_name="店铺ID")  # 店铺ID
-    order_id = CharField(max_length=255, null=True, verbose_name="订单ID")  # 订单ID
-    refund_amount = FloatField(default=0.0, verbose_name="退款金额")  # 退款金额
-    refund_time = DateTimeField(null=True, verbose_name="退款时间")  # 退款时间
-    is_del = BooleanField(default=False, verbose_name="是否删除")  # 软删除标志
-    creator = CharField(max_length=255, null=True, verbose_name="创建人")  # 创建人
-    created_at = DateTimeField(default=datetime.now, verbose_name="创建时间")  # 创建时间
-    updated_at = DateTimeField(default=datetime.now, verbose_name="更新时间")  # 更新时间
-
-    class Meta:
-        table_name = 'refund_records'
-
-    def save(self, *args, **kwargs):
-        # 自动更新更新时间
-        self.updated_at = datetime.now()
-        super().save(*args, **kwargs)
-
-
-class PddBillRecord(BaseModel):
-    """
-    拼多多账单记录表 - 存储每日退款等账单数据
-    """
-    id = AutoField(primary_key=True)
-    shop_profile = CharField(max_length=255, null=True, verbose_name="店铺配置名")  # 店铺配置名
-    bill_date = DateField(verbose_name="账单日期")  # 账单日期
-    outcome_amount = FloatField(default=0.0, verbose_name="支出金额(退款)")  # 支出金额
-    begin_time = IntegerField(null=True, verbose_name="开始时间戳")  # 开始时间戳
-    end_time = IntegerField(null=True, verbose_name="结束时间戳")  # 结束时间戳
-    raw_data = TextField(null=True, verbose_name="原始数据")  # 原始JSON数据
-    is_del = BooleanField(default=False, verbose_name="是否删除")  # 软删除标志
-    created_at = DateTimeField(default=datetime.now, verbose_name="创建时间")  # 创建时间
-    updated_at = DateTimeField(default=datetime.now, verbose_name="更新时间")  # 更新时间
-
-    class Meta:
-        table_name = 'pdd_bill_records'
-        indexes = (
-            (('shop_profile', 'bill_date'), True),  # 店铺+日期唯一索引
-        )
-
-    def save(self, *args, **kwargs):
-        self.updated_at = datetime.now()
-        super().save(*args, **kwargs)
-
-
-class PddBillDetail(BaseModel):
-    """
-    拼多多账单明细表 - 存储每条账单的详细信息
-    """
-    id = AutoField(primary_key=True)
-    bill_id = CharField(max_length=255, unique=True, verbose_name="账单ID")  # 账单ID
-    mall_id = BigIntegerField(null=True, verbose_name="商家ID")  # 商家ID
-    order_sn = CharField(max_length=255, index=True, verbose_name="订单号")  # 订单号
-    amount = FloatField(verbose_name="金额(分)")  # 金额(分)
-    amount_yuan = FloatField(verbose_name="金额(元)")  # 金额(元)
-    created_at_timestamp = BigIntegerField(null=True, verbose_name="账单创建时间戳")  # 账单创建时间戳
-    bill_type = IntegerField(null=True, verbose_name="账单类型")  # 账单类型
-    class_id = IntegerField(null=True, verbose_name="分类ID")  # 分类ID
-    class_id_desc = CharField(max_length=255, null=True, verbose_name="分类描述")  # 分类描述
-    finance_id = IntegerField(null=True, verbose_name="财务ID")  # 财务ID
-    finance_id_desc = CharField(max_length=255, null=True, verbose_name="财务描述")  # 财务描述
-    note = TextField(null=True, verbose_name="备注")  # 备注
-    bill_out_biz_code = CharField(max_length=255, null=True, verbose_name="业务代码")  # 业务代码
-    bill_out_biz_desc = CharField(max_length=255, null=True, verbose_name="业务描述")  # 业务描述
-    bill_biz_code = CharField(max_length=255, null=True, verbose_name="账单业务代码")  # 账单业务代码
-    shop_profile = CharField(max_length=255, null=True, verbose_name="店铺配置名")  # 店铺配置名
-    bill_date = DateField(null=True, verbose_name="账单日期")  # 账单日期
-    raw_data = TextField(null=True, verbose_name="原始数据")  # 原始JSON数据
-    is_del = BooleanField(default=False, verbose_name="是否删除")  # 软删除标志
-    created_at = DateTimeField(default=datetime.now, verbose_name="创建时间")  # 创建时间
-    updated_at = DateTimeField(default=datetime.now, verbose_name="更新时间")  # 更新时间
-
-    class Meta:
-        table_name = 'pdd_bill_details'
-        indexes = (
-            (('order_sn', 'bill_type'), False),  # 订单号+类型索引
-        )
-
-    def save(self, *args, **kwargs):
-        self.updated_at = datetime.now()
-        super().save(*args, **kwargs)
-
 
 # pdd table - 拼多多广告推广数据表
 class PddTable(BaseModel):
     id = AutoField(primary_key=True)
     
     # 基础广告信息
-    ad_id = CharField(unique=True, index=True)  # 广告ID
+    ad_id = CharField(index=True)  # 广告ID（移除unique约束）
     ad_name = CharField(null=True)  # 广告名称
     goods_id = CharField(null=True, index=True)  # 商品ID
     store_id = CharField(null=True, index=True)  # 店铺ID
@@ -411,7 +227,9 @@ class PddTable(BaseModel):
 
     # 推广费
     orderSpendNetCostPerOrder = FloatField(null=True)  # 推广费
-   
+    
+    # 数据日期
+    data_date = DateField(null=True, index=True)  # 推广数据的日期（年-月-日）
 
     # 原始JSON数据(可选,用于存储完整的API响应)
     raw_data = TextField(null=True)  # 原始JSON数据
@@ -423,6 +241,10 @@ class PddTable(BaseModel):
     
     class Meta:
         table_name = 'pdd_ads'
+        indexes = (
+            (('store_id', 'data_date'), False),  # 店铺ID+数据日期索引
+            (('ad_id', 'data_date'), True),  # 广告ID+数据日期唯一索引
+        )
     
     def set_raw_data(self, data_dict):
         """设置原始JSON数据"""
@@ -441,12 +263,39 @@ class PddTable(BaseModel):
         super().save(*args, **kwargs)
 
 
+# 退款数据
+class PddBillRecord(BaseModel):
+    """
+    拼多多账单记录表 - 只保留核心字段
+    """
+    id = AutoField(primary_key=True)
+    shop_id = CharField(max_length=255, index=True, verbose_name="店铺ID")  # 店铺ID
+    order_sn = CharField(max_length=255, index=True, verbose_name="订单号")  # 订单号
+    amount = FloatField(verbose_name="金额(元)")  # 金额(元)
+    bill_date = DateField(verbose_name="账单日期")  # 账单日期
+    is_del = BooleanField(default=False, verbose_name="是否删除")  # 软删除标志
+    created_at = DateTimeField(default=datetime.now, verbose_name="创建时间")  # 创建时间
+    updated_at = DateTimeField(default=datetime.now, verbose_name="更新时间")  # 更新时间
+
+    class Meta:
+        table_name = 'pdd_bill_records'
+        indexes = (
+            (('shop_id', 'order_sn'), True),  # 店铺ID+订单号唯一索引
+        )
+
+    def save(self, *args, **kwargs):
+        self.updated_at = datetime.now()
+        super().save(*args, **kwargs)
+
+
+
+
 
 
 # 创建所有表
 def create_tables():
     with database:
-        database.create_tables([User, JushuitanProduct, Goods, Store, JushuitanCancelProduct, RefundRecord, PddTable, PddBillRecord, PddBillDetail])
+        database.create_tables([User, JushuitanProduct, Goods, Store, PddTable, PddBillRecord])
 
 
 
