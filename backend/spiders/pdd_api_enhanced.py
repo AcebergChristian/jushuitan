@@ -982,24 +982,24 @@ if __name__ == "__main__":
     
     # 店铺配置
     SHOP_PROFILES = [
+        # {
+        #     "shopid": "19250015",
+        #     "shopname": "万鑫如意的大店",
+        #     "username": "19536518704",
+        #     "password": "Aa556678900."
+        # },
         {
-            "shopid": "19250015",
-            "shopname": "万鑫如意的大店",
-            "username": "19536518704",
+            "shopid": "18557611",
+            "shopname": "鲲鹏万里的大店",
+            "username": "19536515001",
+            "password": "Aa123456"
+        },
+        {
+            "shopid": "18386894",
+            "shopname": "飞流直上三千尺",
+            "username": "14797898071",
             "password": "Aa556678900."
         },
-        # {
-        #     "shopid": "18557611",
-        #     "shopname": "鲲鹏万里的大店",
-        #     "username": "19536515001",
-        #     "password": "Aa123456"
-        # },
-        # {
-        #     "shopid": "18386894",
-        #     "shopname": "飞流直上三千尺",
-        #     # "username": "14797898071",
-        #     # "password": "Aa556678900."
-        # },
         # {
         #     "shopid": "17215795",
         #     "shopname": "扶摇直上百货铺",

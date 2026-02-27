@@ -35,7 +35,10 @@ def create_mysql_connection(host, port, user, password, database):
         password=password,
         host=host,
         port=port,
-        charset='utf8mb4'
+        charset='utf8mb4',
+        connect_timeout=10,
+        read_timeout=30,
+        write_timeout=30
     )
 
 
@@ -159,8 +162,28 @@ def main():
         source_db.connect()
         print("✓ SQLite 连接成功")
         
-        target_db.connect()
-        print("✓ MySQL 连接成功")
+        # 尝试连接 MySQL，提供更详细的错误信息
+        try:
+            target_db.connect()
+            print("✓ MySQL 连接成功")
+        except Exception as e:
+            error_msg = str(e)
+            if '1129' in error_msg or 'blocked' in error_msg.lower():
+                print("\n✗ MySQL 连接失败: 主机被阻止")
+                print("\n原因: MySQL 服务器因为太多连接错误而阻止了你的 IP")
+                print("\n解决方案:")
+                print("1. 登录宝塔面板")
+                print("2. 进入数据库管理 → MySQL → 管理")
+                print("3. 执行 SQL: FLUSH HOSTS;")
+                print("\n或者通过 SSH:")
+                print(f"   mysqladmin -u root -p flush-hosts")
+                print("\n或者修改 MySQL 配置 (my.cnf):")
+                print("   [mysqld]")
+                print("   max_connect_errors = 1000")
+                print("   然后重启 MySQL 服务")
+                sys.exit(1)
+            else:
+                raise
         
         # 在目标数据库创建表结构
         print("\n创建 MySQL 表结构...")

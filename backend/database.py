@@ -2,11 +2,22 @@ from playhouse.db_url import connect
 from peewee import SqliteDatabase, MySQLDatabase
 import os
 from contextlib import contextmanager
+from pathlib import Path
+
+# 加载 .env 文件
+try:
+    from dotenv import load_dotenv
+    env_path = Path(__file__).resolve().parent / '.env'
+    if env_path.exists():
+        load_dotenv(env_path)
+except ImportError:
+    pass  # python-dotenv 未安装，跳过
 
 from backend.models.database import create_tables
 
 # 使用环境变量或默认值来配置数据库
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///database.db')
+# 默认使用 MySQL（生产环境）
+DATABASE_URL = os.getenv('DATABASE_URL', 'mysql://pdd:PzNPetJFEwWkdzGD@t21.nulls.cn:3306/pdd')
 
 # 根据数据库URL类型选择适当的数据库连接
 if DATABASE_URL.startswith('sqlite:///'):

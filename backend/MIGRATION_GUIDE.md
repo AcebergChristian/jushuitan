@@ -133,13 +133,36 @@ mysql://pdd:PzNPetJFEwWkdzGD@t21.nulls.cn:3306/pdd
 
 ## 常见问题
 
-### 1. 连接失败
+### 1. 主机被阻止 (错误 1129)
+
+错误信息：`Host 'xxx' is blocked because of many connection errors`
+
+**快速解决：**
+```bash
+# 测试连接
+python backend/test_mysql_connection.py
+
+# 如果被阻止，查看详细解决方案
+cat backend/fix_mysql_blocked.md
+```
+
+**在宝塔面板执行：**
+1. 登录宝塔面板
+2. 数据库 → MySQL → 管理 → phpMyAdmin
+3. 执行 SQL: `FLUSH HOSTS;`
+
+### 2. 连接失败
 
 检查：
 - MySQL 服务是否运行
 - 防火墙是否开放 3306 端口
 - 用户权限是否正确
 - 主机地址是否可访问
+
+**测试连接：**
+```bash
+python backend/test_mysql_connection.py
+```
 
 ### 2. 字符编码问题
 

@@ -2,9 +2,20 @@ from peewee import *
 from datetime import datetime
 import os
 import json
+from pathlib import Path
+
+# 加载 .env 文件
+try:
+    from dotenv import load_dotenv
+    env_path = Path(__file__).resolve().parent.parent / '.env'
+    if env_path.exists():
+        load_dotenv(env_path)
+except ImportError:
+    pass  # python-dotenv 未安装，跳过
 
 # 设置数据库连接 - 支持环境变量配置
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///database.db')
+# 默认使用 MySQL（生产环境）
+DATABASE_URL = os.getenv('DATABASE_URL', 'mysql://pdd:PzNPetJFEwWkdzGD@t21.nulls.cn:3306/pdd')
 
 if DATABASE_URL.startswith('sqlite:///'):
     db_path = DATABASE_URL.replace('sqlite:///', '')

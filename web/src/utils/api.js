@@ -62,10 +62,10 @@ export const login = async (username, password) => {
   let url;
   
   if (isDev) {
-    url = '/api/login';
+    url = ':8000/api/login';
   } else {
-    // 生产环境使用完整URL
-    url = `${window.location.protocol}//${window.location.hostname}/api/login`;
+    // 生产环境使用完整URL（包含端口8000）
+    url = `${window.location.protocol}//${window.location.hostname}:8000/api/login`;
   }
   
   try {
