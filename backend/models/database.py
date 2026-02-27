@@ -3,9 +3,21 @@ from datetime import datetime
 import os
 import json
 
-# 设置数据库连接
-db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
-database = SqliteDatabase(db_path)
+# 设置数据库连接 - 支持环境变量配置
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///database.db')
+
+if DATABASE_URL.startswith('sqlite:///'):
+    db_path = DATABASE_URL.replace('sqlite:///', '')
+    if not os.path.isabs(db_path):
+        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), db_path)
+    database = SqliteDatabase(db_path)
+elif DATABASE_URL.startswith('mysql://'):
+    # 解析MySQL连接字符串: mysql://user:password@host:port/database
+    from playhouse.db_url import connect
+    database = connect(DATABASE_URL)
+else:
+    from playhouse.db_url import connect
+    database = connect(DATABASE_URL)
 
 class BaseModel(Model):
     class Meta:

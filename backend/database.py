@@ -1,5 +1,5 @@
 from playhouse.db_url import connect
-from peewee import SqliteDatabase
+from peewee import SqliteDatabase, MySQLDatabase
 import os
 from contextlib import contextmanager
 
@@ -16,6 +16,9 @@ if DATABASE_URL.startswith('sqlite:///'):
         'ignore_check_constraints': 0,
         'journal_mode': 'wal',
     })
+elif DATABASE_URL.startswith('mysql://'):
+    # MySQL数据库
+    database = connect(DATABASE_URL)
 else:
     # 其他数据库类型
     database = connect(DATABASE_URL)

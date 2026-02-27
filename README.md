@@ -1,5 +1,39 @@
 # 聚水潭和拼多多数据管理系统
 
+## 数据库迁移到 MySQL
+
+本项目已支持从 SQLite 迁移到 MySQL。详细步骤请查看 [backend/MIGRATION_GUIDE.md](backend/MIGRATION_GUIDE.md)
+
+### 快速开始
+
+1. 安装依赖：
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+2. 运行迁移脚本：
+```bash
+python backend/migrate_to_mysql.py
+```
+
+3. 配置环境变量：
+```bash
+export DATABASE_URL='mysql://pdd:PzNPetJFEwWkdzGD@t21.nulls.cn:3306/pdd'
+```
+
+4. 验证迁移：
+```bash
+python backend/verify_mysql.py
+```
+
+5. 启动应用：
+```bash
+python backend/run.py
+```
+
+## 原有内容
+
 这是一个完整的全栈应用程序，用于爬取和管理聚水潭和拼多多平台的商品数据。
 
 ## 项目结构
