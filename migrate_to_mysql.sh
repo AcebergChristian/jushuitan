@@ -24,7 +24,7 @@ echo ""
 
 # 运行迁移
 echo "2. 开始数据迁移..."
-python backend/migrate_to_mysql.py
+python migrate_to_mysql.py
 
 if [ $? -eq 0 ]; then
     echo ""
