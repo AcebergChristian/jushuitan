@@ -12,7 +12,7 @@ from ..services import product_service
 from ..database import get_db
 from ..models.database import JushuitanProduct, Goods, User, Store
 from .auth import get_current_user
-from ..spiders.jushuitan_api import get_all_jushuitan_orders, get_cancel_jushuitan_from_shouhou, get_all_jushuitan_orders_with_refund
+from ..spiders.jushuitan_api import get_all_jushuitan_orders
 
 
 
@@ -331,6 +331,7 @@ def sync_goods(sync_date, orders):
                             'shop_id': order.get('shopId') or '',
                             'shop_name': order.get('shopName') or '未知店铺',
                             'order_id': order.get('oid') or '',
+                            'so_id': order.get('soId') or '',  # 线上订单号
                             'order_time': order_datetime,
                             'sales_amount': payAmount
                         }
@@ -419,6 +420,7 @@ def sync_goods(sync_date, orders):
                 'store_id': sales_data['shop_id'],
                 'store_name': sales_data['shop_name'],
                 'order_id': sales_data['order_id'],
+                'soId': sales_data['so_id'],  # 线上订单号
                 'payment_amount': 0.0,  # 暂不使用
                 'sales_amount': sales_data['sales_amount'],
                 'refund_amount': 0.0,  # 暂不使用
@@ -741,9 +743,12 @@ def get_goods_list(
 ):
     """
     获取商品列表，支持分页和商品名称模糊查询
+    关联 pdd_ads 表获取广告费，关联 pdd_bill_records 表获取退款金额
     """
     
     try:
+        from backend.models.database import PddTable, PddBillRecord
+        
         # 构建查询
         query = Goods.select()
         
@@ -752,7 +757,7 @@ def get_goods_list(
             query = query.where(Goods.goods_name.contains(search))
         
         # 排除已删除的记录
-        query = query.where(Goods.is_del == False)  # False
+        query = query.where(Goods.is_del == False)
         
         # 按创建时间降序排列
         query = query.order_by(Goods.created_at.desc())
@@ -763,9 +768,53 @@ def get_goods_list(
         # 应用分页
         goods_list = query.offset(skip).limit(limit).execute()
         
-        # 转换为字典列表
+        # 转换为字典列表，并关联广告费和退款金额
         result = []
         for good in goods_list:
+            # 关联 pdd_ads 表获取广告费（按 goods_id 和 store_id 匹配）
+            advertising_expenses = 0.0
+            if good.goods_id and good.store_id:
+                # 查询该商品的广告费总和
+                pdd_ads = PddTable.select(fn.SUM(PddTable.orderSpendNetCostPerOrder).alias('total_ad_cost')).where(
+                    (PddTable.goods_id == good.goods_id) &
+                    (PddTable.store_id == good.store_id) &
+                    (PddTable.is_del == False)
+                ).scalar()
+                advertising_expenses = float(pdd_ads) if pdd_ads else 0.0
+            
+            # 关联 pdd_bill_records 表获取退款金额（按 shop_id 和 order_sn 匹配）
+            refund_amount = 0.0
+            if good.store_id and good.order_id:
+                # 查询该订单的退款金额总和
+                bill_refund = PddBillRecord.select(fn.SUM(PddBillRecord.amount).alias('total_refund')).where(
+                    (PddBillRecord.shop_id == good.store_id) &
+                    (PddBillRecord.order_sn == good.order_id) &
+                    (PddBillRecord.is_del == False)
+                ).scalar()
+                refund_amount = float(bill_refund) if bill_refund else 0.0
+            
+            # 使用关联查询的值，如果没有则使用商品表中的值
+            final_advertising_expenses = advertising_expenses if advertising_expenses > 0 else (good.advertising_expenses or 0.0)
+            final_refund_amount = refund_amount if refund_amount > 0 else (good.refund_amount or 0.0)
+            
+            # 重新计算利润指标（使用关联后的广告费和退款金额）
+            sales_amount = good.sales_amount or 0.0
+            sales_cost = good.sales_cost or 0.0
+            
+            gross_profit_1_occurred = sales_amount - sales_cost
+            gross_profit_1_rate = (gross_profit_1_occurred / sales_amount * 100) if sales_amount > 0 else 0.0
+            
+            advertising_ratio = (final_advertising_expenses / sales_amount * 100) if sales_amount > 0 else 0.0
+            
+            gross_profit_3 = sales_amount - sales_cost - final_advertising_expenses
+            gross_profit_3_rate = (gross_profit_3 / sales_amount * 100) if sales_amount > 0 else 0.0
+            
+            gross_profit_4 = gross_profit_3  # 可以根据需要添加其他费用
+            gross_profit_4_rate = (gross_profit_4 / sales_amount * 100) if sales_amount > 0 else 0.0
+            
+            net_profit = gross_profit_3  # 净利润
+            net_profit_rate = (net_profit / sales_amount * 100) if sales_amount > 0 else 0.0
+            
             good_dict = {
                 'id': good.id,
                 'goods_id': good.goods_id,
@@ -774,23 +823,24 @@ def get_goods_list(
                 'store_name': good.store_name,
                 'order_id': good.order_id,
                 'payment_amount': good.payment_amount,
-                'sales_amount': good.sales_amount,
-                'refund_amount': good.refund_amount,
-                'sales_cost': good.sales_cost,
-                'gross_profit_1_occurred': good.gross_profit_1_occurred,
-                'gross_profit_1_rate': good.gross_profit_1_rate,
-                'advertising_expenses': good.advertising_expenses,
-                'gross_profit_3': good.gross_profit_3,
-                'gross_profit_3_rate': good.gross_profit_3_rate,
-                'gross_profit_4': good.gross_profit_4,
-                'gross_profit_4_rate': good.gross_profit_4_rate,
-                'net_profit': good.net_profit,
-                'net_profit_rate': good.net_profit_rate,
+                'sales_amount': sales_amount,
+                'refund_amount': round(final_refund_amount, 2),  # 使用关联查询的退款金额
+                'sales_cost': sales_cost,
+                'gross_profit_1_occurred': round(gross_profit_1_occurred, 2),
+                'gross_profit_1_rate': round(gross_profit_1_rate, 2),
+                'advertising_expenses': round(final_advertising_expenses, 2),  # 使用关联查询的广告费
+                'advertising_ratio': round(advertising_ratio, 2),
+                'gross_profit_3': round(gross_profit_3, 2),
+                'gross_profit_3_rate': round(gross_profit_3_rate, 2),
+                'gross_profit_4': round(gross_profit_4, 2),
+                'gross_profit_4_rate': round(gross_profit_4_rate, 2),
+                'net_profit': round(net_profit, 2),
+                'net_profit_rate': round(net_profit_rate, 2),
                 'is_del': good.is_del,
                 'creator': good.creator,
-                'goodorder_time': good.goodorder_time.strftime("%Y-%m-%d %H:%M:%S"),
-                'created_at': good.created_at.strftime("%Y-%m-%d %H:%M:%S"),
-                'updated_at': good.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+                'goodorder_time': good.goodorder_time.strftime("%Y-%m-%d %H:%M:%S") if good.goodorder_time else "",
+                'created_at': good.created_at.strftime("%Y-%m-%d %H:%M:%S") if good.created_at else "",
+                'updated_at': good.updated_at.strftime("%Y-%m-%d %H:%M:%S") if good.updated_at else ""
             }
             result.append(good_dict)
         
@@ -823,9 +873,12 @@ def get_store_goods(
     根据当前登录用户的goods_stores字段查询店铺数据
     管理员可查看所有数据，普通用户只能查看自己的数据
     直接查询店铺表，返回汇总数据
+    关联 pdd_ads 表获取广告费，关联 pdd_bill_records 表获取退款金额
     返回包含销售金额、成本、利润等统计信息的数据
     支持按日期范围查询
     """
+    
+    from backend.models.database import PddTable, PddBillRecord
 
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
@@ -890,28 +943,81 @@ def get_store_goods(
         query_conditions.append(Store.store_id.in_(user_store_ids))
         store_records = Store.select().where(*query_conditions)
     
-    # 构建返回数据
+    # 构建返回数据，并关联PDD表
     store_data = []
     for store in store_records:
+        # 提取真实的店铺ID（去掉日期后缀）
+        # Store表中的ID格式: shopId_YYYYMMDD (如: 18582224_20260126)
+        real_store_id = store.store_id.split('_')[0] if '_' in store.store_id else store.store_id
+        
+        # 关联 pdd_ads 表获取该店铺的总广告费（按日期匹配）
+        advertising_expenses_from_pdd = 0.0
+        if store.last_order_time:
+            # 提取 last_order_time 的日期部分 (YYYY-MM-DD)
+            order_date = store.last_order_time.date()
+            # 查询同一天的广告费
+            pdd_ads = PddTable.select(fn.SUM(PddTable.orderSpendNetCostPerOrder).alias('total_ad_cost')).where(
+                (PddTable.store_id == real_store_id) &
+                (PddTable.data_date == order_date) &
+                (PddTable.is_del == False)
+            ).scalar()
+            advertising_expenses_from_pdd = float(pdd_ads) if pdd_ads else 0.0
+        
+        # 关联 pdd_bill_records 表获取该店铺的总退款金额
+        # 店铺级别：按 shop_id 和日期匹配（bill_date = last_order_time的日期部分）
+        refund_amount_from_pdd = 0.0
+        if store.last_order_time:
+            # 提取 last_order_time 的日期部分 (YYYY-MM-DD)
+            order_date = store.last_order_time.date()
+            # 查询同一天的退款金额，使用 ABS 转换为正数
+            bill_refund = PddBillRecord.select(fn.SUM(fn.ABS(PddBillRecord.amount)).alias('total_refund')).where(
+                (PddBillRecord.shop_id == real_store_id) &
+                (PddBillRecord.bill_date == order_date) &
+                (PddBillRecord.is_del == False)
+            ).scalar()
+            refund_amount_from_pdd = float(bill_refund) if bill_refund else 0.0
+        
+        # 使用关联查询的值，如果没有则使用Store表中的值
+        final_advertising_expenses = advertising_expenses_from_pdd if advertising_expenses_from_pdd > 0 else (store.total_advertising_expenses or 0.0)
+        final_refund_amount = refund_amount_from_pdd if refund_amount_from_pdd > 0 else (store.total_refund_amount or 0.0)
+        
+        # 重新计算利润指标（使用关联后的广告费和退款金额）
+        sales_amount = store.total_sales_amount or 0.0
+        sales_cost = store.total_sales_cost or 0.0
+        
+        gross_profit_1_occurred = sales_amount - sales_cost
+        gross_profit_1_rate = (gross_profit_1_occurred / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        advertising_ratio = (final_advertising_expenses / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        gross_profit_3 = sales_amount - sales_cost - final_advertising_expenses
+        gross_profit_3_rate = (gross_profit_3 / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        gross_profit_4 = gross_profit_3
+        gross_profit_4_rate = (gross_profit_4 / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        net_profit = gross_profit_3
+        net_profit_rate = (net_profit / sales_amount * 100) if sales_amount > 0 else 0.0
+        
         store_data.append({
             'store_id': store.store_id,
             'store_name': store.store_name,
             'goods_count': store.goods_count,
             'order_count': store.order_count,
             'payment_amount': store.total_payment_amount,
-            'sales_amount': store.total_sales_amount,
-            'refund_amount': store.total_refund_amount,
-            'sales_cost': store.total_sales_cost,
-            'gross_profit_1_occurred': store.total_gross_profit_1_occurred,
-            'gross_profit_1_rate': store.avg_gross_profit_1_rate,
-            'advertising_expenses': store.total_advertising_expenses,
-            'advertising_ratio': store.avg_advertising_ratio,
-            'gross_profit_3': store.total_gross_profit_3,
-            'gross_profit_3_rate': store.avg_gross_profit_3_rate,
-            'gross_profit_4': store.total_gross_profit_4,
-            'gross_profit_4_rate': store.avg_gross_profit_4_rate,
-            'net_profit': store.total_net_profit,
-            'net_profit_rate': store.avg_net_profit_rate,
+            'sales_amount': sales_amount,
+            'refund_amount': round(final_refund_amount, 2),  # 使用关联查询的退款金额
+            'sales_cost': sales_cost,
+            'gross_profit_1_occurred': round(gross_profit_1_occurred, 2),
+            'gross_profit_1_rate': round(gross_profit_1_rate, 2),
+            'advertising_expenses': round(final_advertising_expenses, 2),  # 使用关联查询的广告费
+            'advertising_ratio': round(advertising_ratio, 2),
+            'gross_profit_3': round(gross_profit_3, 2),
+            'gross_profit_3_rate': round(gross_profit_3_rate, 2),
+            'gross_profit_4': round(gross_profit_4, 2),
+            'gross_profit_4_rate': round(gross_profit_4_rate, 2),
+            'net_profit': round(net_profit, 2),
+            'net_profit_rate': round(net_profit_rate, 2),
             'last_order_time': store.last_order_time.strftime("%Y-%m-%d %H:%M:%S") if store.last_order_time else "",
             'created_at': store.created_at.strftime("%Y-%m-%d %H:%M:%S") if store.created_at else "",
             'updated_at': store.updated_at.strftime("%Y-%m-%d %H:%M:%S") if store.updated_at else ""
@@ -970,6 +1076,16 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
     """
     获取特定店铺的商品详情
     """
+    
+    print(f"=== Debug: 查询店铺商品详情 ===")
+    print(f"原始店铺ID: {store_id}")
+    
+    # 提取真实的店铺ID（去掉日期后缀）
+    # Store表中的ID格式: shopId_YYYYMMDD (如: 18582224_20260126)
+    # Goods表中的ID格式: shopId (如: 18582224)
+    real_store_id = store_id.split('_')[0] if '_' in store_id else store_id
+    print(f"提取后的店铺ID: {real_store_id}")
+    print(f"用户: {current_user.username}, 角色: {current_user.role}")
 
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
@@ -978,39 +1094,82 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
     
     if is_admin:
         # 管理员可以查看任意店铺的商品数据
+        print(f"管理员模式：查询店铺 {real_store_id} 的商品")
         goods_records = Goods.select().where(
-            (Goods.store_id == store_id) & (Goods.is_del == False)
-        ).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
+            (Goods.store_id == real_store_id) & (Goods.is_del == False)
+        ).order_by(Goods.goodorder_time.desc())
     else:
         # 普通用户只能查看自己关联的店铺商品数据
         user_goods_stores = current_user.get_goods_stores()
-        user_store_ids = [item.get('store_id') for item in user_goods_stores if item.get('store_id')]
+        # 提取用户关联的真实店铺ID（去掉日期后缀）
+        user_store_ids = [item.get('store_id').split('_')[0] if '_' in item.get('store_id', '') else item.get('store_id') 
+                         for item in user_goods_stores if item.get('store_id')]
         
-        if store_id not in user_store_ids:
+        print(f"普通用户模式：用户关联的店铺IDs: {user_store_ids}")
+        
+        if real_store_id not in user_store_ids:
+            print(f"权限检查失败：店铺 {real_store_id} 不在用户关联列表中")
             return {"message": "无权访问此店铺的商品详情", "data": [], "error": True}
         
         goods_records = Goods.select().where(
-            (Goods.store_id == store_id) & (Goods.is_del == False)
-        ).order_by(Goods.goodorder_time.desc())  # 按订单时间倒序排列
+            (Goods.store_id == real_store_id) & (Goods.is_del == False)
+        ).order_by(Goods.goodorder_time.desc())
+    
+    # 转换为列表以便调试
+    goods_records_list = list(goods_records)
+    print(f"查询到的商品记录数: {len(goods_records_list)}")
+    
+    # 如果没有记录，检查数据库中是否有该店铺的数据
+    if len(goods_records_list) == 0:
+        # 检查是否有该店铺的任何数据（包括已删除的）
+        all_records = Goods.select().where(Goods.store_id == real_store_id)
+        all_count = all_records.count()
+        print(f"该店铺在数据库中的总记录数（包括已删除）: {all_count}")
+        
+        # 检查数据库中所有不同的店铺ID
+        distinct_stores = Goods.select(Goods.store_id).distinct()
+        store_ids_in_db = [s.store_id for s in distinct_stores if s.store_id]
+        print(f"数据库中存在的店铺IDs: {store_ids_in_db[:10]}...")  # 只显示前10个
+        
+        # 检查store_id的类型和格式
+        print(f"查询的store_id类型: {type(real_store_id)}, 值: '{real_store_id}'")
+        if store_ids_in_db:
+            print(f"数据库中第一个store_id类型: {type(store_ids_in_db[0])}, 值: '{store_ids_in_db[0]}'")
+        
+        return {
+            "message": f"该店铺暂无商品数据。数据库中该店铺总记录数: {all_count}",
+            "data": [],
+            "debug": {
+                "original_store_id": store_id,
+                "real_store_id": real_store_id,
+                "store_id_type": str(type(real_store_id)),
+                "total_records_in_db": all_count,
+                "sample_store_ids": store_ids_in_db[:5]
+            }
+        }
 
+    # 导入PDD相关表
+    from backend.models.database import PddTable, PddBillRecord
+    
     # 按good_id进行分组并汇总数据
     grouped_goods = {}
-    for record in goods_records:
+    for record in goods_records_list:
         good_id = record.goods_id
         
         if good_id not in grouped_goods:
             # 初始化商品数据
             grouped_goods[good_id] = {
-                'id': record.id,  # 使用第一条记录的ID
+                'id': record.id,
                 'good_id': record.goods_id,
                 'good_name': record.goods_name,
                 'store_id': record.store_id,
                 'store_name': record.store_name,
-                'order_ids': [record.order_id] if record.order_id else [],  # 收集所有订单号
+                'order_ids': [record.order_id] if record.order_id else [],
+                'so_ids': [record.soId] if record.soId else [],  # 收集线上订单号
                 'payment_amount': record.payment_amount or 0.0,
                 'sales_amount': record.sales_amount or 0.0,
                 'sales_cost': record.sales_cost or 0.0,
-                'refund_amount': record.refund_amount or 0.0,  # 直接使用goods表中的退款金额
+                'refund_amount': record.refund_amount or 0.0,
                 'gross_profit_1_occurred': record.gross_profit_1_occurred or 0.0,
                 'gross_profit_1_rate': record.gross_profit_1_rate or 0.0,
                 'advertising_expenses': record.advertising_expenses or 0.0,
@@ -1021,11 +1180,11 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
                 'gross_profit_4_rate': record.gross_profit_4_rate or 0.0,
                 'net_profit': record.net_profit or 0.0,
                 'net_profit_rate': record.net_profit_rate or 0.0,
-                'first_goodorder_time': record.goodorder_time,  # 最早订单时间
-                'latest_goodorder_time': record.goodorder_time,  # 最晚订单时间
+                'first_goodorder_time': record.goodorder_time,
+                'latest_goodorder_time': record.goodorder_time,
                 'created_at': record.created_at,
                 'updated_at': record.updated_at,
-                'order_count': 1  # 订单数量
+                'order_count': 1
             }
         else:
             # 累加数值字段
@@ -1033,7 +1192,7 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             existing['payment_amount'] += record.payment_amount or 0.0
             existing['sales_amount'] += record.sales_amount or 0.0
             existing['sales_cost'] += record.sales_cost or 0.0
-            existing['refund_amount'] += record.refund_amount or 0.0  # 累加退款金额
+            existing['refund_amount'] += record.refund_amount or 0.0
             existing['gross_profit_1_occurred'] += record.gross_profit_1_occurred or 0.0
             existing['advertising_expenses'] += record.advertising_expenses or 0.0
             existing['advertising_ratio'] += record.advertising_ratio or 0.0
@@ -1044,6 +1203,9 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             # 更新订单ID列表
             if record.order_id:
                 existing['order_ids'].append(record.order_id)
+            # 更新线上订单号列表
+            if record.soId:
+                existing['so_ids'].append(record.soId)
             
             # 更新时间范围
             if record.goodorder_time and (not existing['latest_goodorder_time'] or record.goodorder_time > existing['latest_goodorder_time']):
@@ -1057,22 +1219,58 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             
             existing['order_count'] += 1
     
-    # 将分组结果转换为前端需要的格式
+    print(f"分组后的商品数量: {len(grouped_goods)}")
+    
+    # 将分组结果转换为前端需要的格式，并关联PDD表数据
     for good_id, data in grouped_goods.items():
-        # 计算平均利润率（如果需要的话）
-        if data['sales_amount'] != 0:
-            data['gross_profit_1_rate'] = (data['gross_profit_1_occurred'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
-            data['gross_profit_3_rate'] = (data['gross_profit_3'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
-            data['gross_profit_4_rate'] = (data['gross_profit_4'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
-            data['net_profit_rate'] = (data['net_profit'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
-            data['advertising_ratio'] = (data['advertising_expenses'] / data['sales_amount']) * 100 if data['sales_amount'] else 0.0
-        else:
-            # 如果销售金额为0，利润率设为0
-            data['gross_profit_1_rate'] = 0.0
-            data['gross_profit_3_rate'] = 0.0
-            data['gross_profit_4_rate'] = 0.0
-            data['net_profit_rate'] = 0.0
-            data['advertising_ratio'] = 0.0
+        # 关联 pdd_ads 表获取广告费（按 goods_id、store_id 和日期匹配）
+        advertising_expenses_from_pdd = 0.0
+        if good_id and data['store_id'] and data['latest_goodorder_time']:
+            # 提取订单日期
+            order_date = data['latest_goodorder_time'].date()
+            pdd_ads = PddTable.select(fn.SUM(PddTable.orderSpendNetCostPerOrder).alias('total_ad_cost')).where(
+                (PddTable.goods_id == good_id) &
+                (PddTable.store_id == data['store_id']) &
+                (PddTable.data_date == order_date) &
+                (PddTable.is_del == False)
+            ).scalar()
+            advertising_expenses_from_pdd = float(pdd_ads) if pdd_ads else 0.0
+        
+        # 关联 pdd_bill_records 表获取退款金额（按 shop_id、so_ids 和日期匹配，使用ABS转正数）
+        refund_amount_from_pdd = 0.0
+        if data['store_id'] and data['so_ids'] and data['latest_goodorder_time']:
+            # 提取订单日期
+            order_date = data['latest_goodorder_time'].date()
+            # 查询所有线上订单号的退款金额总和，使用ABS转换为正数
+            bill_refund = PddBillRecord.select(fn.SUM(fn.ABS(PddBillRecord.amount)).alias('total_refund')).where(
+                (PddBillRecord.shop_id == data['store_id']) &
+                (PddBillRecord.order_sn.in_(data['so_ids'])) &
+                (PddBillRecord.bill_date == order_date) &
+                (PddBillRecord.is_del == False)
+            ).scalar()
+            refund_amount_from_pdd = float(bill_refund) if bill_refund else 0.0
+        
+        # 使用关联查询的值，如果没有则使用累加的值
+        final_advertising_expenses = advertising_expenses_from_pdd if advertising_expenses_from_pdd > 0 else data['advertising_expenses']
+        final_refund_amount = refund_amount_from_pdd if refund_amount_from_pdd > 0 else data['refund_amount']
+        
+        # 重新计算利润指标（使用关联后的广告费和退款金额）
+        sales_amount = data['sales_amount']
+        sales_cost = data['sales_cost']
+        
+        gross_profit_1_occurred = sales_amount - sales_cost
+        gross_profit_1_rate = (gross_profit_1_occurred / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        advertising_ratio = (final_advertising_expenses / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        gross_profit_3 = sales_amount - sales_cost - final_advertising_expenses
+        gross_profit_3_rate = (gross_profit_3 / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        gross_profit_4 = gross_profit_3
+        gross_profit_4_rate = (gross_profit_4 / sales_amount * 100) if sales_amount > 0 else 0.0
+        
+        net_profit = gross_profit_3
+        net_profit_rate = (net_profit / sales_amount * 100) if sales_amount > 0 else 0.0
         
         # 格式化时间
         first_time_str = data['first_goodorder_time'].strftime("%Y-%m-%d %H:%M:%S") if data['first_goodorder_time'] else ""
@@ -1084,32 +1282,68 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
             'good_name': data['good_name'],
             'store_id': data['store_id'],
             'store_name': data['store_name'],
-            'order_ids': ', '.join([oid for oid in data['order_ids'] if oid]),  # 将订单号用逗号连接
-            'order_count': data['order_count'],  # 订单数量
+            'order_ids': ', '.join([oid for oid in data['order_ids'] if oid]),
+            'so_ids': ', '.join([sid for sid in data['so_ids'] if sid]),  # 线上订单号
+            'order_count': data['order_count'],
             'payment_amount': round(data['payment_amount'], 2),
-            'sales_amount': round(data['sales_amount'], 2),
-            'sales_cost': round(data['sales_cost'], 2),
-            'refund_amount': round(data['refund_amount'], 2),  # 使用goods表中的退款金额
-            'gross_profit_1_occurred': round(data['gross_profit_1_occurred'], 2),
-            'gross_profit_1_rate': round(data['gross_profit_1_rate'], 2),
-            'advertising_expenses': round(data['advertising_expenses'], 2),
-            'advertising_ratio': round(data['advertising_ratio'], 2),
-            'gross_profit_3': round(data['gross_profit_3'], 2),
-            'gross_profit_3_rate': round(data['gross_profit_3_rate'], 2),
-            'gross_profit_4': round(data['gross_profit_4'], 2),
+            'sales_amount': round(sales_amount, 2),
+            'sales_cost': round(sales_cost, 2),
+            'refund_amount': round(final_refund_amount, 2),  # 使用关联查询的退款金额
+            'gross_profit_1_occurred': round(gross_profit_1_occurred, 2),
+            'gross_profit_1_rate': round(gross_profit_1_rate, 2),
+            'advertising_expenses': round(final_advertising_expenses, 2),  # 使用关联查询的广告费
+            'advertising_ratio': round(advertising_ratio, 2),
+            'gross_profit_3': round(gross_profit_3, 2),
+            'gross_profit_3_rate': round(gross_profit_3_rate, 2),
+            'gross_profit_4': round(gross_profit_4, 2),
             'gross_profit_4_rate': round(data['gross_profit_4_rate'], 2),
             'net_profit': round(data['net_profit'], 2),
             'net_profit_rate': round(data['net_profit_rate'], 2),
-            'first_order_time': first_time_str,  # 最早订单时间
-            'latest_order_time': latest_time_str,  # 最晚订单时间
+            'first_order_time': first_time_str,
+            'latest_order_time': latest_time_str,
             'created_at': data['created_at'].strftime("%Y-%m-%d %H:%M:%S") if data['created_at'] else "",
             'updated_at': data['updated_at'].strftime("%Y-%m-%d %H:%M:%S") if data['updated_at'] else ""
         })
+    
+    print(f"最终返回的商品数据数量: {len(goods_data)}")
     
     return {
         "message": "成功获取店铺商品详情",
         "data": goods_data
     }
+
+
+# 调试端点：查看数据库中的店铺ID列表
+@router.get("/debug/store_ids")
+def debug_store_ids(current_user = Depends(get_current_user)):
+    """
+    调试端点：查看数据库中所有的店铺ID
+    """
+    try:
+        # 从Goods表获取所有不同的店铺ID
+        goods_stores = Goods.select(Goods.store_id, Goods.store_name).distinct()
+        goods_store_list = [{'store_id': s.store_id, 'store_name': s.store_name} for s in goods_stores if s.store_id]
+        
+        # 从Store表获取所有店铺ID
+        store_records = Store.select(Store.store_id, Store.store_name).where(Store.is_del == False)
+        store_list = [{'store_id': s.store_id, 'store_name': s.store_name} for s in store_records]
+        
+        # 统计Goods表中的记录数
+        total_goods = Goods.select().where(Goods.is_del == False).count()
+        
+        return {
+            "message": "调试信息",
+            "data": {
+                "goods_table_stores": goods_store_list,
+                "store_table_stores": store_list,
+                "total_goods_records": total_goods
+            }
+        }
+    except Exception as e:
+        print(f"调试端点出错: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"调试失败: {str(e)}")
 
 
 

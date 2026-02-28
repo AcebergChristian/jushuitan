@@ -988,12 +988,12 @@ if __name__ == "__main__":
         #     "username": "19536518704",
         #     "password": "Aa556678900."
         # },
-        {
-            "shopid": "18557611",
-            "shopname": "鲲鹏万里的大店",
-            "username": "19536515001",
-            "password": "Aa123456"
-        },
+        # {
+        #     "shopid": "18557611",
+        #     "shopname": "鲲鹏万里的大店",
+        #     "username": "19536515001",
+        #     "password": "Aa123456"
+        # },
         {
             "shopid": "18386894",
             "shopname": "飞流直上三千尺",

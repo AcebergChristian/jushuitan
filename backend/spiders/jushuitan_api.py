@@ -9,6 +9,8 @@ authorization = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyMDExNjY1MSIsIn
 # 销售成本 = 待推单审核+异常+待发货+已发货
 
 
+
+
 # 获取销售金额订单数据（包含所有状态）
 def get_jushuitan_orders_for_sales_amount(sync_date=None):
     """
@@ -51,7 +53,7 @@ def get_jushuitan_orders_for_sales_amount(sync_date=None):
         "coId": "14482113",
         "uid": "20116651",
         "pageNum": 1,
-        "pageSize": 500,
+        "pageSize": 9999,
         "searchType": 1
     }
 
@@ -115,7 +117,7 @@ def get_jushuitan_orders_for_sales_cost(sync_date=None):
         "coId": "14482113",
         "uid": "20116651",
         "pageNum": 1,
-        "pageSize": 500,
+        "pageSize": 9999,
         "searchType": 1
     }
 
@@ -205,138 +207,6 @@ def get_all_jushuitan_orders(sync_date=None):
 
 
 
-
-
-
-# 获取所有订单数据 用来与售后数据联查得到refund_amount
-def get_all_jushuitan_orders_with_refund(sync_date=None):
-    """
-    获取聚水潭订单数据，支持查询指定时间段内的所有订单
-    如果未提供日期范围，则默认查询最近7天的订单
-    """
-    url = "https://innerapi.scm121.com/api/inner/order/list"
-
-    headers = {
-        "authorization": authorization,
-        "content-type": "application/json;charset=UTF-8",
-        "origin": "https://innerorder.scm121.com",
-        "referer": "https://innerorder.scm121.com/distribute",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/141.0.0.0 Safari/537.36",
-        "appcode": "sc.scm121.com",
-        "app-version": "TOWER_20260116204226",
-        "source": "SUPPLIER"
-    }
-
-    # 如果没有提供sync_date，则默认使用前一天的日期
-    if sync_date is None:
-        yesterday = datetime.now() - timedelta(days=1)
-        sync_date = yesterday.strftime("%Y-%m-%d")
-    elif isinstance(sync_date, date):
-        # 如果传入的是date对象，转换为字符串
-        sync_date = sync_date.strftime("%Y-%m-%d")
-
-    # 设置当天的开始和结束时间
-    start_time = f"{sync_date} 00:00:00"
-    end_time = f"{sync_date} 23:59:59"
-
-    payload = {
-        "startTime": start_time,
-        "endTime": end_time,
-        "dateQueryType": "OrderDate",
-        "orderTypeEnum": "ALL",
-        "noteType": "NOFILTER",
-        "orderByKey": 0,
-        "ascOrDesc": False,
-        "coId": "14482113",
-        "uid": "20116651",
-        "pageNum": 1,
-        "pageSize": 9999,
-        "searchType": 1
-    }
-
-
-    try:
-        resp = requests.post(url, headers=headers, json=payload, timeout=15)
-        resp.raise_for_status()
-
-        data = resp.json()
-        order_count = len(data.get('data', []))
-        print(f'成功获取聚水潭订单数据，共{order_count}条记录')
-
-        return data
-
-    except requests.exceptions.RequestException as e:
-        print(f'请求聚水潭API失败: {e}')
-        return None
-    except Exception as e:
-        print(f'处理聚水潭数据时发生错误: {e}')
-        return None
-
-
-
-# 通过售后页面获取退款数据
-def get_cancel_jushuitan_from_shouhou(date=None):
-    """
-    获取聚水潭售后订单数据，支持查询指定时间段内的所有售后订单
-    如果未提供日期范围，则默认查询最近7天的售后订单
-    """
-    url = "https://innerapi.scm121.com/api/inner/after-sale/page/list"
-
-    headers = {
-        "authorization": authorization,
-        "content-type": "application/json;charset=UTF-8",
-        "origin": "https://innerorder.scm121.com",
-        "referer": "https://innerorder.scm121.com/afterSales",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36",
-        "appcode": "sc.scm121.com",
-        "app-version": "TOWER_20260130202757",
-        "source": "SUPPLIER",
-        "accept": "application/json",
-        "accept-language": "zh-CN,zh;q=0.9",
-        "gwfp": "180fcdc0c0f8aa459761e4b59acf09a5"
-    }
-
-    # 如果没有提供date，则默认使用前一天的日期
-    if date is None:
-        today = datetime.now()
-        date = today.strftime("%Y-%m-%d")
-
-    # 设置当天的开始和结束时间
-    confirm_start_time = f"{date} 00:00:00"
-    confirm_end_time = f"{date} 23:59:59"
-
-    payload = {
-        "coId": "14482113",
-        "uid": "20116651",
-        "searchType": 1,
-        "confirmStartTime": confirm_start_time,
-        "confirmEndTime": confirm_end_time,
-        "querySortDTO": {
-            "shopEndDate": False
-        },
-        "isWhite": 1,
-        "afterSaleStatus": ["Confirmed"],
-        "pageNum": 1,
-        "pageSize": 9999  # 获取所有记录
-    }
-
-
-    try:
-        resp = requests.post(url, headers=headers, json=payload, timeout=15)
-        resp.raise_for_status()
-
-        data = resp.json()
-        order_count = len(data.get('data', []))
-
-        print(f"获取到 {order_count} 条售后订单记录")
-        return data
-
-    except requests.exceptions.RequestException as e:
-        print(f'请求聚水潭售后API失败: {e}')
-        return None
-    except Exception as e:
-        print(f'处理聚水潭售后数据时发生错误: {e}')
-        return None
 
 
 
