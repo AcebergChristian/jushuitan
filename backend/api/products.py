@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query, Request
 from typing import List
-import sqlite3
 import os
 import json
 from datetime import datetime, date, timedelta
 import traceback
+from peewee import fn
 
 
 from .. import schemas
@@ -23,123 +23,44 @@ router = APIRouter()
 @router.get("/jushuitan_products/")
 def read_jushuitan_products(search: str = ""):
     """获取聚水潭商品数据列表"""
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
-    if not os.path.exists(db_path):
-        raise HTTPException(status_code=404, detail="数据库不存在")
-    
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    
-    # 查询所有未删除的数据总数
-    if search:
-        cursor.execute('''SELECT COUNT(*) FROM jushuitan_products 
-                         WHERE is_del = 0 
-                         AND disInnerOrderGoodsViewList LIKE ?''', (f'%{search}%',))
-    else:
-        cursor.execute('SELECT COUNT(*) FROM jushuitan_products WHERE is_del = 0')
-    
-    total_count = cursor.fetchone()[0]
-    
-    # 查询所有未删除的数据
-    if search:
-        cursor.execute('''SELECT * FROM jushuitan_products 
-                         WHERE is_del = 0 
-                         AND disInnerOrderGoodsViewList LIKE ? 
-                         ORDER BY created_at DESC''', (f'%{search}%',))
-    else:
-        cursor.execute('SELECT * FROM jushuitan_products WHERE is_del = 0 ORDER BY created_at DESC')
-    
-    records = cursor.fetchall()
-    
-    # 获取列名
-    column_names = [description[0] for description in cursor.description]
-    
-    # 将结果转换为字典列表
-    result = []
-    for row in records:
-        record_dict = {}
-        for i, col_name in enumerate(column_names):
-            record_dict[col_name] = row[i]
-        result.append(record_dict)
-    
-    conn.close()
-    
-    # 返回包含数据和总数的对象
-    return {
-        "data": result,
-        "total": total_count
-    }
-
-
-
-
-# 根据ID获取聚水潭商品数据
-@router.get("/jushuitan_products/{record_id}")
-def read_jushuitan_product(record_id: int):
-    """根据ID获取聚水潭商品数据"""
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
-    if not os.path.exists(db_path):
-        raise HTTPException(status_code=404, detail="数据库不存在")
-    
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    
-    cursor.execute('SELECT * FROM jushuitan_products WHERE id = ? AND is_del = 0', (record_id,))
-    record = cursor.fetchone()
-    
-    if record is None:
-        conn.close()
-        raise HTTPException(status_code=404, detail="聚水潭数据不存在")
-    
-    # 获取列名
-    column_names = [description[0] for description in cursor.description]
-    
-    # 将结果转换为字典
-    record_dict = {}
-    for i, col_name in enumerate(column_names):
-        record_dict[col_name] = record[i]
-    
-    conn.close()
-    return record_dict
-
-# 根据数据类型获取聚水潭商品数据
-@router.get("/jushuitan_products/type/{data_type}")
-def read_jushuitan_products_by_type(data_type: str, skip: int = 0, limit: int = 100):
-    """根据数据类型获取聚水潭商品数据"""
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
-    if not os.path.exists(db_path):
-        raise HTTPException(status_code=404, detail="数据库不存在")
-    
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    
-    # 首先找出最新日期的数据
-    cursor.execute('SELECT MAX(created_at) FROM jushuitan_products WHERE is_del = 0 AND data_type = ?', (data_type,))
-    latest_date_result = cursor.fetchone()
-    if latest_date_result and latest_date_result[0]:
-        latest_date = latest_date_result[0].split(' ')[0]  # 取日期部分，去掉时间
-        
-        # 查询最新日期的数据
-        cursor.execute('SELECT * FROM jushuitan_products WHERE data_type = ? AND is_del = 0 AND substr(created_at, 1, 10) = ? ORDER BY created_at DESC LIMIT ? OFFSET ?', (data_type, latest_date, limit, skip))
-    else:
-        # 如果没有数据，返回空结果
-        cursor.execute('SELECT * FROM jushuitan_products WHERE 1=0')  # 返回空结果集
-    
-    records = cursor.fetchall()
-    
-    # 获取列名
-    column_names = [description[0] for description in cursor.description]
-    
-    # 将结果转换为字典列表
-    result = []
-    for row in records:
-        record_dict = {}
-        for i, col_name in enumerate(column_names):
-            record_dict[col_name] = row[i]
-        result.append(record_dict)
-    
-    conn.close()
-    return result
+    try:
+        with get_db() as db:
+            # 构建查询
+            query = JushuitanProduct.select().where(JushuitanProduct.is_del == False)
+            
+            # 如果有搜索条件，添加搜索过滤
+            if search:
+                query = query.where(JushuitanProduct.disInnerOrderGoodsViewList.contains(search))
+            
+            # 获取总数
+            total_count = query.count()
+            
+            # 按创建时间降序排序
+            query = query.order_by(JushuitanProduct.created_at.desc())
+            
+            # 将结果转换为字典列表
+            result = []
+            for record in query:
+                record_dict = {}
+                for field in JushuitanProduct._meta.fields.values():
+                    field_value = getattr(record, field.name)
+                    # 将datetime转换为字符串
+                    if isinstance(field_value, datetime):
+                        record_dict[field.name] = field_value.strftime('%Y-%m-%d %H:%M:%S')
+                    else:
+                        record_dict[field.name] = field_value
+                result.append(record_dict)
+            
+            # 返回包含数据和总数的对象
+            return {
+                "data": result,
+                "total": total_count
+            }
+    except Exception as e:
+        print(f"查询聚水潭商品数据失败: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=f"查询聚水潭商品数据失败: {str(e)}")
 
 
 
@@ -148,9 +69,7 @@ def read_jushuitan_products_by_type(data_type: str, skip: int = 0, limit: int = 
 # 点击获取同步数据进表里
 @router.post("/sync_jushuitan_data")
 def sync_jushuitan_data(request: dict = None):
-    """同步聚水潭数据到数据库，根据oid字段处理重复数据"""
-
-
+    """同步聚水潭数据到数据库，根据oid字段处理重复数据 - 使用批量操作优化性能"""
 
     # 获取请求体中的同步日期
     sync_date_str = request.get('sync_date') if request else None
@@ -172,159 +91,149 @@ def sync_jushuitan_data(request: dict = None):
         return {"message": "没有获取到新的聚水潭数据"}
     
     # 获取系统当前日期
-    current_system_date = datetime.now().strftime('%Y-%m-%d')
+    current_system_date = datetime.now().date()
+    start_of_day = datetime.combine(current_system_date, datetime.min.time())
+    end_of_day = datetime.combine(current_system_date, datetime.max.time())
     
     processed_count = 0
     
     with get_db() as db:
-        for item in new_data_list:
-            oid = item.get('oid')
+        with db.atomic():
+            # 步骤1: 批量删除当天的重复记录
+            # 收集所有新数据的oid
+            new_oids = [item.get('oid') for item in new_data_list if item.get('oid')]
             
-            if oid:  # 如果oid存在
-                # 查找数据库中相同oid的记录
-                existing_records = JushuitanProduct.select().where(
-                    JushuitanProduct.oid == oid
-                )
-
-                # 检查是否存在同一天（系统当前日期）的记录 - 检查创建时间而不是订单时间
-                same_day_record_exists = False
-                for record in existing_records:
-                    # 检查记录的创建时间是否为当天
-                    record_created_date = record.created_at.strftime('%Y-%m-%d') if hasattr(record.created_at, 'strftime') else str(record.created_at).split(' ')[0]
-
-                    # 如果是系统当前日期，则标记为需要删除
-                    if current_system_date == record_created_date:
-                        same_day_record_exists = True
-                        break
-
-                # 如果存在同一天的记录，则删除它们
-                if same_day_record_exists:
-                    for record in existing_records:
-                        record_created_date = record.created_at.strftime('%Y-%m-%d') if hasattr(record.created_at, 'strftime') else str(record.created_at).split(' ')[0]
-                        if current_system_date == record_created_date:
-                            record.delete_instance()
+            if new_oids:
+                # 批量删除当天已存在的相同oid记录
+                delete_count = (JushuitanProduct
+                    .delete()
+                    .where(
+                        (JushuitanProduct.oid.in_(new_oids)) &
+                        (JushuitanProduct.created_at >= start_of_day) &
+                        (JushuitanProduct.created_at <= end_of_day)
+                    )
+                    .execute())
                 
-                # 插入新的记录
-                JushuitanProduct.create(
-                    oid=item.get('oid'),
-                    isSuccess=item.get('isSuccess'),
-                    msg=item.get('msg'),
-                    purchaseAmt=item.get('purchaseAmt'),
-                    totalAmt=item.get('totalAmt'),
-                    discountAmt=item.get('discountAmt'),
-                    commission=item.get('commission'),
-                    freight=item.get('freight'),
-                    payAmount=item.get('payAmount'),
-                    paidAmount=item.get('paidAmount'),
-                    totalPurchasePriceGoods=item.get('totalPurchasePriceGoods'),
-                    smallProgramFreight=item.get('smallProgramFreight'),
-                    totalTransactionPurchasePrice=item.get('totalTransactionPurchasePrice'),
-                    smallProgramCommission=item.get('smallProgramCommission'),
-                    smallProgramPaidAmount=item.get('smallProgramPaidAmount'),
-                    freightCalcRule=item.get('freightCalcRule'),
-                    oaId=item.get('oaId'),
-                    soId=item.get('soId'),
-                    rawSoId=item.get('rawSoId'),
-                    mergeSoIds=item.get('mergeSoIds'),
-                    soIdList=str(item.get('soIdList', [])),
-                    supplierCoId=item.get('supplierCoId'),
-                    supplierName=item.get('supplierName'),
-                    channelCoId=item.get('channelCoId'),
-                    channelName=item.get('channelName'),
-                    shopId=item.get('shopId'),
-                    shopType=item.get('shopType'),
-                    shopName=item.get('shopName'),
-                    disInnerOrderGoodsViewList=str(item.get('disInnerOrderGoodsViewList', [])),
-                    orderTime=item.get('orderTime'),
-                    payTime=item.get('payTime'),
-                    deliveryDate=item.get('deliveryDate'),
-                    expressCode=item.get('expressCode'),
-                    expressCompany=item.get('expressCompany'),
-                    trackNo=item.get('trackNo'),
-                    orderStatus=item.get('orderStatus'),
-                    errorMsg=item.get('errorMsg'),
-                    errorDesc=item.get('errorDesc'),
-                    labels=json.dumps(item.get('labels', []), ensure_ascii=False),
-                    buyerMessage=item.get('buyerMessage'),
-                    remark=item.get('remark'),
-                    sellerFlag=item.get('sellerFlag'),
-                    updated=item.get('updated'),
-                    clientPaidAmt=item.get('clientPaidAmt'),
-                    goodsQty=item.get('goodsQty'),
-                    goodsAmt=item.get('goodsAmt'),
-                    freeAmount=item.get('freeAmount'),
-                    orderType=item.get('orderType'),
-                    isSplit=item.get('isSplit', False),
-                    isMerge=item.get('isMerge', False),
-                    planDeliveryDate=item.get('planDeliveryDate'),
-                    deliverTimeLeft=item.get('deliverTimeLeft'),
-                    printCount=item.get('printCount'),
-                    ioId=item.get('ioId'),
-                    receiverState=item.get('receiverState'),
-                    receiverCity=item.get('receiverCity'),
-                    receiverDistrict=item.get('receiverDistrict'),
-                    weight=item.get('weight'),
-                    realWeight=item.get('realWeight'),
-                    wmsCoId=item.get('wmsCoId'),
-                    wmsCoName=item.get('wmsCoName'),
-                    drpAmount=item.get('drpAmount'),
-                    shopSite=item.get('shopSite'),
-                    isDeliveryPrinted=item.get('isDeliveryPrinted'),
-                    fullReceiveData=item.get('fullReceiveData'),
-                    fuzzFullReceiverInfo=item.get('fuzzFullReceiverInfo'),
-                    shopBuyerId=item.get('shopBuyerId'),
-                    logisticsNos=item.get('logisticsNos'),
-                    openId=item.get('openId'),
-                    printedList=item.get('printedList'),
-                    note=item.get('note'),
-                    receiverTown=item.get('receiverTown'),
-                    solution=item.get('solution'),
-                    orderFrom=item.get('orderFrom'),
-                    linkOid=item.get('linkOid'),
-                    channelOid=item.get('channelOid'),
-                    isSupplierInitiatedReissueOrExchange=item.get('isSupplierInitiatedReissueOrExchange'),
-                    confirmDate=item.get('confirmDate'),
-                    topDrpCoIdFrom=item.get('topDrpCoIdFrom'),
-                    topDrpOrderId=item.get('topDrpOrderId'),
-                    orderIdentity=item.get('orderIdentity'),
-                    originalSoId=item.get('originalSoId'),
-                    isVirtualShipment=item.get('isVirtualShipment', False),
-                    relationshipBySoIdMd5=item.get('relationshipBySoIdMd5'),
-                    online=item.get('online', False),
-                    data_type='regular' if item.get('orderStatus') not in ['Cancelled', 'Refunded', 'Closed'] else 'cancel',
-                    is_del=False
-                )
-                processed_count += 1
-    
+                print(f"批量删除了 {delete_count} 条当天的重复记录")
+            
+            # 步骤2: 准备批量插入的数据
+            batch_data = []
+            for item in new_data_list:
+                if item.get('oid'):  # 只处理有oid的记录
+                    batch_data.append({
+                        'oid': item.get('oid'),
+                        'isSuccess': item.get('isSuccess'),
+                        'msg': item.get('msg'),
+                        'purchaseAmt': item.get('purchaseAmt'),
+                        'totalAmt': item.get('totalAmt'),
+                        'discountAmt': item.get('discountAmt'),
+                        'commission': item.get('commission'),
+                        'freight': item.get('freight'),
+                        'payAmount': item.get('payAmount'),
+                        'paidAmount': item.get('paidAmount'),
+                        'totalPurchasePriceGoods': item.get('totalPurchasePriceGoods'),
+                        'smallProgramFreight': item.get('smallProgramFreight'),
+                        'totalTransactionPurchasePrice': item.get('totalTransactionPurchasePrice'),
+                        'smallProgramCommission': item.get('smallProgramCommission'),
+                        'smallProgramPaidAmount': item.get('smallProgramPaidAmount'),
+                        'freightCalcRule': item.get('freightCalcRule'),
+                        'oaId': item.get('oaId'),
+                        'soId': item.get('soId'),
+                        'rawSoId': item.get('rawSoId'),
+                        'mergeSoIds': item.get('mergeSoIds'),
+                        'soIdList': str(item.get('soIdList', [])),
+                        'supplierCoId': item.get('supplierCoId'),
+                        'supplierName': item.get('supplierName'),
+                        'channelCoId': item.get('channelCoId'),
+                        'channelName': item.get('channelName'),
+                        'shopId': item.get('shopId'),
+                        'shopType': item.get('shopType'),
+                        'shopName': item.get('shopName'),
+                        'disInnerOrderGoodsViewList': str(item.get('disInnerOrderGoodsViewList', [])),
+                        'orderTime': item.get('orderTime'),
+                        'payTime': item.get('payTime'),
+                        'deliveryDate': item.get('deliveryDate'),
+                        'expressCode': item.get('expressCode'),
+                        'expressCompany': item.get('expressCompany'),
+                        'trackNo': item.get('trackNo'),
+                        'orderStatus': item.get('orderStatus'),
+                        'errorMsg': item.get('errorMsg'),
+                        'errorDesc': item.get('errorDesc'),
+                        'labels': json.dumps(item.get('labels', []), ensure_ascii=False),
+                        'buyerMessage': item.get('buyerMessage'),
+                        'remark': item.get('remark'),
+                        'sellerFlag': item.get('sellerFlag'),
+                        'updated': item.get('updated'),
+                        'clientPaidAmt': item.get('clientPaidAmt'),
+                        'goodsQty': item.get('goodsQty'),
+                        'goodsAmt': item.get('goodsAmt'),
+                        'freeAmount': item.get('freeAmount'),
+                        'orderType': item.get('orderType'),
+                        'isSplit': item.get('isSplit', False),
+                        'isMerge': item.get('isMerge', False),
+                        'planDeliveryDate': item.get('planDeliveryDate'),
+                        'deliverTimeLeft': item.get('deliverTimeLeft'),
+                        'printCount': item.get('printCount'),
+                        'ioId': item.get('ioId'),
+                        'receiverState': item.get('receiverState'),
+                        'receiverCity': item.get('receiverCity'),
+                        'receiverDistrict': item.get('receiverDistrict'),
+                        'weight': item.get('weight'),
+                        'realWeight': item.get('realWeight'),
+                        'wmsCoId': item.get('wmsCoId'),
+                        'wmsCoName': item.get('wmsCoName'),
+                        'drpAmount': item.get('drpAmount'),
+                        'shopSite': item.get('shopSite'),
+                        'isDeliveryPrinted': item.get('isDeliveryPrinted'),
+                        'fullReceiveData': item.get('fullReceiveData'),
+                        'fuzzFullReceiverInfo': item.get('fuzzFullReceiverInfo'),
+                        'shopBuyerId': item.get('shopBuyerId'),
+                        'logisticsNos': item.get('logisticsNos'),
+                        'openId': item.get('openId'),
+                        'printedList': item.get('printedList'),
+                        'note': item.get('note'),
+                        'receiverTown': item.get('receiverTown'),
+                        'solution': item.get('solution'),
+                        'orderFrom': item.get('orderFrom'),
+                        'linkOid': item.get('linkOid'),
+                        'channelOid': item.get('channelOid'),
+                        'isSupplierInitiatedReissueOrExchange': item.get('isSupplierInitiatedReissueOrExchange'),
+                        'confirmDate': item.get('confirmDate'),
+                        'topDrpCoIdFrom': item.get('topDrpCoIdFrom'),
+                        'topDrpOrderId': item.get('topDrpOrderId'),
+                        'orderIdentity': item.get('orderIdentity'),
+                        'originalSoId': item.get('originalSoId'),
+                        'isVirtualShipment': item.get('isVirtualShipment', False),
+                        'relationshipBySoIdMd5': item.get('relationshipBySoIdMd5'),
+                        'online': item.get('online', False),
+                        'data_type': 'regular' if item.get('orderStatus') not in ['Cancelled', 'Refunded', 'Closed'] else 'cancel',
+                        'is_del': False,
+                        'created_at': datetime.now(),
+                        'updated_at': datetime.now()
+                    })
+            
+            # 步骤3: 批量插入新记录（分批处理，每批500条）
+            batch_size = 500
+            for i in range(0, len(batch_data), batch_size):
+                batch = batch_data[i:i + batch_size]
+                JushuitanProduct.insert_many(batch).execute()
+                processed_count += len(batch)
+                print(f"已批量插入 {len(batch)} 条记录，总计 {processed_count}/{len(batch_data)}")
     
     try:
-        # 直接从数据库中的JushuitanProduct表获取刚刚同步的订单数据
-        # 查询未删除的订单记录
-        order_query = JushuitanProduct.select().where(JushuitanProduct.is_del == False)
-        
-        # 如果指定了同步日期，则添加日期筛选
-        if sync_date:
-            # 将sync_date转换为当天的开始和结束时间
-            start_of_day = datetime.combine(sync_date, datetime.min.time())
-            end_of_day = datetime.combine(sync_date, datetime.max.time())
-            order_query = order_query.where(
-                (JushuitanProduct.created_at >= start_of_day) & 
-                (JushuitanProduct.created_at <= end_of_day)
-            )
-        
-        processed_count, _ = sync_goods(sync_date, new_data_list)
+        # 同步商品和店铺数据
+        goods_processed_count, _ = sync_goods(sync_date, new_data_list)
         store_processed_count, _ = sync_stores(sync_date, new_data_list)
         
-
     except Exception as e:
         print(f"同步商品数据时发生错误: {str(e)}")
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
 
     return {
-        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条订单记录、{processed_count} 条商品记录和 {store_processed_count} 条店铺记录",
+        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条订单记录、{goods_processed_count} 条商品记录和 {store_processed_count} 条店铺记录",
         "processed_count": processed_count,
-        "goods_processed_count": processed_count,
+        "goods_processed_count": goods_processed_count,
         "stores_processed_count": store_processed_count
     }
 
@@ -340,214 +249,186 @@ def sync_jushuitan_data(request: dict = None):
 def sync_goods(sync_date, orders):
     """
     同步订单数据中的商品信息到goods表
+    - 从两个不同的API获取销售金额和销售成本数据
     - 提取disInnerOrderGoodsViewList中的商品数据
     - 按shopIid聚合相同商品的金额
-    - 计算各种利润指标
     - 支持按指定日期同步数据
     """
 
     try:
-        # 获取售后数据
+        # 导入新的API方法
+        from backend.spiders.jushuitan_api import get_jushuitan_orders_for_sales_amount, get_jushuitan_orders_for_sales_cost
         
-        shouhou_date_str = sync_date.strftime('%Y-%m-%d') if sync_date else None
-        print(f"正在获取售后数据，日期: {shouhou_date_str}")
+        # 获取销售金额数据（包含所有状态）
+        print(f"正在获取销售金额数据，日期: {sync_date}")
+        sales_amount_data = get_jushuitan_orders_for_sales_amount(sync_date=sync_date)
         
-        shouhou_data = get_cancel_jushuitan_from_shouhou(date=shouhou_date_str)
+        # 获取销售成本数据（不包含已取消和被拆分）
+        print(f"正在获取销售成本数据，日期: {sync_date}")
+        sales_cost_data = get_jushuitan_orders_for_sales_cost(sync_date=sync_date)
         
-        # 获取包含退款信息的所有聚水潭订单数据
-        all_orders_with_refund = get_all_jushuitan_orders_with_refund(sync_date=sync_date)
+        if not sales_amount_data or 'data' not in sales_amount_data:
+            raise HTTPException(status_code=400, detail="获取销售金额数据失败")
         
-        # 构建退款金额映射表，按soId和商品关键字段关联
-        refund_amount_map = {}
-        if shouhou_data and 'data' in shouhou_data:
-            records = shouhou_data['data']
-            
-            for record in records:
-                # 遍历details列表
-                after_sale_goods = record.get('afterSaleOrderGoodsVO', {})
-                details = after_sale_goods.get('details', [])
-
-
-                for detail in details:
-                    # 使用订单soId和designCode作为键
-                    so_id = record.get('soId')  # 使用soId而不是oid
-                    design_code = detail.get('designCode')
-
-                    
-                    if so_id and design_code:
-                        # 使用 - 连接的字符串格式作为键
-                        key = f"{so_id}-{design_code}"
-                        refund_amount = detail.get('refundAmount', 0.0)
-                        refund_amount_map[key] = refund_amount
-
-
-        else:
-            print("没有获取到有效的售后数据")
-
-        if not orders:
-            raise HTTPException(status_code=400, detail="没有提供订单数据")
-
-        # 用于存储商品数据的字典，以shopIid和订单时间为唯一键进行区分
-        goods_dict = {}
-        print(f"开始处理 {len(orders)} 个订单")
+        if not sales_cost_data or 'data' not in sales_cost_data:
+            raise HTTPException(status_code=400, detail="获取销售成本数据失败")
         
-        for order in all_orders_with_refund.get('data', []):
-            # 如果是从数据库获取的订单对象，需要转换为字典
-            if hasattr(order, 'disInnerOrderGoodsViewList'):
-                # 从数据库获取的订单对象
-                order_dict = {
-                    'oid': order.oid,
-                    'soId': order.soId,  # 添加soId
-                    'payAmount': order.payAmount,
-                    'paidAmount': order.paidAmount,
-                    'drpAmount': order.drpAmount,
-                    'shopId': order.shopId,
-                    'shopName': order.shopName,
-                    'orderTime': order.orderTime,
-                    'disInnerOrderGoodsViewList': order.disInnerOrderGoodsViewList,
-                    'created_at': order.created_at
-                }
-                order_obj = order
-            else:
-                # 从API获取的订单字典
-                order_dict = order
-                order_obj = None
-            
+        # 构建销售金额映射表：key = shopIid, value = payAmount
+        sales_amount_map = {}
+        for order in sales_amount_data.get('data', []):
             try:
-                # 如果指定了同步日期，则只处理该日期的订单
-                if sync_date and order_obj is None:  # 只有从API获取的订单需要检查时间
-                    order_time_str = order_dict.get('orderTime')
-                    if order_time_str:
-                        try:
-                            # 解析订单时间，提取日期部分
-                            if 'T' in order_time_str:
-                                order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
-                                order_date = order_datetime.date()
-                            else:
-                                # 如果只是日期字符串
-                                order_date = datetime.strptime(order_time_str.split(' ')[0], '%Y-%m-%d').date()
-                            
-                            # 只处理指定日期的订单
-                            if order_date != sync_date:
-                                continue
-                        except:
-                            # 如果解析失败，跳过该订单
-                            continue
+                payAmount = float(order.get('payAmount', 0) or 0)
                 
-                payAmount = float(order_dict.get('payAmount', 0) or 0)
-                paidAmount = float(order_dict.get('paidAmount', 0) or 0)
-                drpAmount = float(order_dict.get('drpAmount', 0) or 0)
-
-                # 解析disInnerOrderGoodsViewList字段
-                goods_list_raw = order_dict.get('disInnerOrderGoodsViewList')
-                
-                # 解析JSON字符串
+                # 解析商品列表
+                goods_list_raw = order.get('disInnerOrderGoodsViewList')
                 try:
                     if isinstance(goods_list_raw, str):
                         goods_list = json.loads(goods_list_raw)
                     else:
                         goods_list = goods_list_raw
                 except json.JSONDecodeError:
-                    print(f"无法解析disInnerOrderGoodsViewList: {goods_list_raw}")
                     continue
                 
-                # 根据项目规范，确保目标字段为list类型
                 if not isinstance(goods_list, list):
                     if goods_list is None:
                         goods_list = []
                     else:
-                        goods_list = [goods_list]  # 强制转换为list
+                        goods_list = [goods_list]
                 
-                # 遍历订单中的每个商品
+                # 遍历商品，累加销售金额
                 for goods_item in goods_list:
                     if not isinstance(goods_item, dict):
                         continue
                     
-                    # 获取商品的关键信息 - 使用正确的英文字段名
                     shop_iid = goods_item.get('shopIid')
-                    if not shop_iid:  # 如果没有shopIid，则跳过
+                    if not shop_iid:
                         continue
                     
-                    # 使用shopIid + 订单时间作为唯一键
-                    order_time_str = order_dict.get('orderTime')
+                    # 获取订单时间
+                    order_time_str = order.get('orderTime')
                     order_datetime = None
                     if order_time_str:
                         try:
                             if 'T' in order_time_str:
                                 order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
                             else:
-                                # 如果只是日期时间字符串
                                 order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d %H:%M:%S')
                         except ValueError:
                             try:
-                                # 尝试其他常见格式
                                 order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d')
                             except ValueError:
-                                # 如果解析失败，使用当前时间
                                 order_datetime = datetime.now()
                     else:
-                        # 如果没有订单时间，使用当前时间
                         order_datetime = datetime.now()
                     
                     # 使用shopIid + 订单时间作为唯一键
                     unique_key = f"{shop_iid}_{order_datetime.strftime('%Y%m%d%H%M%S')}"
                     
-                    # 获取商品其他信息 - 使用正确的英文字段名
-                    item_name = goods_item.get('itemName', '未知商品')
-                    
-                    # 如果指定了同步日期，使用该日期，否则使用订单创建日期
-                    if sync_date:
-                        order_created_at = datetime.combine(sync_date, datetime.min.time())
+                    if unique_key not in sales_amount_map:
+                        sales_amount_map[unique_key] = {
+                            'shop_iid': shop_iid,
+                            'item_name': goods_item.get('itemName', '未知商品'),
+                            'shop_id': order.get('shopId') or '',
+                            'shop_name': order.get('shopName') or '未知店铺',
+                            'order_id': order.get('oid') or '',
+                            'order_time': order_datetime,
+                            'sales_amount': payAmount
+                        }
                     else:
-                        # 获取订单创建时间并转换为日期对象
-                        order_created_at = order.created_at
-                    
-                    # 处理退款金额逻辑 - 从售后数据中获取，使用soId进行匹配
-                    so_id = order_dict.get('soId')
-                    
-                    # 查找对应的退款金额 - 使用soId和shopIid进行匹配
-                    refund_amount = 0.0
-                    matched_key = None
-                    
-                    # 使用shopIid进行匹配
-                    good_id_styleCode = goods_item.get('styleCode') # 如果shopIid是null 用这个字段
- 
-                    if so_id and shop_iid and good_id_styleCode:
-                        # 使用 - 连接的字符串格式作为键，与创建退款映射时保持一致
-                        key = f"{so_id}-{shop_iid}"
-                        key_styleCode = f"{so_id}-{good_id_styleCode}"
+                        sales_amount_map[unique_key]['sales_amount'] += payAmount
                         
-                        if key in refund_amount_map or key_styleCode in refund_amount_map:
-                            refund_amount = refund_amount_map[key] if key in refund_amount_map else refund_amount_map[key_styleCode]
-                            matched_key = key
-                        else:
-                            # print(f"✗ 未找到匹配的退款金额")
-                            pass
-
-                    else:
-                        print(f"缺少匹配字段: soId={so_id}, good_id={shop_iid}")
-                    
-                    # 初始化商品数据结构
-                    goods_dict[unique_key] = {
-                        'goods_id': shop_iid,  # 商品ID使用shopIid
-                        'goods_name': item_name,
-                        'store_id': order_dict.get('shopId') or '',
-                        'store_name': order_dict.get('shopName') or '未知店铺',
-                        'order_id': order_dict.get('oid') or '',
-                        'payment_amount': paidAmount,  # 使用订单的paidAmount
-                        'sales_amount': payAmount,    # 使用订单的payAmount
-                        'refund_amount': refund_amount, # 使用从售后数据获取的退款金额
-                        'sales_cost': drpAmount,      # 使用订单的drpAmount
-                        'creator': 'system',
-                        'created_at': order_created_at,
-                        'goodorder_time': order_datetime,  # 保留订单时间
-                        'updated_at': datetime.now()
-                    }
-        
             except Exception as e:
-                pass
-                # print(f"Error processing order {order_dict.get('id') if order_dict else 'unknown'}: {e}")
-
+                print(f"处理销售金额订单时出错: {e}")
+                continue
+        
+        # 构建销售成本映射表：key = shopIid, value = drpAmount
+        sales_cost_map = {}
+        for order in sales_cost_data.get('data', []):
+            try:
+                drpAmount = float(order.get('drpAmount', 0) or 0)
+                
+                # 解析商品列表
+                goods_list_raw = order.get('disInnerOrderGoodsViewList')
+                try:
+                    if isinstance(goods_list_raw, str):
+                        goods_list = json.loads(goods_list_raw)
+                    else:
+                        goods_list = goods_list_raw
+                except json.JSONDecodeError:
+                    continue
+                
+                if not isinstance(goods_list, list):
+                    if goods_list is None:
+                        goods_list = []
+                    else:
+                        goods_list = [goods_list]
+                
+                # 遍历商品，累加销售成本
+                for goods_item in goods_list:
+                    if not isinstance(goods_item, dict):
+                        continue
+                    
+                    shop_iid = goods_item.get('shopIid')
+                    if not shop_iid:
+                        continue
+                    
+                    # 获取订单时间
+                    order_time_str = order.get('orderTime')
+                    order_datetime = None
+                    if order_time_str:
+                        try:
+                            if 'T' in order_time_str:
+                                order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
+                            else:
+                                order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d %H:%M:%S')
+                        except ValueError:
+                            try:
+                                order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d')
+                            except ValueError:
+                                order_datetime = datetime.now()
+                    else:
+                        order_datetime = datetime.now()
+                    
+                    # 使用shopIid + 订单时间作为唯一键
+                    unique_key = f"{shop_iid}_{order_datetime.strftime('%Y%m%d%H%M%S')}"
+                    
+                    if unique_key not in sales_cost_map:
+                        sales_cost_map[unique_key] = drpAmount
+                    else:
+                        sales_cost_map[unique_key] += drpAmount
+                        
+            except Exception as e:
+                print(f"处理销售成本订单时出错: {e}")
+                continue
+        
+        # 合并两个映射表，构建最终的商品数据
+        goods_dict = {}
+        for unique_key, sales_data in sales_amount_map.items():
+            # 获取对应的销售成本
+            sales_cost = sales_cost_map.get(unique_key, 0.0)
+            
+            # 如果指定了同步日期，使用该日期，否则使用订单创建日期
+            if sync_date:
+                order_created_at = datetime.combine(sync_date, datetime.min.time())
+            else:
+                order_created_at = datetime.now()
+            
+            goods_dict[unique_key] = {
+                'goods_id': sales_data['shop_iid'],
+                'goods_name': sales_data['item_name'],
+                'store_id': sales_data['shop_id'],
+                'store_name': sales_data['shop_name'],
+                'order_id': sales_data['order_id'],
+                'payment_amount': 0.0,  # 暂不使用
+                'sales_amount': sales_data['sales_amount'],
+                'refund_amount': 0.0,  # 暂不使用
+                'sales_cost': sales_cost,
+                'creator': 'system',
+                'created_at': order_created_at,
+                'goodorder_time': sales_data['order_time'],
+                'updated_at': datetime.now()
+            }
+        
         # 删除之前同步的相同日期的数据（避免重复）
         if sync_date:
             start_of_day = datetime.combine(sync_date, datetime.min.time())
@@ -557,7 +438,6 @@ def sync_goods(sync_date, orders):
                 (Goods.goodorder_time <= end_of_day)
             ).execute()
         else:
-            # 如果没有指定日期，删除所有数据重新插入（或可以考虑更精确的清理策略）
             Goods.delete().execute()
 
         # 使用insert_many批量插入新的商品记录
@@ -586,10 +466,10 @@ def sync_goods(sync_date, orders):
             gross_profit_3 = sales_amount - cost_amount - ad_cost
             gross_profit_3_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
             
-            gross_profit_4 = sales_amount - cost_amount - ad_cost  # 可能还有其他费用
+            gross_profit_4 = sales_amount - cost_amount - ad_cost
             gross_profit_4_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
             
-            net_profit = sales_amount - cost_amount - ad_cost  # 净利润可能还要扣除其他费用
+            net_profit = sales_amount - cost_amount - ad_cost
             net_profit_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
             
             # 更新利润相关字段
@@ -630,152 +510,68 @@ def sync_goods(sync_date, orders):
 def sync_stores(sync_date, orders):
     """
     同步订单数据中的店铺信息到stores表
+    - 从两个不同的API获取销售金额和销售成本数据
     - 按shopId聚合店铺数据
     - 计算各种利润指标和汇总数据
     - 支持按指定日期同步数据
     """
     
     try:
-        # 获取售后数据
-        shouhou_date_str = sync_date.strftime('%Y-%m-%d') if sync_date else None
-        print(f"正在获取售后数据，日期: {shouhou_date_str}")
+        # 导入新的API方法
+        from backend.spiders.jushuitan_api import get_jushuitan_orders_for_sales_amount, get_jushuitan_orders_for_sales_cost
         
-        shouhou_data = get_cancel_jushuitan_from_shouhou(date=shouhou_date_str)
+        # 获取销售金额数据（包含所有状态）
+        print(f"正在获取店铺销售金额数据，日期: {sync_date}")
+        sales_amount_data = get_jushuitan_orders_for_sales_amount(sync_date=sync_date)
         
-        # 获取包含退款信息的所有聚水潭订单数据
-        all_orders_with_refund = get_all_jushuitan_orders_with_refund(sync_date=sync_date)
+        # 获取销售成本数据（不包含已取消和被拆分）
+        print(f"正在获取店铺销售成本数据，日期: {sync_date}")
+        sales_cost_data = get_jushuitan_orders_for_sales_cost(sync_date=sync_date)
         
-        # 构建退款金额映射表，按soId和商品关键字段关联
-        refund_amount_map = {}
-        if shouhou_data and 'data' in shouhou_data:
-            records = shouhou_data['data']
-            
-            for record in records:
-                # 遍历details列表
-                after_sale_goods = record.get('afterSaleOrderGoodsVO', {})
-                details = after_sale_goods.get('details', [])
-
-                for detail in details:
-                    # 使用订单soId和designCode作为键
-                    so_id = record.get('soId')  # 使用soId而不是oid
-                    design_code = detail.get('designCode')
-                    
-                    if so_id and design_code:
-                        # 使用 - 连接的字符串格式作为键
-                        key = f"{so_id}-{design_code}"
-                        refund_amount = detail.get('refundAmount', 0.0)
-                        refund_amount_map[key] = refund_amount
-        else:
-            print("没有获取到有效的售后数据")
-
+        if not sales_amount_data or 'data' not in sales_amount_data:
+            raise HTTPException(status_code=400, detail="获取店铺销售金额数据失败")
+        
+        if not sales_cost_data or 'data' not in sales_cost_data:
+            raise HTTPException(status_code=400, detail="获取店铺销售成本数据失败")
+        
         # 用于存储店铺数据的字典，以store_id和日期为唯一键
         stores_dict = {}
-        print(f"开始处理订单数据")
         
-        for order in all_orders_with_refund.get('data', []):
-            # 如果是从数据库获取的订单对象，需要转换为字典
-            if hasattr(order, 'disInnerOrderGoodsViewList'):
-                # 从数据库获取的订单对象
-                order_dict = {
-                    'oid': order.oid,
-                    'soId': order.soId,
-                    'payAmount': order.payAmount,
-                    'paidAmount': order.paidAmount,
-                    'drpAmount': order.drpAmount,
-                    'shopId': order.shopId,
-                    'shopName': order.shopName,
-                    'orderTime': order.orderTime,
-                    'disInnerOrderGoodsViewList': order.disInnerOrderGoodsViewList,
-                    'created_at': order.created_at
-                }
-                order_obj = order
-            else:
-                # 从API获取的订单字典
-                order_dict = order
-                order_obj = None
-            
+        # 处理销售金额数据
+        for order in sales_amount_data.get('data', []):
             try:
-                # 如果指定了同步日期，则只处理该日期的订单
-                if sync_date and order_obj is None:  # 只有从API获取的订单需要检查时间
-                    order_time_str = order_dict.get('orderTime')
-                    if order_time_str:
-                        try:
-                            # 解析订单时间，提取日期部分
-                            if 'T' in order_time_str:
-                                order_datetime = datetime.fromisoformat(order_time_str.replace('Z', '+00:00'))
-                                order_date = order_datetime.date()
-                            else:
-                                # 如果只是日期字符串
-                                order_date = datetime.strptime(order_time_str.split(' ')[0], '%Y-%m-%d').date()
-                            
-                            # 只处理指定日期的订单
-                            if order_date != sync_date:
-                                continue
-                        except:
-                            # 如果解析失败，跳过该订单
-                            continue
+                store_id = order.get('shopId')
+                store_name = order.get('shopName', '未知店铺')
                 
-                # 获取店铺信息
-                store_id = order_dict.get('shopId')
-                store_name = order_dict.get('shopName', '未知店铺')
-                
-                if not store_id:  # 如果没有店铺ID，则跳过
+                if not store_id:
                     continue
                 
                 # 如果指定了同步日期，将日期加入store_id以确保唯一性
-                # 格式: shopId_YYYYMMDD
                 if sync_date:
                     unique_store_id = f"{store_id}_{sync_date.strftime('%Y%m%d')}"
                 else:
                     unique_store_id = store_id
                 
-                payAmount = float(order_dict.get('payAmount', 0) or 0)
-                paidAmount = float(order_dict.get('paidAmount', 0) or 0)
-                drpAmount = float(order_dict.get('drpAmount', 0) or 0)
-
-                # 解析disInnerOrderGoodsViewList字段
-                goods_list_raw = order_dict.get('disInnerOrderGoodsViewList')
+                payAmount = float(order.get('payAmount', 0) or 0)
                 
-                # 解析JSON字符串
+                # 解析商品列表
+                goods_list_raw = order.get('disInnerOrderGoodsViewList')
                 try:
                     if isinstance(goods_list_raw, str):
                         goods_list = json.loads(goods_list_raw)
                     else:
                         goods_list = goods_list_raw
                 except json.JSONDecodeError:
-                    print(f"无法解析disInnerOrderGoodsViewList: {goods_list_raw}")
                     continue
                 
-                # 根据项目规范，确保目标字段为list类型
                 if not isinstance(goods_list, list):
                     if goods_list is None:
                         goods_list = []
                     else:
-                        goods_list = [goods_list]  # 强制转换为list
-                
-                # 计算该订单的退款金额
-                order_refund_amount = 0.0
-                so_id = order_dict.get('soId')
-                
-                for goods_item in goods_list:
-                    if not isinstance(goods_item, dict):
-                        continue
-                    
-                    shop_iid = goods_item.get('shopIid')
-                    good_id_styleCode = goods_item.get('styleCode')
-                    
-                    if so_id and shop_iid and good_id_styleCode:
-                        key = f"{so_id}-{shop_iid}"
-                        key_styleCode = f"{so_id}-{good_id_styleCode}"
-                        
-                        if key in refund_amount_map:
-                            order_refund_amount += refund_amount_map[key]
-                        elif key_styleCode in refund_amount_map:
-                            order_refund_amount += refund_amount_map[key_styleCode]
-                
+                        goods_list = [goods_list]
                 
                 # 获取订单时间
-                order_time_str = order_dict.get('orderTime')
+                order_time_str = order.get('orderTime')
                 order_datetime = None
                 if order_time_str:
                     try:
@@ -791,11 +587,11 @@ def sync_stores(sync_date, orders):
                 else:
                     order_datetime = datetime.now()
                 
-                # 如果指定了同步日期，使用该日期，否则使用订单创建日期
+                # 如果指定了同步日期，使用该日期，否则使用当前时间
                 if sync_date:
                     created_at = datetime.combine(sync_date, datetime.min.time())
                 else:
-                    created_at = order.created_at if order_obj else datetime.now()
+                    created_at = datetime.now()
                 
                 # 初始化或累加店铺数据
                 if unique_store_id not in stores_dict:
@@ -819,12 +615,9 @@ def sync_stores(sync_date, orders):
                         'updated_at': datetime.now()
                     }
                 
-                # 累加店铺数据
+                # 累加销售金额
                 store_data = stores_dict[unique_store_id]
-                store_data['total_payment_amount'] += paidAmount
                 store_data['total_sales_amount'] += payAmount
-                store_data['total_refund_amount'] += order_refund_amount
-                store_data['total_sales_cost'] += drpAmount
                 store_data['goods_count'] += len(goods_list)
                 store_data['order_count'] += 1
                 
@@ -833,31 +626,43 @@ def sync_stores(sync_date, orders):
                     store_data['last_order_time'] = order_datetime
                 
             except Exception as e:
-                print(f"Error processing order {order_dict.get('oid') if order_dict else 'unknown'}: {e}")
+                print(f"处理店铺销售金额订单时出错: {e}")
                 continue
-
+        
+        # 处理销售成本数据
+        for order in sales_cost_data.get('data', []):
+            try:
+                store_id = order.get('shopId')
+                
+                if not store_id:
+                    continue
+                
+                # 如果指定了同步日期，将日期加入store_id以确保唯一性
+                if sync_date:
+                    unique_store_id = f"{store_id}_{sync_date.strftime('%Y%m%d')}"
+                else:
+                    unique_store_id = store_id
+                
+                drpAmount = float(order.get('drpAmount', 0) or 0)
+                
+                # 累加销售成本
+                if unique_store_id in stores_dict:
+                    stores_dict[unique_store_id]['total_sales_cost'] += drpAmount
+                
+            except Exception as e:
+                print(f"处理店铺销售成本订单时出错: {e}")
+                continue
+        
         # 删除之前同步的相同日期的数据（避免重复）
         if sync_date:
             start_of_day = datetime.combine(sync_date, datetime.min.time())
             end_of_day = datetime.combine(sync_date, datetime.max.time())
             
-            # 获取该日期已存在的店铺ID列表
-            existing_store_ids = set()
-            existing_stores = Store.select().where(
-                (Store.created_at >= start_of_day) & 
-                (Store.created_at <= end_of_day)
-            )
-            for store in existing_stores:
-                existing_store_ids.add(store.store_id)
-            
-            # 删除该日期的所有店铺记录
             Store.delete().where(
                 (Store.created_at >= start_of_day) & 
                 (Store.created_at <= end_of_day)
             ).execute()
         else:
-            # 如果没有指定日期，删除所有数据重新插入
-            existing_store_ids = set()
             Store.delete().execute()
 
         # 使用insert_many批量插入新的店铺记录
@@ -1812,32 +1617,13 @@ def get_goods_dict():
 
 
 # ********* 拼多多数据相关路由 *********
-@router.get("/pdd_products/")
-def read_pdd_products(skip: int = 0, limit: int = 100):
-    """获取拼多多商品数据列表"""
-    db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "database.db")
-    if not os.path.exists(db_path):
-        raise HTTPException(status_code=404, detail="数据库不存在")
-    
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    
-    cursor.execute('SELECT * FROM pdd_products WHERE is_del = 0 LIMIT ? OFFSET ?', (limit, skip))
-    records = cursor.fetchall()
-    
-    # 获取列名
-    column_names = [description[0] for description in cursor.description]
-    
-    # 将结果转换为字典列表
-    result = []
-    for row in records:
-        record_dict = {}
-        for i, col_name in enumerate(column_names):
-            record_dict[col_name] = row[i]
-        result.append(record_dict)
-    
-    conn.close()
-    return result
+# Note: pdd_products table is deprecated. Use PddTable (pdd_ads) or PddBillRecord instead.
+# @router.get("/pdd_products/")
+# def read_pdd_products(skip: int = 0, limit: int = 100):
+#     """获取拼多多商品数据列表 - DEPRECATED"""
+#     # This endpoint is deprecated as pdd_products table no longer exists
+#     # Use /pdd/promotion or /pdd/bill endpoints instead
+#     raise HTTPException(status_code=410, detail="此接口已废弃，请使用 /pdd/promotion 或 /pdd/bill 接口")
 
 
 
