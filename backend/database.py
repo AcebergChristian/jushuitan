@@ -1,8 +1,10 @@
 from playhouse.db_url import connect
-from peewee import SqliteDatabase, MySQLDatabase
+from peewee import SqliteDatabase
+from playhouse.pool import PooledMySQLDatabase
 import os
 from contextlib import contextmanager
 from pathlib import Path
+import logging
 
 # 加载 .env 文件
 try:
@@ -28,8 +30,21 @@ if DATABASE_URL.startswith('sqlite:///'):
         'journal_mode': 'wal',
     })
 elif DATABASE_URL.startswith('mysql://'):
-    # MySQL数据库
-    database = connect(DATABASE_URL)
+    # MySQL数据库 - 配置连接池参数
+    # 解析数据库URL: mysql://user:password@host:port/database
+    from urllib.parse import urlparse
+    parsed = urlparse(DATABASE_URL)
+    database = PooledMySQLDatabase(
+        parsed.path[1:],  # database name (remove leading slash)
+        host=parsed.hostname,
+        port=parsed.port or 3306,
+        user=parsed.username,
+        password=parsed.password,
+        max_connections=20,  # 最大连接数
+        stale_timeout=300,  # 连接过期时间（秒）
+        charset='utf8mb4',
+        autocommit=True
+    )
 else:
     # 其他数据库类型
     database = connect(DATABASE_URL)
@@ -39,12 +54,27 @@ def get_db():
     """获取数据库连接的上下文管理器"""
     try:
         if database.is_closed():
-            database.connect()
+            database.connect(reuse_if_open=True)
         yield database
+    except Exception as e:
+        logging.error(f"Database connection error: {e}")
+        raise
     finally:
-        if not database.is_closed():
-            database.close()
+        # 只在连接开启时才尝试关闭
+        try:
+            if not database.is_closed():
+                database.close()
+        except:
+            # 如果关闭连接时出错，忽略（可能是连接已经无效）
+            pass
 
 def init_db():
     """初始化数据库，创建所有表"""
-    create_tables()
+    try:
+        if database.is_closed():
+            database.connect()
+        create_tables()
+        database.close()
+    except Exception as e:
+        logging.error(f"Failed to initialize database: {e}")
+        raise

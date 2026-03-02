@@ -62,12 +62,18 @@ export const login = async (username, password) => {
   let url;
   
   if (isDev) {
-    url = ':8000/api/login';
+    // 本地开发环境，前后端分离
+    url = 'http://127.0.0.1:8000/api/login';
   } else {
-    // 生产环境使用完整URL（包含端口8000）
-    url = `${window.location.protocol}//${window.location.hostname}/api/login`;
+    // 检测是否是本地打包部署（localhost或127.0.0.1）还是生产环境
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      // 本地打包后端部署，使用端口8000
+      url = `${window.location.protocol}//${window.location.hostname}:8000/api/login`;
+    } else {
+      // 生产环境使用完整URL（包含端口8000）
+      url = `${window.location.protocol}//${window.location.hostname}/api/login`;
+    }
   }
-  
   try {
   const response = await fetch(url, {
     method: 'POST',
