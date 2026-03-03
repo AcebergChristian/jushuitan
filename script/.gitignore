@@ -1,0 +1,37 @@
+# 便携式 Python 环境
+python_portable/
+
+# 虚拟环境
+venv/
+env/
+ENV/
+
+# PyInstaller 输出
+dist/
+build/
+*.spec
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 环境变量
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 日志
+*.log
+
+# 临时文件
+*.tmp
+*.bak
+
+# Chrome 配置文件
+chrome_profiles/
