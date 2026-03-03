@@ -219,8 +219,8 @@ def sync_jushuitan_data(request: dict = None):
     
     try:
         # 同步商品和店铺数据
-        goods_processed_count, _ = sync_goods(sync_date, new_data_list)
-        store_processed_count, _ = sync_stores(sync_date, new_data_list)
+        goods_processed_count, _ = sync_goods(sync_date)
+        store_processed_count, _ = sync_stores(sync_date)
         
     except Exception as e:
         print(f"同步商品数据时发生错误: {str(e)}")
@@ -243,7 +243,7 @@ def sync_jushuitan_data(request: dict = None):
 
 
 # 批量新增商品台账方法
-def sync_goods(sync_date, orders):
+def sync_goods(sync_date):
     """
     同步订单数据中的商品信息到goods表
     - 从两个不同的API获取销售金额和销售成本数据
@@ -385,7 +385,11 @@ def sync_goods(sync_date, orders):
                             except ValueError:
                                 order_datetime = datetime.now()
                     else:
-                        order_datetime = datetime.now()
+                        # 如果没有订单时间，则使用同步日期并转换为年月日时分秒
+                        if sync_date:
+                            order_datetime = datetime.combine(sync_date, datetime.min.time())
+                        else:
+                            order_datetime = datetime.now()
                     
                     # 使用shopIid + 订单时间作为唯一键
                     unique_key = f"{shop_iid}_{order_datetime.strftime('%Y%m%d%H%M%S')}"
@@ -405,11 +409,6 @@ def sync_goods(sync_date, orders):
             # 获取对应的销售成本
             sales_cost = sales_cost_map.get(unique_key, 0.0)
             
-            # 如果指定了同步日期，使用该日期，否则使用订单创建日期
-            if sync_date:
-                order_created_at = datetime.combine(sync_date, datetime.min.time())
-            else:
-                order_created_at = datetime.now()
             
             goods_dict[unique_key] = {
                 'goods_id': sales_data['shop_iid'],
@@ -423,7 +422,7 @@ def sync_goods(sync_date, orders):
                 'refund_amount': 0.0,  # 暂不使用
                 'sales_cost': sales_cost,
                 'creator': 'system',
-                'created_at': order_created_at,
+                'created_at': datetime.now(),
                 'goodorder_time': sales_data['order_time'],
                 'updated_at': datetime.now()
             }
@@ -447,7 +446,14 @@ def sync_goods(sync_date, orders):
                     Goods.insert_many(goods_data_list).execute()
 
         # 计算利润相关指标并更新
-        all_new_goods = list(Goods.select())
+        try:
+            all_new_goods = list(Goods.select())
+        except Exception as select_error:
+            print(f"查询商品数据时发生错误: {select_error}")
+            # 尝试重新连接数据库后再查询
+            from ..database import reconnect_db
+            reconnect_db()
+            all_new_goods = list(Goods.select())
         
         for good_record in all_new_goods:
             # 确保所有数值字段都不为None
@@ -506,7 +512,7 @@ def sync_goods(sync_date, orders):
 
 
 # 批量新增店铺表数据
-def sync_stores(sync_date, orders):
+def sync_stores(sync_date):
     """
     同步订单数据中的店铺信息到stores表
     - 从两个不同的API获取销售金额和销售成本数据
@@ -584,13 +590,12 @@ def sync_stores(sync_date, orders):
                         except ValueError:
                             order_datetime = datetime.now()
                 else:
-                    order_datetime = datetime.now()
-                
-                # 如果指定了同步日期，使用该日期，否则使用当前时间
-                if sync_date:
-                    created_at = datetime.combine(sync_date, datetime.min.time())
-                else:
-                    created_at = datetime.now()
+                    # 如果没有订单时间，则使用同步日期并转换为年月日时分秒
+                    if sync_date:
+                        order_datetime = datetime.combine(sync_date, datetime.min.time())
+                    else:
+                        order_datetime = datetime.now()
+            
                 
                 # 初始化或累加店铺数据
                 if unique_store_id not in stores_dict:
@@ -610,7 +615,7 @@ def sync_stores(sync_date, orders):
                         'order_count': 0,
                         'creator': 'system',
                         'last_order_time': order_datetime,
-                        'created_at': created_at,
+                        'created_at': datetime.now(),
                         'updated_at': datetime.now()
                     }
                 

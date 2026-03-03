@@ -4,35 +4,10 @@ import os
 import json
 from pathlib import Path
 
-# 加载 .env 文件
-try:
-    from dotenv import load_dotenv
-    env_path = Path(__file__).resolve().parent.parent / '.env'
-    if env_path.exists():
-        load_dotenv(env_path)
-except ImportError:
-    pass  # python-dotenv 未安装，跳过
-
-# 设置数据库连接 - 支持环境变量配置
-# 默认使用 MySQL（生产环境）
-DATABASE_URL = os.getenv('DATABASE_URL', 'mysql://pdd:PzNPetJFEwWkdzGD@t21.nulls.cn:3306/pdd')
-
-if DATABASE_URL.startswith('sqlite:///'):
-    db_path = DATABASE_URL.replace('sqlite:///', '')
-    if not os.path.isabs(db_path):
-        db_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), db_path)
-    database = SqliteDatabase(db_path)
-elif DATABASE_URL.startswith('mysql://'):
-    # 解析MySQL连接字符串: mysql://user:password@host:port/database
-    from playhouse.db_url import connect
-    database = connect(DATABASE_URL)
-else:
-    from playhouse.db_url import connect
-    database = connect(DATABASE_URL)
 
 class BaseModel(Model):
     class Meta:
-        database = database
+        database = None
 
 
 class User(BaseModel):
@@ -314,14 +289,16 @@ class PddBillRecord(BaseModel):
 
 
 
-
-
-# 创建所有表
 def create_tables():
-    with database:
-        database.create_tables([User, JushuitanProduct, Goods, Store, PddTable, PddBillRecord])
+    db = BaseModel._meta.database
+    if db is None:
+        raise Exception("Database not initialized. Please bind database first.")
 
+    if db.is_closed():
+        db.connect()
 
-
-
-
+    db.create_tables([
+        User,
+        Goods,
+        Store,
+    ])
