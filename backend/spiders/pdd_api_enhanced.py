@@ -13,7 +13,7 @@ import os
 
 # 添加父目录到路径以导入数据库模型
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from models.database import PddTable, PddBillRecord, database
+from backend.models.database import PddTable, PddBillRecord, database
 
 
 # ===============================

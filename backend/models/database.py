@@ -1,13 +1,13 @@
 from peewee import *
 from datetime import datetime
-import os
 import json
-from pathlib import Path
+
+from backend.database import database
 
 
 class BaseModel(Model):
     class Meta:
-        database = None
+        database = database
 
 
 class User(BaseModel):
@@ -288,17 +288,3 @@ class PddBillRecord(BaseModel):
 
 
 
-
-def create_tables():
-    db = BaseModel._meta.database
-    if db is None:
-        raise Exception("Database not initialized. Please bind database first.")
-
-    if db.is_closed():
-        db.connect()
-
-    db.create_tables([
-        User,
-        Goods,
-        Store,
-    ])

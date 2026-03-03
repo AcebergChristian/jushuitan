@@ -9,7 +9,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 # JWT配置
 SECRET_KEY = "your-secret-key-change-this-in-production"  # 应该从环境变量中读取
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 360
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """验证密码"""

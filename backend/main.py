@@ -17,7 +17,7 @@ from backend.api.dash import router as dash_router
 from backend.api.users import router as users_router
 from backend.api.products import router as products_router
 from backend.api.auth import router as auth_router
-from backend.database import init_db
+from backend.init_db import init_db
 
 # 初始化数据库，创建所有表
 init_db()
