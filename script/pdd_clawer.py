@@ -823,10 +823,15 @@ def get_bill_outcome_amount(driver, shop_id, begin_time, end_time):
         
         while current_page <= max_pages:
             print(f"\n正在获取第 {current_page} 页数据...")
-            time.sleep(2)
+            time.sleep(3)  # 增加等待时间
             
             # 查找当前页的API响应
             found_page_data = False
+            page_total = 0
+            
+            # 打印当前请求数量（调试用）
+            print(f"   当前捕获的请求数: {len(driver.requests)}")
+            
             for req in reversed(driver.requests):
                 if not req.response:
                     continue
@@ -844,33 +849,13 @@ def get_bill_outcome_amount(driver, shop_id, begin_time, end_time):
                         if data.get("success"):
                             result = data.get("result", {})
                             bill_list = result.get("billList", [])
-                            total = result.get("total", 0)
+                            page_total = result.get("total", 0)
                             
                             if bill_list:
                                 print(f"✅ 第 {current_page} 页: 获取到 {len(bill_list)} 条数据")
                                 all_bill_details.extend(bill_list)
                                 found_page_data = True
-                                
-                                # 检查是否还有下一页
-                                if len(all_bill_details) >= total:
-                                    print(f"✅ 已获取全部数据，共 {len(all_bill_details)} 条")
-                                    break
-                                
-                                # 点击下一页
-                                try:
-                                    next_button = WebDriverWait(driver, 5).until(
-                                        EC.element_to_be_clickable((By.XPATH, '//button[@class="arco-pagination-item-next"]'))
-                                    )
-                                    driver.execute_script("arguments[0].click();", next_button)
-                                    print(f"👉 点击下一页...")
-                                    current_page += 1
-                                    time.sleep(2)
-                                    # 清空之前的请求，避免重复读取
-                                    del driver.requests
-                                    break
-                                except Exception as e:
-                                    print(f"⚠️ 没有下一页了或点击失败: {e}")
-                                    break
+                                break  # 找到当前页数据，跳出 for 循环
                             else:
                                 print(f"⚠️ 第 {current_page} 页没有数据")
                                 break
@@ -880,19 +865,101 @@ def get_bill_outcome_amount(driver, shop_id, begin_time, end_time):
             
             if not found_page_data:
                 print(f"⚠️ 未找到第 {current_page} 页的数据")
+                
+                # 如果是第一页就没找到，直接退出
+                if current_page == 1:
+                    break
+                
+                # 如果不是第一页，可能是网络延迟，再等待一下
+                print(f"   等待 5 秒后重试...")
+                time.sleep(5)
+                
+                # 再次尝试查找
+                for req in reversed(driver.requests):
+                    if not req.response:
+                        continue
+                    try:
+                        if "pagingQueryMallBalanceBillListForMms" in req.url:
+                            body = req.response.body
+                            encoding = req.response.headers.get("Content-Encoding", "")
+                            if "gzip" in encoding:
+                                body = gzip.GzipFile(fileobj=BytesIO(body)).read()
+                            data = json.loads(body.decode("utf-8"))
+                            if data.get("success"):
+                                result = data.get("result", {})
+                                bill_list = result.get("billList", [])
+                                if bill_list:
+                                    print(f"✅ 重试成功: 第 {current_page} 页获取到 {len(bill_list)} 条数据")
+                                    all_bill_details.extend(bill_list)
+                                    found_page_data = True
+                                    page_total = result.get("total", 0)
+                                    break
+                    except:
+                        continue
+                
+                # 如果重试还是失败，退出循环
+                if not found_page_data:
+                    print(f"⚠️ 重试失败，停止翻页")
+                    break
+            
+            # 检查是否还有下一页
+            if len(all_bill_details) >= page_total:
+                print(f"✅ 已获取全部数据，共 {len(all_bill_details)} 条（总计 {page_total} 条）")
                 break
             
-            # 如果已经获取完所有数据，退出循环
-            if len(all_bill_details) >= total:
+            # 点击下一页
+            try:
+                print(f"👉 尝试点击下一页...")
+                
+                # 方法1: 使用 data-testid 查找下一页按钮（最可靠）
+                try:
+                    next_button = WebDriverWait(driver, 5).until(
+                        EC.presence_of_element_located((By.CSS_SELECTOR, 'li[data-testid="beast-core-pagination-next"]'))
+                    )
+                    print(f"   找到下一页按钮（方法1: data-testid）")
+                except:
+                    # 方法2: 使用 class 前缀查找
+                    try:
+                        next_button = driver.find_element(By.CSS_SELECTOR, 'li[class*="PGT_next_"]')
+                        print(f"   找到下一页按钮（方法2: class）")
+                    except:
+                        # 方法3: 使用 arco-pagination（旧版本）
+                        try:
+                            next_button = driver.find_element(By.CSS_SELECTOR, 'li.arco-pagination-item-next:not(.arco-pagination-item-disabled) button')
+                            print(f"   找到下一页按钮（方法3: arco）")
+                        except:
+                            raise Exception("未找到下一页按钮")
+                
+                # 检查按钮是否禁用
+                button_class = next_button.get_attribute("class") or ""
+                is_disabled = "disabled" in button_class.lower() or next_button.get_attribute("disabled")
+                
+                if is_disabled:
+                    print(f"⚠️ 下一页按钮已禁用，已到最后一页")
+                    break
+                
+                # 清空之前的请求，避免重复读取
+                print(f"   清空旧请求...")
+                del driver.requests
+                
+                # 点击按钮
+                driver.execute_script("arguments[0].click();", next_button)
+                print(f"✅ 已点击下一页")
+                current_page += 1
+                
+                # 等待页面加载和API响应
+                print(f"   等待页面加载...")
+                time.sleep(5)  # 增加等待时间到5秒
+                
+            except Exception as e:
+                print(f"⚠️ 没有下一页了或点击失败: {e}")
+                import traceback
+                traceback.print_exc()
                 break
         
         print(f"\n{'='*60}")
         print(f"📊 数据获取完成: 共 {len(all_bill_details)} 条账单")
         print(f"{'='*60}\n")
-        
-        # 等待API请求
-        print("⏳ 等待账单API响应...")
-        time.sleep(3)
         
         # 只查找账单明细API
         found_details = len(all_bill_details) > 0
@@ -903,18 +970,27 @@ def get_bill_outcome_amount(driver, shop_id, begin_time, end_time):
             try:
                 print(f"\n💾 开始处理 {len(bill_details)} 条账单数据...")
                 
-                # 先按订单号聚合金额
+                # 先按订单号聚合金额（只统计负数，即退款）
                 order_amounts = {}  # {order_sn: total_amount}
+                total_bills = 0
+                negative_bills = 0
+                
                 for bill in bill_details:
                     order_sn = bill.get("orderSn")
                     amount_fen = bill.get("amount", 0)
                     amount_yuan = amount_fen / 100.0
+                    total_bills += 1
                     
-                    if order_sn in order_amounts:
-                        order_amounts[order_sn] += amount_yuan
-                    else:
-                        order_amounts[order_sn] = amount_yuan
+                    # 只统计负数金额（退款）
+                    if amount_yuan < 0:
+                        negative_bills += 1
+                        if order_sn in order_amounts:
+                            order_amounts[order_sn] += amount_yuan
+                        else:
+                            order_amounts[order_sn] = amount_yuan
                 
+                print(f"📊 总账单: {total_bills} 条")
+                print(f"📊 退款账单: {negative_bills} 条")
                 print(f"📊 聚合后共 {len(order_amounts)} 个不同订单")
                 
                 # 保存到数据库 - 先删除旧数据，再插入新数据
@@ -924,6 +1000,7 @@ def get_bill_outcome_amount(driver, shop_id, begin_time, end_time):
                         (PddBillRecord.shop_id == shop_id) &
                         (PddBillRecord.bill_date == actual_bill_date)
                     ).execute()
+                    print(f"🗑️  删除时间为: {actual_bill_date} 的旧记录")
                     print(f"🗑️  删除旧记录: {deleted_count} 条")
                     
                     # 2. 插入新的聚合数据
@@ -1001,6 +1078,7 @@ def get_bill_outcome_amount(driver, shop_id, begin_time, end_time):
                                 print(f"📊 聚合后共 {len(order_amounts)} 个不同订单")
                                 
                                 # 先删除旧数据，再插入新数据
+                                print(f'删除 时间为：{actual_bill_date} 的旧数据')
                                 with database.atomic():
                                     # 删除该店铺该日期的所有旧记录
                                     deleted_count = PddBillRecord.delete().where(
