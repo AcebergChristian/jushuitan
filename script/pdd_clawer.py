@@ -6,6 +6,7 @@ from io import BytesIO
 from seleniumwire import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys
@@ -22,13 +23,78 @@ def create_driver(profile_name):
     chrome_options = Options()
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_argument("--start-maximized")
-    chrome_options.add_argument(
-        f"--user-data-dir=/Users/Aceberg/chrome_profiles/{profile_name}"
-    )
-
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.set_page_load_timeout(30)
-    return driver
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--remote-debugging-port=9222")
+    
+    # 跨平台路径处理
+    if sys.platform == "win32":
+        # Windows 路径
+        profile_dir = os.path.join(os.path.expanduser("~"), "chrome_profiles", profile_name)
+    else:
+        # macOS/Linux 路径
+        profile_dir = f"/Users/Aceberg/chrome_profiles/{profile_name}"
+    
+    # 确保目录存在且路径正确
+    os.makedirs(profile_dir, exist_ok=True)
+    chrome_options.add_argument(f"--user-data-dir={profile_dir}")
+    
+    # 尝试多种方式创建 driver
+    driver = None
+    
+    # 方法1: 优先使用本地 chromedriver.exe（如果存在）
+    try:
+        print("🔍 检查本地 chromedriver.exe...")
+        local_driver = os.path.join(os.getcwd(), "chromedriver.exe")
+        if os.path.exists(local_driver):
+            print(f"   找到: {local_driver}")
+            service = Service(local_driver)
+            driver = webdriver.Chrome(service=service, options=chrome_options)
+            print("✅ 使用本地 chromedriver.exe")
+            driver.set_page_load_timeout(30)
+            return driver
+        else:
+            print("   未找到本地 chromedriver.exe")
+    except Exception as e:
+        print(f"⚠️ 本地 chromedriver 失败: {e}")
+    
+    # 方法2: 尝试使用 webdriver-manager（需要网络）
+    try:
+        print("🔍 尝试自动下载 ChromeDriver...")
+        from webdriver_manager.chrome import ChromeDriverManager
+        service = Service(ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=service, options=chrome_options)
+        print("✅ 使用自动下载的 ChromeDriver")
+        driver.set_page_load_timeout(30)
+        return driver
+    except Exception as e:
+        print(f"⚠️ 自动下载失败: {e}")
+    
+    # 方法3: 让 Selenium 自己找（依赖系统 PATH）
+    try:
+        print("🔍 尝试使用系统 PATH 中的 ChromeDriver...")
+        driver = webdriver.Chrome(options=chrome_options)
+        print("✅ 使用系统 ChromeDriver")
+        driver.set_page_load_timeout(30)
+        return driver
+    except Exception as e3:
+        print(f"⚠️ 系统 ChromeDriver 失败: {e3}")
+    
+    # 所有方法都失败
+    print(f"\n{'='*60}")
+    print("❌ 无法启动 ChromeDriver")
+    print(f"{'='*60}")
+    print("解决方案:")
+    print("1. 手动下载 ChromeDriver:")
+    print("   a. 打开 Chrome 浏览器，查看版本号")
+    print("      (设置 -> 关于 Chrome)")
+    print("   b. 访问: https://googlechromelabs.github.io/chrome-for-testing/")
+    print("   c. 下载对应版本的 chromedriver-win64.zip")
+    print(f"   d. 解压后将 chromedriver.exe 放到: {os.getcwd()}")
+    print("")
+    print("2. 或者配置代理后重新运行（如果是网络问题）")
+    print(f"{'='*60}\n")
+    raise Exception("无法启动 ChromeDriver")
 
 
 # ===============================
