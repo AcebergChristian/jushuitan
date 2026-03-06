@@ -181,8 +181,9 @@ class Goods(BaseModel):
 # 店铺表：以店铺为主键，聚合所有金额字段
 class Store(BaseModel):
     id = AutoField(primary_key=True)
-    store_id = CharField(unique=True)  # 店铺ID，唯一标识
+    store_id = CharField(index=True)  # 店铺ID（不再唯一，因为同一店铺可能有多个日期的数据）
     store_name = CharField(null=True)  # 店铺名称
+    order_date = DateField(null=True, index=True)  # 订单日期（用于区分同一店铺不同日期的数据）
     total_payment_amount = FloatField(default=0.0)  # 总付款金额
     total_sales_amount = FloatField(default=0.0)  # 总销售金额
     total_refund_amount = FloatField(default=0.0)  # 总退款金额
@@ -207,6 +208,9 @@ class Store(BaseModel):
 
     class Meta:
         table_name = 'stores'
+        indexes = (
+            (('store_id', 'order_date'), True),  # store_id + order_date 唯一索引
+        )
 
 
 

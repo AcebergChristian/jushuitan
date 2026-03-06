@@ -5,15 +5,18 @@ import { history } from './history';
 // 根据环境动态设置基础URL
 const getApiBaseUrl = () => {
   if (typeof window !== 'undefined') {
-    // 在生产环境中，如果前端和后端在同一域名下，但不同端口，需要指定端口
-    // 或者使用绝对URL指向后端服务
     const isDev = process.env.NODE_ENV === 'development';
     if (isDev) {
-      return ''; // 开发环境使用代理
+      // 开发环境使用空字符串，让 Vite 代理处理
+      return '';
     }
     // 生产环境：根据实际情况配置后端API的基础URL
     // 如果后端运行在相同域名的不同端口上，例如 :8000
-    return window.location.protocol + '//' + window.location.hostname + ':8000';
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      return window.location.protocol + '//' + window.location.hostname + ':8000';
+    }
+    // 生产环境（非本地）
+    return window.location.protocol + '//' + window.location.hostname;
   }
   return '';
 };
@@ -62,8 +65,8 @@ export const login = async (username, password) => {
   let url;
   
   if (isDev) {
-    // 本地开发环境，前后端分离
-    url = 'http://127.0.0.1:8000/api/login';
+    // 本地开发环境，使用相对路径（通过 Vite 代理）
+    url = '/api/login';
   } else {
     // 检测是否是本地打包部署（localhost或127.0.0.1）还是生产环境
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {

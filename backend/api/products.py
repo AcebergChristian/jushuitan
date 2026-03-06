@@ -539,7 +539,7 @@ def sync_stores(sync_date):
         if not sales_cost_data or 'data' not in sales_cost_data:
             raise HTTPException(status_code=400, detail="获取店铺销售成本数据失败")
         
-        # 用于存储店铺数据的字典，以store_id和日期为唯一键
+        # 用于存储店铺数据的字典，以 (store_id, order_date) 为唯一键
         stores_dict = {}
         
         # 处理销售金额数据
@@ -551,11 +551,25 @@ def sync_stores(sync_date):
                 if not store_id:
                     continue
                 
-                # 如果指定了同步日期，将日期加入store_id以确保唯一性
-                if sync_date:
-                    unique_store_id = f"{store_id}_{sync_date.strftime('%Y%m%d')}"
-                else:
-                    unique_store_id = store_id
+                # 获取订单日期（只取日期部分）
+                order_time_str = order.get('orderTime')
+                order_date = None
+                if order_time_str:
+                    try:
+                        order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d %H:%M:%S')
+                        order_date = order_datetime.date()
+                    except:
+                        pass
+                
+                # 如果没有订单日期，使用同步日期
+                if not order_date and sync_date:
+                    order_date = sync_date
+                
+                if not order_date:
+                    continue
+                
+                # 使用 (store_id, order_date) 作为唯一键
+                unique_key = (store_id, order_date)
                 
                 payAmount = float(order.get('payAmount', 0) or 0)
                 
@@ -576,7 +590,6 @@ def sync_stores(sync_date):
                         goods_list = [goods_list]
                 
                 # 获取订单时间
-                order_time_str = order.get('orderTime')
                 order_datetime = None
                 if order_time_str:
                     try:
@@ -598,10 +611,11 @@ def sync_stores(sync_date):
             
                 
                 # 初始化或累加店铺数据
-                if unique_store_id not in stores_dict:
-                    stores_dict[unique_store_id] = {
-                        'store_id': unique_store_id,
+                if unique_key not in stores_dict:
+                    stores_dict[unique_key] = {
+                        'store_id': store_id,
                         'store_name': store_name,
+                        'order_date': order_date,
                         'total_payment_amount': 0.0,
                         'total_sales_amount': 0.0,
                         'total_refund_amount': 0.0,
@@ -614,13 +628,13 @@ def sync_stores(sync_date):
                         'goods_count': 0,
                         'order_count': 0,
                         'creator': 'system',
-                        'last_order_time': order_datetime,
+                        'last_order_time': order_datetime if order_datetime else datetime.combine(order_date, datetime.min.time()),
                         'created_at': datetime.now(),
                         'updated_at': datetime.now()
                     }
                 
                 # 累加销售金额
-                store_data = stores_dict[unique_store_id]
+                store_data = stores_dict[unique_key]
                 store_data['total_sales_amount'] += payAmount
                 store_data['goods_count'] += len(goods_list)
                 store_data['order_count'] += 1
@@ -641,17 +655,31 @@ def sync_stores(sync_date):
                 if not store_id:
                     continue
                 
-                # 如果指定了同步日期，将日期加入store_id以确保唯一性
-                if sync_date:
-                    unique_store_id = f"{store_id}_{sync_date.strftime('%Y%m%d')}"
-                else:
-                    unique_store_id = store_id
+                # 获取订单日期
+                order_time_str = order.get('orderTime')
+                order_date = None
+                if order_time_str:
+                    try:
+                        order_datetime = datetime.strptime(order_time_str, '%Y-%m-%d %H:%M:%S')
+                        order_date = order_datetime.date()
+                    except:
+                        pass
+                
+                # 如果没有订单日期，使用同步日期
+                if not order_date and sync_date:
+                    order_date = sync_date
+                
+                if not order_date:
+                    continue
+                
+                # 使用 (store_id, order_date) 作为唯一键
+                unique_key = (store_id, order_date)
                 
                 drpAmount = float(order.get('drpAmount', 0) or 0)
                 
                 # 累加销售成本
-                if unique_store_id in stores_dict:
-                    stores_dict[unique_store_id]['total_sales_cost'] += drpAmount
+                if unique_key in stores_dict:
+                    stores_dict[unique_key]['total_sales_cost'] += drpAmount
                 
             except Exception as e:
                 print(f"处理店铺销售成本订单时出错: {e}")
@@ -659,12 +687,8 @@ def sync_stores(sync_date):
         
         # 删除之前同步的相同日期的数据（避免重复）
         if sync_date:
-            start_of_day = datetime.combine(sync_date, datetime.min.time())
-            end_of_day = datetime.combine(sync_date, datetime.max.time())
-            
             Store.delete().where(
-                (Store.created_at >= start_of_day) & 
-                (Store.created_at <= end_of_day)
+                Store.order_date == sync_date
             ).execute()
         else:
             Store.delete().execute()
@@ -677,7 +701,10 @@ def sync_stores(sync_date):
                     Store.insert_many(stores_data_list).execute()
 
         # 计算利润相关指标并更新
-        all_new_stores = list(Store.select())
+        if sync_date:
+            all_new_stores = list(Store.select().where(Store.order_date == sync_date))
+        else:
+            all_new_stores = list(Store.select())
         
         for store_record in all_new_stores:
             # 确保所有数值字段都不为None
@@ -1074,20 +1101,35 @@ def get_store_goods(
 
 # 获取特定店铺的商品详情
 @router.get("/store_goods_detail/{store_id}")
-def get_store_goods_detail(store_id: str, current_user = Depends(get_current_user)):
+def get_store_goods_detail(
+    store_id: str, 
+    order_date: str = None,  # 订单日期参数（格式：YYYY-MM-DD）
+    current_user = Depends(get_current_user)
+):
     """
     获取特定店铺的商品详情
+    参数:
+        store_id: 店铺ID
+        order_date: 订单日期（必需，格式：YYYY-MM-DD），用于匹配PDD数据
     """
     
     print(f"=== Debug: 查询店铺商品详情 ===")
-    print(f"原始店铺ID: {store_id}")
-    
-    # 提取真实的店铺ID（去掉日期后缀）
-    # Store表中的ID格式: shopId_YYYYMMDD (如: 18582224_20260126)
-    # Goods表中的ID格式: shopId (如: 18582224)
-    real_store_id = store_id.split('_')[0] if '_' in store_id else store_id
-    print(f"提取后的店铺ID: {real_store_id}")
+    print(f"店铺ID: {store_id}")
+    print(f"订单日期参数: {order_date}")
     print(f"用户: {current_user.username}, 角色: {current_user.role}")
+    
+    # 解析订单日期
+    target_date = None
+    if order_date:
+        try:
+            from datetime import datetime
+            target_date = datetime.strptime(order_date, '%Y-%m-%d').date()
+            print(f"解析后的日期对象: {target_date}")
+        except ValueError as e:
+            print(f"日期解析失败: {e}")
+            return {"message": f"日期格式错误: {order_date}，应为 YYYY-MM-DD", "data": [], "error": True}
+    else:
+        return {"message": "缺少订单日期参数", "data": [], "error": True}
 
     # 判断是否为管理员
     is_admin = current_user.role == 'admin'
@@ -1096,25 +1138,24 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
     
     if is_admin:
         # 管理员可以查看任意店铺的商品数据
-        print(f"管理员模式：查询店铺 {real_store_id} 的商品")
+        print(f"管理员模式：查询店铺 {store_id} 的商品")
         goods_records = Goods.select().where(
-            (Goods.store_id == real_store_id) & (Goods.is_del == False)
+            (Goods.store_id == store_id) & (Goods.is_del == False)
         ).order_by(Goods.goodorder_time.desc())
     else:
         # 普通用户只能查看自己关联的店铺商品数据
         user_goods_stores = current_user.get_goods_stores()
-        # 提取用户关联的真实店铺ID（去掉日期后缀）
-        user_store_ids = [item.get('store_id').split('_')[0] if '_' in item.get('store_id', '') else item.get('store_id') 
-                         for item in user_goods_stores if item.get('store_id')]
+        # 提取用户关联的店铺ID
+        user_store_ids = [item.get('store_id') for item in user_goods_stores if item.get('store_id')]
         
         print(f"普通用户模式：用户关联的店铺IDs: {user_store_ids}")
         
-        if real_store_id not in user_store_ids:
-            print(f"权限检查失败：店铺 {real_store_id} 不在用户关联列表中")
+        if store_id not in user_store_ids:
+            print(f"权限检查失败：店铺 {store_id} 不在用户关联列表中")
             return {"message": "无权访问此店铺的商品详情", "data": [], "error": True}
         
         goods_records = Goods.select().where(
-            (Goods.store_id == real_store_id) & (Goods.is_del == False)
+            (Goods.store_id == store_id) & (Goods.is_del == False)
         ).order_by(Goods.goodorder_time.desc())
     
     # 转换为列表以便调试
@@ -1227,30 +1268,92 @@ def get_store_goods_detail(store_id: str, current_user = Depends(get_current_use
     for good_id, data in grouped_goods.items():
         # 关联 pdd_ads 表获取广告费（按 goods_id、store_id 和日期匹配）
         advertising_expenses_from_pdd = 0.0
-        if good_id and data['store_id'] and data['latest_goodorder_time']:
-            # 提取订单日期
-            order_date = data['latest_goodorder_time'].date()
-            pdd_ads = PddTable.select(fn.SUM(PddTable.orderSpendNetCostPerOrder).alias('total_ad_cost')).where(
+        if good_id and data['store_id'] and target_date:
+            print(f"\n=== 查询商品 {good_id} 的广告费 ===")
+            print(f"  goods_id: {good_id}")
+            print(f"  store_id: {data['store_id']}")
+            print(f"  target_date: {target_date}")
+            
+            # 查询该商品在指定日期的广告费记录
+            pdd_ads_records = PddTable.select().where(
                 (PddTable.goods_id == good_id) &
                 (PddTable.store_id == data['store_id']) &
-                (PddTable.data_date == order_date) &
+                (PddTable.data_date == target_date) &
                 (PddTable.is_del == False)
-            ).scalar()
-            advertising_expenses_from_pdd = float(pdd_ads) if pdd_ads else 0.0
+            )
+            
+            pdd_ads_list = list(pdd_ads_records)
+            print(f"  找到 {len(pdd_ads_list)} 条广告记录")
+            
+            if pdd_ads_list:
+                # 计算总广告费
+                advertising_expenses_from_pdd = sum(
+                    float(ad.orderSpendNetCostPerOrder or 0) for ad in pdd_ads_list
+                )
+                print(f"  总广告费: {advertising_expenses_from_pdd}")
+                # 打印前3条记录的详情
+                for i, ad in enumerate(pdd_ads_list[:3]):
+                    print(f"    记录{i+1}: ad_id={ad.ad_id}, 费用={ad.orderSpendNetCostPerOrder}, 日期={ad.data_date}")
+            else:
+                # 检查是否有该商品的其他日期的广告记录
+                any_ads = PddTable.select().where(
+                    (PddTable.goods_id == good_id) &
+                    (PddTable.store_id == data['store_id']) &
+                    (PddTable.is_del == False)
+                ).limit(3)
+                any_ads_list = list(any_ads)
+                if any_ads_list:
+                    print(f"  该商品有其他日期的广告记录，但日期不匹配")
+                    print(f"  数据库中的日期示例: {[ad.data_date for ad in any_ads_list]}")
+                else:
+                    print(f"  该商品在广告表中没有任何记录")
+        elif not target_date:
+            print(f"\n⚠️ 未提供订单日期，跳过商品 {good_id} 的广告费查询")
         
-        # 关联 pdd_bill_records 表获取退款金额（按 shop_id、so_ids 和日期匹配，使用ABS转正数）
+        # 关联 pdd_bill_records 表获取退款金额（按 shop_id、so_ids 和日期匹配）
         refund_amount_from_pdd = 0.0
-        if data['store_id'] and data['so_ids'] and data['latest_goodorder_time']:
-            # 提取订单日期
-            order_date = data['latest_goodorder_time'].date()
-            # 查询所有线上订单号的退款金额总和，使用ABS转换为正数
-            bill_refund = PddBillRecord.select(fn.SUM(fn.ABS(PddBillRecord.amount)).alias('total_refund')).where(
+        if data['store_id'] and data['so_ids'] and target_date:
+            print(f"\n=== 查询商品 {good_id} 的退款金额 ===")
+            print(f"  shop_id: {data['store_id']}")
+            print(f"  so_ids数量: {len(data['so_ids'])}")
+            print(f"  so_ids前3个: {data['so_ids'][:3]}")
+            print(f"  target_date: {target_date}")
+            
+            # 查询指定日期的退款金额总和，使用ABS转换为正数
+            bill_records = PddBillRecord.select().where(
                 (PddBillRecord.shop_id == data['store_id']) &
                 (PddBillRecord.order_sn.in_(data['so_ids'])) &
-                (PddBillRecord.bill_date == order_date) &
+                (PddBillRecord.bill_date == target_date) &
                 (PddBillRecord.is_del == False)
-            ).scalar()
-            refund_amount_from_pdd = float(bill_refund) if bill_refund else 0.0
+            )
+            
+            bill_list = list(bill_records)
+            print(f"  找到 {len(bill_list)} 条退款记录")
+            
+            if bill_list:
+                # 计算总退款金额（取绝对值）
+                refund_amount_from_pdd = sum(
+                    abs(float(bill.amount or 0)) for bill in bill_list
+                )
+                print(f"  总退款金额: {refund_amount_from_pdd}")
+                # 打印前3条记录的详情
+                for i, bill in enumerate(bill_list[:3]):
+                    print(f"    记录{i+1}: order_sn={bill.order_sn}, 金额={bill.amount}, 日期={bill.bill_date}")
+            else:
+                # 如果没找到，检查是否有该店铺的其他日期的退款记录
+                any_bills = PddBillRecord.select().where(
+                    (PddBillRecord.shop_id == data['store_id']) &
+                    (PddBillRecord.order_sn.in_(data['so_ids'])) &
+                    (PddBillRecord.is_del == False)
+                ).limit(3)
+                any_bills_list = list(any_bills)
+                if any_bills_list:
+                    print(f"  该店铺有其他日期的退款记录，但日期不匹配")
+                    print(f"  数据库中的日期示例: {[b.bill_date for b in any_bills_list]}")
+                else:
+                    print(f"  该店铺在退款表中没有匹配的订单号记录")
+        elif not target_date:
+            print(f"\n⚠️ 未提供订单日期，跳过商品 {good_id} 的退款金额查询")
         
         # 使用关联查询的值，如果没有则使用累加的值
         final_advertising_expenses = advertising_expenses_from_pdd if advertising_expenses_from_pdd > 0 else data['advertising_expenses']

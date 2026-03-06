@@ -144,6 +144,11 @@ const StoreManagement = () => {
       sorter: (a, b) => (a.net_profit_rate || 0) - (b.net_profit_rate || 0),
     },
     {
+      title: '订单时间',
+      dataIndex: 'last_order_time',
+      key: 'last_order_time',
+    },
+    {
       title: '创建时间',
       dataIndex: 'created_at',
       key: 'created_at',
@@ -156,7 +161,7 @@ const StoreManagement = () => {
           <Button 
             type="link" 
             icon={<EyeOutlined />}
-            onClick={() => handleViewDetails(record.store_id)}
+            onClick={() => handleViewDetails(record.store_id, record.last_order_time)}
           >
             查看详情
           </Button>
@@ -262,6 +267,16 @@ const StoreManagement = () => {
       render: (text) => `${Number(text || 0).toFixed(2)}%`,
     },
     {
+      title: 'first订单时间',
+      dataIndex: 'first_order_time',
+      key: 'first_order_time',
+    },
+    {
+      title: 'latest订单时间',
+      dataIndex: 'latest_order_time',
+      key: 'latest_order_time',
+    },
+    {
       title: '创建时间',
       dataIndex: 'created_at',
       key: 'created_at',
@@ -313,12 +328,20 @@ const StoreManagement = () => {
 
 
   // 查看店铺详情
-  const handleViewDetails = async (storeId) => {
+  const handleViewDetails = async (storeId, orderTime) => {
     setCurrentStoreId(storeId);
     setDetailLoading(true);
     
     try {
-      const response = await apiRequest(`/store_goods_detail/${storeId}`);
+      // 构建URL，如果有orderTime则添加为查询参数
+      let url = `/store_goods_detail/${storeId}`;
+      if (orderTime) {
+        // 提取日期部分（YYYY-MM-DD）
+        const dateStr = orderTime.split(' ')[0];
+        url += `?order_date=${encodeURIComponent(dateStr)}`;
+      }
+      
+      const response = await apiRequest(url);
       const result = await response.json();
       
       if (result.data) {
