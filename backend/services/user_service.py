@@ -9,6 +9,16 @@ def get_user_by_username(db, username: str):
         return User.get_or_none(User.username == username)
     except Exception as e:
         print(f"Error getting user by username: {e}")
+        # 如果是连接错误，尝试重连后再试一次
+        if "Lost connection" in str(e) or "gone away" in str(e) or "(0," in str(e):
+            try:
+                if not db.is_closed():
+                    db.close()
+                db.connect()
+                return User.get_or_none(User.username == username)
+            except Exception as retry_error:
+                print(f"Retry failed: {retry_error}")
+                return None
         return None
 
 def get_user_by_email(db, email: str):
@@ -17,6 +27,16 @@ def get_user_by_email(db, email: str):
         return User.get_or_none(User.email == email)
     except Exception as e:
         print(f"Error getting user by email: {e}")
+        # 如果是连接错误，尝试重连后再试一次
+        if "Lost connection" in str(e) or "gone away" in str(e) or "(0," in str(e):
+            try:
+                if not db.is_closed():
+                    db.close()
+                db.connect()
+                return User.get_or_none(User.email == email)
+            except Exception as retry_error:
+                print(f"Retry failed: {retry_error}")
+                return None
         return None
 
 def get_user_by_id(db, user_id: int):
@@ -25,6 +45,16 @@ def get_user_by_id(db, user_id: int):
         return User.get_or_none(User.id == user_id)
     except Exception as e:
         print(f"Error getting user by id: {e}")
+        # 如果是连接错误，尝试重连后再试一次
+        if "Lost connection" in str(e) or "gone away" in str(e) or "(0," in str(e):
+            try:
+                if not db.is_closed():
+                    db.close()
+                db.connect()
+                return User.get_or_none(User.id == user_id)
+            except Exception as retry_error:
+                print(f"Retry failed: {retry_error}")
+                return None
         return None
         
 def authenticate_user(db, username: str, password: str):

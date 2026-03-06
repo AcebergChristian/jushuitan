@@ -457,7 +457,7 @@ def save_promotion_to_db(items, store_id=None, data_date=None):
                     "goods_id": str(item.get("goodsId")) if item.get("goodsId") else None,
                     "store_id": store_id,
                     "goods_name": item.get("goodsName"),
-                    "orderSpendNetCostPerOrder": item.get("reportInfo", {}).get("orderSpendNetCostPerOrder"),
+                    "orderSpendNetCostPerOrder": item.get("reportInfo", {}).get("spend") / 1000 if item.get("reportInfo", {}).get("spend") else None,
                     "data_date": data_date,  # 添加数据日期
                     "raw_data": json.dumps(item, ensure_ascii=False),
                     "updated_at": datetime.now()

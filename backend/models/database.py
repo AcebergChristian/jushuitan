@@ -2,7 +2,7 @@ from peewee import *
 from datetime import datetime
 import json
 
-from backend.database import database
+from database import database
 
 
 class BaseModel(Model):

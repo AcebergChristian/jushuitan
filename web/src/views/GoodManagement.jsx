@@ -71,6 +71,12 @@ const GoodManagement = () => {
   // 表格列配置
   const columns = [
     {
+      title: '商品订单时间',
+      dataIndex: 'goodorder_time',
+      key: 'goodorder_time',
+      render: (date) => date || '-',
+    },
+    {
       title: '商品ID',
       dataIndex: 'goods_id',
       key: 'goods_id',
@@ -195,12 +201,6 @@ const GoodManagement = () => {
       key: 'net_profit_rate',
       render: (rate) => `${(rate || 0).toFixed(2)}%`,
       sorter: (a, b) => (a.net_profit_rate || 0) - (b.net_profit_rate || 0),
-    },
-    {
-      title: '商品订单时间',
-      dataIndex: 'goodorder_time',
-      key: 'goodorder_time',
-      render: (date) => date || '-',
     },
     {
       title: '创建时间',

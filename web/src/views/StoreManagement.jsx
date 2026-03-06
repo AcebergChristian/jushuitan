@@ -28,6 +28,11 @@ const StoreManagement = () => {
   // 表格列配置 - 店铺汇总数据
   const storeColumns = [
     {
+      title: '订单时间',
+      dataIndex: 'last_order_time',
+      key: 'last_order_time',
+    },
+    {
       title: '店铺ID',
       dataIndex: 'store_id',
       key: 'store_id',
@@ -142,11 +147,6 @@ const StoreManagement = () => {
       key: 'net_profit_rate',
       render: (text) => `${Number(text || 0).toFixed(2)}%`,
       sorter: (a, b) => (a.net_profit_rate || 0) - (b.net_profit_rate || 0),
-    },
-    {
-      title: '订单时间',
-      dataIndex: 'last_order_time',
-      key: 'last_order_time',
     },
     {
       title: '创建时间',

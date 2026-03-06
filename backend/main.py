@@ -18,11 +18,31 @@ from backend.api.users import router as users_router
 from backend.api.products import router as products_router
 from backend.api.auth import router as auth_router
 from backend.init_db import init_db
+from backend.database import database
+import logging
+
+# 配置日志
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 # 初始化数据库，创建所有表
 init_db()
 
 app = FastAPI(title="聚水潭和拼多多数据管理系统", version="1.0.0")
+
+# 应用启动时连接数据库
+@app.on_event("startup")
+async def startup():
+    if database.is_closed():
+        database.connect()
+        logger.info("Database connected on startup")
+
+# 应用关闭时断开数据库连接
+@app.on_event("shutdown")
+async def shutdown():
+    if not database.is_closed():
+        database.close()
+        logger.info("Database connection closed on shutdown")
 
 # 允许跨域请求
 app.add_middleware(

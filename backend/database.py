@@ -31,17 +31,33 @@ database = PooledMySQLDatabase(
 
 @contextmanager
 def get_db():
-    """统一数据库上下文"""
+    """统一数据库上下文 - 改进版，处理连接超时"""
     try:
+        # 确保连接是活跃的
         if database.is_closed():
             database.connect()
+        else:
+            # 测试连接是否有效，如果无效则重连
+            try:
+                database.execute_sql('SELECT 1')
+            except Exception:
+                logging.warning("Database connection stale, reconnecting...")
+                database.close()
+                database.connect()
+        
         yield database
     except Exception as e:
         logging.error(f"Database error: {e}")
+        # 如果是连接错误，尝试重连
+        if "Lost connection" in str(e) or "gone away" in str(e):
+            try:
+                database.close()
+                database.connect()
+                logging.info("Database reconnected after error")
+            except Exception as reconnect_error:
+                logging.error(f"Failed to reconnect: {reconnect_error}")
         raise
-    finally:
-        if not database.is_closed():
-            database.close()
+    # 注意：不要在 finally 中关闭连接，让连接池管理
 
 
 def reconnect_db():
