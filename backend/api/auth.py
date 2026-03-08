@@ -2,12 +2,15 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
 from jose import JWTError, jwt
 from datetime import timedelta, datetime
+import logging
 import json
 from typing import Optional
 from .. import schemas
 from ..services import user_service
 from ..database import get_db
 from ..utils.auth import verify_password, create_access_token, SECRET_KEY, ALGORITHM, ACCESS_TOKEN_EXPIRE_MINUTES
+
+logger = logging.getLogger(__name__)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -55,37 +58,52 @@ def get_current_active_user(current_user: schemas.User = Depends(get_current_use
 @router.post("/login", response_model=schemas.Token)
 def login(form_data: OAuth2PasswordRequestForm = Depends()):
     """用户登录接口"""
-    with get_db() as db:
-        # 首先尝试通过用户名查找用户
-        user = user_service.get_user_by_username(db, username=form_data.username)
-        
-        # 如果用户名未找到，尝试通过邮箱查找
-        if not user:
-            user = user_service.get_user_by_email(db, email=form_data.username)
-        
-        # 验证用户存在且密码正确
-        if not user or not user.is_active or not verify_password(form_data.password, user.hashed_password):
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="用户名/邮箱或密码错误",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        
-        # 创建访问令牌，包含用户ID和角色信息
-        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-        token_data = {
-            "sub": user.username,
-            "user_id": user.id,
-            "username": user.username,
-            "email": user.email,
-            "role": user.role,
-            "is_active": user.is_active,
-            "exp": datetime.utcnow() + access_token_expires
-        }
-        
-        access_token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
-        
-        return {"access_token": access_token, "token_type": "bearer", "userinfo": json.dumps(token_data, ensure_ascii=False, indent=2).encode('utf-8').decode('utf-8')}
+    try:
+        with get_db() as db:
+            # 首先尝试通过用户名查找用户
+            user = user_service.get_user_by_username(db, username=form_data.username)
+            
+            # 如果用户名未找到，尝试通过邮箱查找
+            if not user:
+                user = user_service.get_user_by_email(db, email=form_data.username)
+            
+            # 验证用户存在且密码正确
+            if not user or not user.is_active or not verify_password(form_data.password, user.hashed_password):
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="用户名/邮箱或密码错误",
+                    headers={"WWW-Authenticate": "Bearer"},
+                )
+            
+            # 创建访问令牌，包含用户ID和角色信息
+            access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+            token_data = {
+                "sub": user.username,
+                "user_id": user.id,
+                "username": user.username,
+                "email": user.email,
+                "role": user.role,
+                "is_active": user.is_active,
+                "exp": datetime.utcnow() + access_token_expires
+            }
+            
+            access_token = jwt.encode(token_data, SECRET_KEY, algorithm=ALGORITHM)
+            
+            return {
+                "access_token": access_token,
+                "token_type": "bearer",
+                "userinfo": json.dumps(token_data, ensure_ascii=False, indent=2).encode('utf-8').decode('utf-8'),
+            }
+    except HTTPException:
+        # 显式抛出的认证错误（用户名/密码错误）直接透传
+        raise
+    except Exception as e:
+        # 数据库或其他非预期错误，返回 500，而不是误报为 401
+        logger.error(f"Login database error: {e}", exc_info=True)
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="登录服务暂时不可用，请稍后重试",
+        )
 
 @router.post("/logout")
 def logout():

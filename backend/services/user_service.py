@@ -2,117 +2,118 @@ from backend.models.database import User
 from werkzeug.security import generate_password_hash
 import json
 from datetime import datetime
+import logging
+from functools import wraps
 
+logger = logging.getLogger(__name__)
+
+
+def retry_on_db_error(max_retries=2):
+    """装饰器：数据库操作失败时自动重试"""
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            last_error = None
+            
+            for attempt in range(max_retries + 1):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    last_error = e
+                    error_str = str(e)
+                    
+                    # 检查是否是连接错误
+                    is_connection_error = (
+                        "(0," in error_str or 
+                        "Lost connection" in error_str or 
+                        "gone away" in error_str or
+                        "not connected" in error_str.lower()
+                    )
+                    
+                    if is_connection_error and attempt < max_retries:
+                        logger.warning(f"{func.__name__} failed (attempt {attempt + 1}), retrying...")
+                        # 对于连接错误，简单依赖底层连接池的自动重连机制，
+                        # 本次调用结束后会重新获取连接，不再在这里手动 close/connect。
+                        continue
+                    else:
+                        # 不是连接错误或已达到最大重试次数
+                        break
+            
+            # 所有重试都失败了：向上抛出最后一次错误，让接口明确返回 500 而不是静默返回 None
+            logger.error(
+                f"{func.__name__} failed after {max_retries + 1} attempts: {last_error}",
+                exc_info=True,
+            )
+            if last_error:
+                raise last_error
+            raise Exception(f"{func.__name__} failed without explicit error")
+        
+        return wrapper
+    return decorator
+
+
+@retry_on_db_error(max_retries=2)
 def get_user_by_username(db, username: str):
     """根据用户名获取用户"""
-    try:
-        return User.get_or_none(User.username == username)
-    except Exception as e:
-        print(f"Error getting user by username: {e}")
-        # 如果是连接错误，尝试重连后再试一次
-        if "Lost connection" in str(e) or "gone away" in str(e) or "(0," in str(e):
-            try:
-                if not db.is_closed():
-                    db.close()
-                db.connect()
-                return User.get_or_none(User.username == username)
-            except Exception as retry_error:
-                print(f"Retry failed: {retry_error}")
-                return None
-        return None
+    return User.get_or_none(User.username == username)
 
+
+@retry_on_db_error(max_retries=2)
 def get_user_by_email(db, email: str):
     """根据邮箱获取用户"""
-    try:
-        return User.get_or_none(User.email == email)
-    except Exception as e:
-        print(f"Error getting user by email: {e}")
-        # 如果是连接错误，尝试重连后再试一次
-        if "Lost connection" in str(e) or "gone away" in str(e) or "(0," in str(e):
-            try:
-                if not db.is_closed():
-                    db.close()
-                db.connect()
-                return User.get_or_none(User.email == email)
-            except Exception as retry_error:
-                print(f"Retry failed: {retry_error}")
-                return None
-        return None
+    return User.get_or_none(User.email == email)
 
+
+@retry_on_db_error(max_retries=2)
 def get_user_by_id(db, user_id: int):
     """根据ID获取用户"""
-    try:
-        return User.get_or_none(User.id == user_id)
-    except Exception as e:
-        print(f"Error getting user by id: {e}")
-        # 如果是连接错误，尝试重连后再试一次
-        if "Lost connection" in str(e) or "gone away" in str(e) or "(0," in str(e):
-            try:
-                if not db.is_closed():
-                    db.close()
-                db.connect()
-                return User.get_or_none(User.id == user_id)
-            except Exception as retry_error:
-                print(f"Retry failed: {retry_error}")
-                return None
-        return None
+    return User.get_or_none(User.id == user_id)
         
+@retry_on_db_error(max_retries=2)
 def authenticate_user(db, username: str, password: str):
     """验证用户身份"""
-    try:
-        user = User.get_or_none(User.username == username)
-        if user and check_password_hash(password, user.password_hash):
-            return user
-        return None
-    except Exception as e:
-        print(f"Error authenticating user: {e}")
-        return None
+    user = User.get_or_none(User.username == username)
+    if user and check_password_hash(password, user.password_hash):
+        return user
+    return None
 
+
+@retry_on_db_error(max_retries=2)
 def create_user(db, username: str, email: str, password: str, role: str = "user"):
     """创建新用户"""
-    try:
-        hashed_password = generate_password_hash(password)
-        user = User.create(
-            username=username,
-            email=email,
-            hashed_password=hashed_password,  # 使用正确的字段名
-            role=role
-        )
-        return user
-    except Exception as e:
-        print(f"Error creating user: {e}")
-        raise e
+    hashed_password = generate_password_hash(password)
+    user = User.create(
+        username=username,
+        email=email,
+        hashed_password=hashed_password,
+        role=role
+    )
+    return user
 
+
+@retry_on_db_error(max_retries=2)
 def update_user(db, user_id: int, **kwargs):
     """更新用户信息"""
-    try:
-        query = User.update(**kwargs).where(User.id == user_id)
-        result = query.execute()
-        return result > 0
-    except Exception as e:
-        print(f"Error updating user: {e}")
-        raise e
+    query = User.update(**kwargs).where(User.id == user_id)
+    result = query.execute()
+    return result > 0
 
+
+@retry_on_db_error(max_retries=2)
 def delete_user(db, user_id: int):
     """删除用户"""
-    try:
-        user = User.get_or_none(User.id == user_id)
-        if user:
-            user.is_del = True  # 软删除，标记为已删除
-            user.save()
-            return True
-        return False
-    except Exception as e:
-        print(f"Error deleting user: {e}")
-        raise e
-        
+    user = User.get_or_none(User.id == user_id)
+    if user:
+        user.is_del = True
+        user.save()
+        return True
+    return False
+
+
+@retry_on_db_error(max_retries=2)
 def get_all_users(db, skip: int = 0, limit: int = 10):
     """获取所有用户"""
-    try:
-        return User.select().offset(skip).limit(limit)
-    except Exception as e:
-        print(f"Error getting all users: {e}")
-        return []
+    return User.select().offset(skip).limit(limit)
 
 def model_to_dict_safe(model_instance):
     """安全地将模型实例转换为字典，特别处理JSON字段"""

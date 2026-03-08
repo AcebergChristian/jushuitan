@@ -18,11 +18,14 @@ from backend.api.users import router as users_router
 from backend.api.products import router as products_router
 from backend.api.auth import router as auth_router
 from backend.init_db import init_db
-from backend.database import database
+from backend.database import database, ensure_connection
 import logging
 
 # 配置日志
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 logger = logging.getLogger(__name__)
 
 # 初始化数据库，创建所有表
@@ -33,13 +36,16 @@ app = FastAPI(title="聚水潭和拼多多数据管理系统", version="1.0.0")
 # 应用启动时连接数据库
 @app.on_event("startup")
 async def startup():
-    if database.is_closed():
-        database.connect()
-        logger.info("Database connected on startup")
+    logger.info("Application starting up...")
+    if ensure_connection():
+        logger.info("✅ Database connected successfully on startup")
+    else:
+        logger.error("❌ Failed to connect to database on startup")
 
 # 应用关闭时断开数据库连接
 @app.on_event("shutdown")
 async def shutdown():
+    logger.info("Application shutting down...")
     if not database.is_closed():
         database.close()
         logger.info("Database connection closed on shutdown")

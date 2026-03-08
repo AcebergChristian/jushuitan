@@ -438,12 +438,14 @@ def sync_goods(sync_date):
         else:
             Goods.delete().execute()
 
-        # 使用insert_many批量插入新的商品记录
+        # 使用 insert_many 批量插入新的商品记录
         goods_data_list = list(goods_dict.values())
         if goods_data_list:
-            with get_db() as db:
-                with db.atomic():
-                    Goods.insert_many(goods_data_list).execute()
+            # 分批插入，每批 500 条
+            batch_size = 500
+            for i in range(0, len(goods_data_list), batch_size):
+                batch = goods_data_list[i:i + batch_size]
+                Goods.insert_many(batch).execute()
 
         # 计算利润相关指标并更新
         try:
@@ -498,6 +500,8 @@ def sync_goods(sync_date):
             message_text = f"成功同步指定日期 {sync_date} 的商品数据，处理了 {processed_count} 条商品记录"
         else:
             message_text = f"成功同步商品数据，处理了 {processed_count} 条商品记录"
+
+        print(message_text)
 
         return processed_count, message_text
         
@@ -693,12 +697,14 @@ def sync_stores(sync_date):
         else:
             Store.delete().execute()
 
-        # 使用insert_many批量插入新的店铺记录
+        # 使用 insert_many 批量插入新的店铺记录
         stores_data_list = list(stores_dict.values())
         if stores_data_list:
-            with get_db() as db:
-                with db.atomic():
-                    Store.insert_many(stores_data_list).execute()
+            # 分批插入，每批 500 条
+            batch_size = 500
+            for i in range(0, len(stores_data_list), batch_size):
+                batch = stores_data_list[i:i + batch_size]
+                Store.insert_many(batch).execute()
 
         # 计算利润相关指标并更新
         if sync_date:
@@ -750,6 +756,9 @@ def sync_stores(sync_date):
         else:
             message_text = f"成功同步店铺数据，处理了 {processed_count} 条店铺记录"
 
+        print(message_text)
+
+        
         return processed_count, message_text
         
     except Exception as e:
