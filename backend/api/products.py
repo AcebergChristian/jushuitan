@@ -11,7 +11,8 @@ from ..models.database import JushuitanProduct, Goods, User, Store
 from .auth import get_current_user
 from ..spiders.jushuitan_api import get_all_jushuitan_orders
 
-
+# 导入新的获取商品和店铺数据的方法
+from backend.spiders.jushuitan_api import get_jushuitan_orders_for_sales_amount, get_jushuitan_orders_for_sales_cost
 
 router = APIRouter()
 
@@ -77,145 +78,156 @@ def sync_jushuitan_data(request: dict = None):
         except ValueError:
             raise HTTPException(status_code=400, detail="日期格式不正确，请使用 YYYY-MM-DD 格式")
 
-    # 获取聚水潭API数据
-    api_response = get_all_jushuitan_orders(sync_date=sync_date)
-    if not api_response or 'data' not in api_response:
-        raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
+    # # 获取聚水潭API数据
+    # api_response = get_all_jushuitan_orders(sync_date=sync_date)
+    # if not api_response or 'data' not in api_response:
+    #     raise HTTPException(status_code=400, detail="获取聚水潭API数据失败")
     
-    new_data_list = api_response.get('data', [])
+    # new_data_list = api_response.get('data', [])
     
-    if not new_data_list:
-        return {"message": "没有获取到新的聚水潭数据"}
+    # if not new_data_list:
+    #     return {"message": "没有获取到新的聚水潭数据"}
     
-    # 获取系统当前日期
-    current_system_date = datetime.now().date()
-    start_of_day = datetime.combine(current_system_date, datetime.min.time())
-    end_of_day = datetime.combine(current_system_date, datetime.max.time())
+    # # 获取系统当前日期
+    # current_system_date = datetime.now().date()
+    # start_of_day = datetime.combine(current_system_date, datetime.min.time())
+    # end_of_day = datetime.combine(current_system_date, datetime.max.time())
     
-    processed_count = 0
+    # processed_count = 0
     
-    with get_db() as db:
-        with db.atomic():
-            # 步骤1: 批量删除当天的重复记录
-            # 收集所有新数据的oid
-            new_oids = [item.get('oid') for item in new_data_list if item.get('oid')]
+    # with get_db() as db:
+    #     with db.atomic():
+    #         # 步骤1: 批量删除当天的重复记录
+    #         # 收集所有新数据的oid
+    #         new_oids = [item.get('oid') for item in new_data_list if item.get('oid')]
             
-            if new_oids:
-                # 批量删除当天已存在的相同oid记录
-                delete_count = (JushuitanProduct
-                    .delete()
-                    .where(
-                        (JushuitanProduct.oid.in_(new_oids)) &
-                        (JushuitanProduct.created_at >= start_of_day) &
-                        (JushuitanProduct.created_at <= end_of_day)
-                    )
-                    .execute())
+    #         if new_oids:
+    #             # 批量删除当天已存在的相同oid记录
+    #             delete_count = (JushuitanProduct
+    #                 .delete()
+    #                 .where(
+    #                     (JushuitanProduct.oid.in_(new_oids)) &
+    #                     (JushuitanProduct.created_at >= start_of_day) &
+    #                     (JushuitanProduct.created_at <= end_of_day)
+    #                 )
+    #                 .execute())
                 
-                print(f"批量删除了 {delete_count} 条当天的重复记录")
+    #             print(f"批量删除了 {delete_count} 条当天的重复记录")
             
-            # 步骤2: 准备批量插入的数据
-            batch_data = []
-            for item in new_data_list:
-                if item.get('oid'):  # 只处理有oid的记录
-                    batch_data.append({
-                        'oid': item.get('oid'),
-                        'isSuccess': item.get('isSuccess'),
-                        'msg': item.get('msg'),
-                        'purchaseAmt': item.get('purchaseAmt'),
-                        'totalAmt': item.get('totalAmt'),
-                        'discountAmt': item.get('discountAmt'),
-                        'commission': item.get('commission'),
-                        'freight': item.get('freight'),
-                        'payAmount': item.get('payAmount'),
-                        'paidAmount': item.get('paidAmount'),
-                        'totalPurchasePriceGoods': item.get('totalPurchasePriceGoods'),
-                        'smallProgramFreight': item.get('smallProgramFreight'),
-                        'totalTransactionPurchasePrice': item.get('totalTransactionPurchasePrice'),
-                        'smallProgramCommission': item.get('smallProgramCommission'),
-                        'smallProgramPaidAmount': item.get('smallProgramPaidAmount'),
-                        'freightCalcRule': item.get('freightCalcRule'),
-                        'oaId': item.get('oaId'),
-                        'soId': item.get('soId'),
-                        'rawSoId': item.get('rawSoId'),
-                        'mergeSoIds': item.get('mergeSoIds'),
-                        'soIdList': str(item.get('soIdList', [])),
-                        'supplierCoId': item.get('supplierCoId'),
-                        'supplierName': item.get('supplierName'),
-                        'channelCoId': item.get('channelCoId'),
-                        'channelName': item.get('channelName'),
-                        'shopId': item.get('shopId'),
-                        'shopType': item.get('shopType'),
-                        'shopName': item.get('shopName'),
-                        'disInnerOrderGoodsViewList': str(item.get('disInnerOrderGoodsViewList', [])),
-                        'orderTime': item.get('orderTime'),
-                        'payTime': item.get('payTime'),
-                        'deliveryDate': item.get('deliveryDate'),
-                        'expressCode': item.get('expressCode'),
-                        'expressCompany': item.get('expressCompany'),
-                        'trackNo': item.get('trackNo'),
-                        'orderStatus': item.get('orderStatus'),
-                        'errorMsg': item.get('errorMsg'),
-                        'errorDesc': item.get('errorDesc'),
-                        'labels': json.dumps(item.get('labels', []), ensure_ascii=False),
-                        'buyerMessage': item.get('buyerMessage'),
-                        'remark': item.get('remark'),
-                        'sellerFlag': item.get('sellerFlag'),
-                        'updated': item.get('updated'),
-                        'clientPaidAmt': item.get('clientPaidAmt'),
-                        'goodsQty': item.get('goodsQty'),
-                        'goodsAmt': item.get('goodsAmt'),
-                        'freeAmount': item.get('freeAmount'),
-                        'orderType': item.get('orderType'),
-                        'isSplit': item.get('isSplit', False),
-                        'isMerge': item.get('isMerge', False),
-                        'planDeliveryDate': item.get('planDeliveryDate'),
-                        'deliverTimeLeft': item.get('deliverTimeLeft'),
-                        'printCount': item.get('printCount'),
-                        'ioId': item.get('ioId'),
-                        'receiverState': item.get('receiverState'),
-                        'receiverCity': item.get('receiverCity'),
-                        'receiverDistrict': item.get('receiverDistrict'),
-                        'weight': item.get('weight'),
-                        'realWeight': item.get('realWeight'),
-                        'wmsCoId': item.get('wmsCoId'),
-                        'wmsCoName': item.get('wmsCoName'),
-                        'drpAmount': item.get('drpAmount'),
-                        'shopSite': item.get('shopSite'),
-                        'isDeliveryPrinted': item.get('isDeliveryPrinted'),
-                        'fullReceiveData': item.get('fullReceiveData'),
-                        'fuzzFullReceiverInfo': item.get('fuzzFullReceiverInfo'),
-                        'shopBuyerId': item.get('shopBuyerId'),
-                        'logisticsNos': item.get('logisticsNos'),
-                        'openId': item.get('openId'),
-                        'printedList': item.get('printedList'),
-                        'note': item.get('note'),
-                        'receiverTown': item.get('receiverTown'),
-                        'solution': item.get('solution'),
-                        'orderFrom': item.get('orderFrom'),
-                        'linkOid': item.get('linkOid'),
-                        'channelOid': item.get('channelOid'),
-                        'isSupplierInitiatedReissueOrExchange': item.get('isSupplierInitiatedReissueOrExchange'),
-                        'confirmDate': item.get('confirmDate'),
-                        'topDrpCoIdFrom': item.get('topDrpCoIdFrom'),
-                        'topDrpOrderId': item.get('topDrpOrderId'),
-                        'orderIdentity': item.get('orderIdentity'),
-                        'originalSoId': item.get('originalSoId'),
-                        'isVirtualShipment': item.get('isVirtualShipment', False),
-                        'relationshipBySoIdMd5': item.get('relationshipBySoIdMd5'),
-                        'online': item.get('online', False),
-                        'data_type': 'regular' if item.get('orderStatus') not in ['Cancelled', 'Refunded', 'Closed'] else 'cancel',
-                        'is_del': False,
-                        'created_at': datetime.now(),
-                        'updated_at': datetime.now()
-                    })
+    #         # 步骤2: 准备批量插入的数据
+    #         batch_data = []
+    #         for item in new_data_list:
+    #             if item.get('oid'):  # 只处理有oid的记录
+    #                 batch_data.append({
+    #                     'oid': item.get('oid'),
+    #                     'isSuccess': item.get('isSuccess'),
+    #                     'msg': item.get('msg'),
+    #                     'purchaseAmt': item.get('purchaseAmt'),
+    #                     'totalAmt': item.get('totalAmt'),
+    #                     'discountAmt': item.get('discountAmt'),
+    #                     'commission': item.get('commission'),
+    #                     'freight': item.get('freight'),
+    #                     'payAmount': item.get('payAmount'),
+    #                     'paidAmount': item.get('paidAmount'),
+    #                     'totalPurchasePriceGoods': item.get('totalPurchasePriceGoods'),
+    #                     'smallProgramFreight': item.get('smallProgramFreight'),
+    #                     'totalTransactionPurchasePrice': item.get('totalTransactionPurchasePrice'),
+    #                     'smallProgramCommission': item.get('smallProgramCommission'),
+    #                     'smallProgramPaidAmount': item.get('smallProgramPaidAmount'),
+    #                     'freightCalcRule': item.get('freightCalcRule'),
+    #                     'oaId': item.get('oaId'),
+    #                     'soId': item.get('soId'),
+    #                     'rawSoId': item.get('rawSoId'),
+    #                     'mergeSoIds': item.get('mergeSoIds'),
+    #                     'soIdList': str(item.get('soIdList', [])),
+    #                     'supplierCoId': item.get('supplierCoId'),
+    #                     'supplierName': item.get('supplierName'),
+    #                     'channelCoId': item.get('channelCoId'),
+    #                     'channelName': item.get('channelName'),
+    #                     'shopId': item.get('shopId'),
+    #                     'shopType': item.get('shopType'),
+    #                     'shopName': item.get('shopName'),
+    #                     'disInnerOrderGoodsViewList': str(item.get('disInnerOrderGoodsViewList', [])),
+    #                     'orderTime': item.get('orderTime'),
+    #                     'payTime': item.get('payTime'),
+    #                     'deliveryDate': item.get('deliveryDate'),
+    #                     'expressCode': item.get('expressCode'),
+    #                     'expressCompany': item.get('expressCompany'),
+    #                     'trackNo': item.get('trackNo'),
+    #                     'orderStatus': item.get('orderStatus'),
+    #                     'errorMsg': item.get('errorMsg'),
+    #                     'errorDesc': item.get('errorDesc'),
+    #                     'labels': json.dumps(item.get('labels', []), ensure_ascii=False),
+    #                     'buyerMessage': item.get('buyerMessage'),
+    #                     'remark': item.get('remark'),
+    #                     'sellerFlag': item.get('sellerFlag'),
+    #                     'updated': item.get('updated'),
+    #                     'clientPaidAmt': item.get('clientPaidAmt'),
+    #                     'goodsQty': item.get('goodsQty'),
+    #                     'goodsAmt': item.get('goodsAmt'),
+    #                     'freeAmount': item.get('freeAmount'),
+    #                     'orderType': item.get('orderType'),
+    #                     'isSplit': item.get('isSplit', False),
+    #                     'isMerge': item.get('isMerge', False),
+    #                     'planDeliveryDate': item.get('planDeliveryDate'),
+    #                     'deliverTimeLeft': item.get('deliverTimeLeft'),
+    #                     'printCount': item.get('printCount'),
+    #                     'ioId': item.get('ioId'),
+    #                     'receiverState': item.get('receiverState'),
+    #                     'receiverCity': item.get('receiverCity'),
+    #                     'receiverDistrict': item.get('receiverDistrict'),
+    #                     'weight': item.get('weight'),
+    #                     'realWeight': item.get('realWeight'),
+    #                     'wmsCoId': item.get('wmsCoId'),
+    #                     'wmsCoName': item.get('wmsCoName'),
+    #                     'drpAmount': item.get('drpAmount'),
+    #                     'shopSite': item.get('shopSite'),
+    #                     'isDeliveryPrinted': item.get('isDeliveryPrinted'),
+    #                     'fullReceiveData': item.get('fullReceiveData'),
+    #                     'fuzzFullReceiverInfo': item.get('fuzzFullReceiverInfo'),
+    #                     'shopBuyerId': item.get('shopBuyerId'),
+    #                     'logisticsNos': item.get('logisticsNos'),
+    #                     'openId': item.get('openId'),
+    #                     'printedList': item.get('printedList'),
+    #                     'note': item.get('note'),
+    #                     'receiverTown': item.get('receiverTown'),
+    #                     'solution': item.get('solution'),
+    #                     'orderFrom': item.get('orderFrom'),
+    #                     'linkOid': item.get('linkOid'),
+    #                     'channelOid': item.get('channelOid'),
+    #                     'isSupplierInitiatedReissueOrExchange': item.get('isSupplierInitiatedReissueOrExchange'),
+    #                     'confirmDate': item.get('confirmDate'),
+    #                     'topDrpCoIdFrom': item.get('topDrpCoIdFrom'),
+    #                     'topDrpOrderId': item.get('topDrpOrderId'),
+    #                     'orderIdentity': item.get('orderIdentity'),
+    #                     'originalSoId': item.get('originalSoId'),
+    #                     'isVirtualShipment': item.get('isVirtualShipment', False),
+    #                     'relationshipBySoIdMd5': item.get('relationshipBySoIdMd5'),
+    #                     'online': item.get('online', False),
+    #                     'data_type': 'regular' if item.get('orderStatus') not in ['Cancelled', 'Refunded', 'Closed'] else 'cancel',
+    #                     'is_del': False,
+    #                     'created_at': datetime.now(),
+    #                     'updated_at': datetime.now()
+    #                 })
             
-            # 步骤3: 批量插入新记录（分批处理，每批500条）
-            batch_size = 500
-            for i in range(0, len(batch_data), batch_size):
-                batch = batch_data[i:i + batch_size]
-                JushuitanProduct.insert_many(batch).execute()
-                processed_count += len(batch)
-                print(f"已批量插入 {len(batch)} 条记录，总计 {processed_count}/{len(batch_data)}")
+    #         # 步骤 3: 批量插入新记录（分批处理，每批 500 条）
+    #         batch_size = 500
+    #         for i in range(0, len(batch_data), batch_size):
+    #             batch = batch_data[i:i + batch_size]
+    #             try:
+    #                 JushuitanProduct.insert_many(batch).execute()
+    #                 processed_count += len(batch)
+    #                 print(f"已批量插入 {len(batch)} 条记录，总计 {processed_count}/{len(batch_data)}")
+    #             except Exception as e:
+    #                 print(f"批量插入失败，尝试逐条插入：{e}")
+    #                 # 如果批量插入失败，尝试逐条插入
+    #                 for item in batch:
+    #                     try:
+    #                         JushuitanProduct.create(**item)
+    #                         processed_count += 1
+    #                     except Exception as create_error:
+    #                         print(f"插入单条记录失败：{create_error}")
+    #                         continue
     
     try:
         # 同步商品和店铺数据
@@ -228,8 +240,8 @@ def sync_jushuitan_data(request: dict = None):
         raise HTTPException(status_code=500, detail=f"同步商品数据失败: {str(e)}")
 
     return {
-        "message": f"成功同步聚水潭数据，处理了 {processed_count} 条订单记录、{goods_processed_count} 条商品记录和 {store_processed_count} 条店铺记录",
-        "processed_count": processed_count,
+        "message": f"成功同步聚水潭数据，处理了 {goods_processed_count} 条商品记录和 {store_processed_count} 条店铺记录",
+        # "processed_count": processed_count,
         "goods_processed_count": goods_processed_count,
         "stores_processed_count": store_processed_count
     }
@@ -237,8 +249,11 @@ def sync_jushuitan_data(request: dict = None):
 
 
 
-
-
+# 从两个接口获取对应的数据
+def get_sales_amount_data_and_sales_cost_data(sync_date):
+    sales_amount_data = get_jushuitan_orders_for_sales_amount(sync_date=sync_date)
+    sales_cost_data = get_jushuitan_orders_for_sales_cost(sync_date=sync_date)
+    return sales_amount_data, sales_cost_data
 
 
 
@@ -253,16 +268,15 @@ def sync_goods(sync_date):
     """
 
     try:
-        # 导入新的API方法
-        from backend.spiders.jushuitan_api import get_jushuitan_orders_for_sales_amount, get_jushuitan_orders_for_sales_cost
-        
+        # 同步商品数据
+        print("开始拉取商品数据，并同步至数据库...")
         # 获取销售金额数据（包含所有状态）
         print(f"正在获取销售金额数据，日期: {sync_date}")
-        sales_amount_data = get_jushuitan_orders_for_sales_amount(sync_date=sync_date)
-        
         # 获取销售成本数据（不包含已取消和被拆分）
         print(f"正在获取销售成本数据，日期: {sync_date}")
-        sales_cost_data = get_jushuitan_orders_for_sales_cost(sync_date=sync_date)
+
+        sales_amount_data, sales_cost_data = get_sales_amount_data_and_sales_cost_data(sync_date)
+        
         
         if not sales_amount_data or 'data' not in sales_amount_data:
             raise HTTPException(status_code=400, detail="获取销售金额数据失败")
@@ -409,6 +423,26 @@ def sync_goods(sync_date):
             # 获取对应的销售成本
             sales_cost = sales_cost_map.get(unique_key, 0.0)
             
+            # 提取数值，确保不为 None
+            sales_amount = sales_data['sales_amount'] or 0.0
+            cost_amount = sales_cost or 0.0
+            
+            # 直接在这里计算利润指标
+            gross_profit_1_occurred = sales_amount - cost_amount
+            gross_profit_1_rate = round(((sales_amount - cost_amount) / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            # 广告费用暂时为 0（后续可以从其他数据源获取）
+            ad_cost = 0.0
+            advertising_ratio = round((ad_cost / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            gross_profit_3 = sales_amount - cost_amount - ad_cost
+            gross_profit_3_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            gross_profit_4 = sales_amount - cost_amount - ad_cost
+            gross_profit_4_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
+            
+            net_profit = sales_amount - cost_amount - ad_cost
+            net_profit_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
             
             goods_dict[unique_key] = {
                 'goods_id': sales_data['shop_iid'],
@@ -416,11 +450,20 @@ def sync_goods(sync_date):
                 'store_id': sales_data['shop_id'],
                 'store_name': sales_data['shop_name'],
                 'order_id': sales_data['order_id'],
-                'soId': sales_data['so_id'],  # 线上订单号
-                'payment_amount': 0.0,  # 暂不使用
-                'sales_amount': sales_data['sales_amount'],
-                'refund_amount': 0.0,  # 暂不使用
-                'sales_cost': sales_cost,
+                'soId': sales_data['so_id'],
+                'payment_amount': 0.0,
+                'sales_amount': sales_amount,
+                'refund_amount': 0.0,
+                'sales_cost': cost_amount,
+                'gross_profit_1_occurred': gross_profit_1_occurred,
+                'gross_profit_1_rate': gross_profit_1_rate,
+                'advertising_ratio': advertising_ratio,
+                'gross_profit_3': gross_profit_3,
+                'gross_profit_3_rate': gross_profit_3_rate,
+                'gross_profit_4': gross_profit_4,
+                'gross_profit_4_rate': gross_profit_4_rate,
+                'net_profit': net_profit,
+                'net_profit_rate': net_profit_rate,
                 'creator': 'system',
                 'created_at': datetime.now(),
                 'goodorder_time': sales_data['order_time'],
@@ -438,62 +481,34 @@ def sync_goods(sync_date):
         else:
             Goods.delete().execute()
 
-        # 使用 insert_many 批量插入新的商品记录
+        # 使用 insert_many 批量插入新的商品记录（已包含利润指标）
         goods_data_list = list(goods_dict.values())
         if goods_data_list:
-            # 分批插入，每批 500 条
+            print(f"开始插入 {len(goods_data_list)} 条商品记录...")
             batch_size = 500
+            inserted_count = 0
             for i in range(0, len(goods_data_list), batch_size):
                 batch = goods_data_list[i:i + batch_size]
-                Goods.insert_many(batch).execute()
+                try:
+                    Goods.insert_many(batch).execute()
+                    inserted_count += len(batch)
+                    print(f"成功插入批次 {i//batch_size + 1}: {len(batch)} 条商品记录，进度 {inserted_count}/{len(goods_data_list)}")
+                except Exception as e:
+                    print(f"批量插入商品失败，尝试逐条插入：{e}")
+                    for item in batch:
+                        try:
+                            Goods.create(**item)
+                            inserted_count += 1
+                        except Exception as create_error:
+                            print(f"插入单条商品记录失败：{create_error}")
+                            continue
+            print(f"商品记录插入完成，总计 {inserted_count} 条")
 
-        # 计算利润相关指标并更新
-        try:
-            all_new_goods = list(Goods.select())
-        except Exception as select_error:
-            print(f"查询商品数据时发生错误: {select_error}")
-            # 尝试重新连接数据库后再查询
-            from ..database import reconnect_db
-            reconnect_db()
-            all_new_goods = list(Goods.select())
-        
-        for good_record in all_new_goods:
-            # 确保所有数值字段都不为None
-            sales_amount = good_record.sales_amount or 0.0
-            cost_amount = good_record.sales_cost or 0.0
-            
-            # 计算各种利润指标
-            gross_profit_1_occurred = sales_amount - cost_amount
-            gross_profit_1_rate = round(((sales_amount - cost_amount) / sales_amount) * 100, 2) if sales_amount > 0 else 0
-            
-            # 获取广告费用，如果为None则默认为0
-            ad_cost = getattr(good_record, 'advertising_expenses', 0) or 0
-            advertising_ratio = round((ad_cost / sales_amount) * 100, 2) if sales_amount > 0 else 0
-            
-            gross_profit_3 = sales_amount - cost_amount - ad_cost
-            gross_profit_3_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
-            
-            gross_profit_4 = sales_amount - cost_amount - ad_cost
-            gross_profit_4_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
-            
-            net_profit = sales_amount - cost_amount - ad_cost
-            net_profit_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
-            
-            # 更新利润相关字段
-            good_record.gross_profit_1_occurred = gross_profit_1_occurred
-            good_record.gross_profit_1_rate = gross_profit_1_rate
-            good_record.advertising_ratio = advertising_ratio
-            good_record.gross_profit_3 = gross_profit_3
-            good_record.gross_profit_3_rate = gross_profit_3_rate
-            good_record.gross_profit_4 = gross_profit_4
-            good_record.gross_profit_4_rate = gross_profit_4_rate
-            good_record.net_profit = net_profit
-            good_record.net_profit_rate = net_profit_rate
-            good_record.updated_at = datetime.now()
-            good_record.save()
-        
+       
+
         # 统计处理结果
         processed_count = len(goods_dict)
+        print(f"商品数据处理完成，共 {processed_count} 条记录")
         
         # 根据是否指定了同步日期返回不同的消息
         if sync_date:
@@ -526,16 +541,17 @@ def sync_stores(sync_date):
     """
     
     try:
-        # 导入新的API方法
-        from backend.spiders.jushuitan_api import get_jushuitan_orders_for_sales_amount, get_jushuitan_orders_for_sales_cost
+        
+        
+        # 同步店铺数据
+        print("开始拉取店铺数据，并同步至数据库...")
         
         # 获取销售金额数据（包含所有状态）
         print(f"正在获取店铺销售金额数据，日期: {sync_date}")
-        sales_amount_data = get_jushuitan_orders_for_sales_amount(sync_date=sync_date)
-        
         # 获取销售成本数据（不包含已取消和被拆分）
         print(f"正在获取店铺销售成本数据，日期: {sync_date}")
-        sales_cost_data = get_jushuitan_orders_for_sales_cost(sync_date=sync_date)
+
+        sales_amount_data, sales_cost_data = get_sales_amount_data_and_sales_cost_data(sync_date=sync_date)
         
         if not sales_amount_data or 'data' not in sales_amount_data:
             raise HTTPException(status_code=400, detail="获取店铺销售金额数据失败")
@@ -686,43 +702,67 @@ def sync_stores(sync_date):
                     stores_dict[unique_key]['total_sales_cost'] += drpAmount
                 
             except Exception as e:
-                print(f"处理店铺销售成本订单时出错: {e}")
+                print(f"处理店铺销售成本订单时出错：{e}")
                 continue
         
         # 删除之前同步的相同日期的数据（避免重复）
         if sync_date:
-            Store.delete().where(
-                Store.order_date == sync_date
-            ).execute()
+            # 确保 sync_date 是 date 对象类型
+            from datetime import date as date_type, time as time_type
+            # 使用 datetime.date() 方法转换
+            if isinstance(sync_date, str):
+                target_date = datetime.strptime(sync_date, '%Y-%m-%d').date()
+            elif hasattr(sync_date, 'date') and callable(getattr(sync_date, 'date')):
+                # datetime 对象
+                target_date = sync_date.date()
+            elif isinstance(sync_date, date_type):
+                target_date = sync_date
+            else:
+                target_date = sync_date
+            
+            # 使用日期范围删除，确保删除当天的所有数据（兼容 datetime 和 date 类型）
+            start_of_day = datetime.combine(target_date, time_type.min)
+            end_of_day = datetime.combine(target_date, time_type.max)
+            
+            deleted = (Store.delete().where(
+                (Store.order_date >= start_of_day) & 
+                (Store.order_date <= end_of_day)
+            ).execute())
+            
+            print(f"已删除 {target_date} 的店铺数据，共 {deleted} 条记录")
         else:
             Store.delete().execute()
+            print("已清空所有店铺数据")
 
         # 使用 insert_many 批量插入新的店铺记录
-        stores_data_list = list(stores_dict.values())
-        if stores_data_list:
-            # 分批插入，每批 500 条
-            batch_size = 500
-            for i in range(0, len(stores_data_list), batch_size):
-                batch = stores_data_list[i:i + batch_size]
-                Store.insert_many(batch).execute()
-
-        # 计算利润相关指标并更新
-        if sync_date:
-            all_new_stores = list(Store.select().where(Store.order_date == sync_date))
-        else:
-            all_new_stores = list(Store.select())
+        # 合并两个映射表，构建最终的店铺数据（在插入前计算好利润指标）
+        stores_data_list = []
         
-        for store_record in all_new_stores:
-            # 确保所有数值字段都不为None
-            sales_amount = store_record.total_sales_amount or 0.0
-            cost_amount = store_record.total_sales_cost or 0.0
+        # 检查是否有重复的 unique_key
+        seen_keys = set()
+        duplicate_keys = []
+        
+        for unique_key, store_data in stores_dict.items():
+            store_id, order_date = unique_key
+            
+            # 检查重复
+            key_tuple = (str(store_id), str(order_date))
+            if key_tuple in seen_keys:
+                duplicate_keys.append(key_tuple)
+                print(f"⚠️ 发现重复的 unique_key: {key_tuple}")
+            else:
+                seen_keys.add(key_tuple)
+            
+            # 确保所有数值字段都不为 None
+            sales_amount = store_data['total_sales_amount'] or 0.0
+            cost_amount = store_data['total_sales_cost'] or 0.0
             
             # 计算各种利润指标
             gross_profit_1_occurred = sales_amount - cost_amount
             avg_gross_profit_1_rate = round(((sales_amount - cost_amount) / sales_amount) * 100, 2) if sales_amount > 0 else 0
             
-            # 获取广告费用，如果为None则默认为0
-            ad_cost = store_record.total_advertising_expenses or 0
+            # 广告费用暂时为 0（后续可以从 PDD 表关联获取）
+            ad_cost = 0.0
             avg_advertising_ratio = round((ad_cost / sales_amount) * 100, 2) if sales_amount > 0 else 0
             
             gross_profit_3 = sales_amount - cost_amount - ad_cost
@@ -734,21 +774,117 @@ def sync_stores(sync_date):
             net_profit = sales_amount - cost_amount - ad_cost
             avg_net_profit_rate = round(((sales_amount - cost_amount - ad_cost) / sales_amount) * 100, 2) if sales_amount > 0 else 0
             
-            # 更新利润相关字段
-            store_record.total_gross_profit_1_occurred = gross_profit_1_occurred
-            store_record.avg_gross_profit_1_rate = avg_gross_profit_1_rate
-            store_record.avg_advertising_ratio = avg_advertising_ratio
-            store_record.total_gross_profit_3 = gross_profit_3
-            store_record.avg_gross_profit_3_rate = avg_gross_profit_3_rate
-            store_record.total_gross_profit_4 = gross_profit_4
-            store_record.avg_gross_profit_4_rate = avg_gross_profit_4_rate
-            store_record.total_net_profit = net_profit
-            store_record.avg_net_profit_rate = avg_net_profit_rate
-            store_record.updated_at = datetime.now()
-            store_record.save()
+            # 构建完整的店铺记录
+            store_record = {
+                'store_id': str(store_data['store_id']),  # 确保是字符串
+                'store_name': store_data['store_name'],
+                'order_date': store_data['order_date'],
+                'total_payment_amount': store_data['total_payment_amount'] or 0.0,
+                'total_sales_amount': sales_amount,
+                'total_refund_amount': store_data['total_refund_amount'] or 0.0,
+                'total_sales_cost': cost_amount,
+                'total_gross_profit_1_occurred': gross_profit_1_occurred,
+                'avg_gross_profit_1_rate': avg_gross_profit_1_rate,
+                'total_advertising_expenses': ad_cost,
+                'avg_advertising_ratio': avg_advertising_ratio,
+                'total_gross_profit_3': gross_profit_3,
+                'avg_gross_profit_3_rate': avg_gross_profit_3_rate,
+                'total_gross_profit_4': gross_profit_4,
+                'avg_gross_profit_4_rate': avg_gross_profit_4_rate,
+                'total_net_profit': net_profit,
+                'avg_net_profit_rate': avg_net_profit_rate,
+                'goods_count': store_data['goods_count'],
+                'order_count': store_data['order_count'],
+                'creator': 'system',
+                'last_order_time': store_data['last_order_time'],
+                'created_at': datetime.now(),
+                'updated_at': datetime.now()
+            }
+            
+            stores_data_list.append(store_record)
         
+        # 输出重复检查结果
+        print(f"\n=== stores_dict 检查 ===")
+        print(f"stores_dict 共有 {len(stores_dict)} 个 unique_key")
+        print(f"去重后：{len(seen_keys)} 个")
+        if duplicate_keys:
+            print(f"发现 {len(duplicate_keys)} 个重复 key:")
+            for dk in duplicate_keys[:5]:
+                print(f"  - {dk}")
+        print("======================\n")
+
+        # 删除之前同步的相同日期的数据（避免重复）
+        if sync_date:
+            # 确保 sync_date 是 date 对象类型
+            from datetime import date as date_type, time as time_type
+            
+            # 转换 sync_date 为 date 对象
+            if isinstance(sync_date, str):
+                target_date = datetime.strptime(sync_date, '%Y-%m-%d').date()
+            elif hasattr(sync_date, 'date') and callable(getattr(sync_date, 'date')):
+                target_date = sync_date.date()
+            elif isinstance(sync_date, date_type):
+                target_date = sync_date
+            else:
+                target_date = sync_date
+            
+            # 收集所有需要删除的日期（从待插入数据中提取）
+            dates_to_delete = set()
+            for item in stores_data_list:
+                item_date = item['order_date']
+                if isinstance(item_date, datetime):
+                    item_date = item_date.date()
+                dates_to_delete.add(item_date)
+            
+            # 删除这些日期的所有数据
+            total_deleted = 0
+            for del_date in dates_to_delete:
+                start_of_day = datetime.combine(del_date, time_type.min)
+                end_of_day = datetime.combine(del_date, time_type.max)
+                
+                deleted = (Store.delete().where(
+                    (Store.order_date >= start_of_day) & 
+                    (Store.order_date <= end_of_day)
+                ).execute())
+                
+                total_deleted += deleted
+                if deleted > 0:
+                    print(f"删除 {del_date} 的数据：{deleted} 条")
+            
+            if total_deleted > 0:
+                print(f"共删除 {total_deleted} 条历史数据")
+        else:
+            Store.delete().execute()
+            print("已清空所有店铺数据")
+
+
+
+        # 使用 insert_many 批量插入新的店铺记录（已包含利润指标）
+        if stores_data_list:
+            print(f"开始插入 {len(stores_data_list)} 条店铺记录...")
+            batch_size = 500
+            inserted_count = 0
+            for i in range(0, len(stores_data_list), batch_size):
+                batch = stores_data_list[i:i + batch_size]
+                try:
+                    Store.insert_many(batch).execute()
+                    inserted_count += len(batch)
+                    print(f"成功插入批次 {i//batch_size + 1}: {len(batch)} 条店铺记录，进度 {inserted_count}/{len(stores_data_list)}")
+                except Exception as e:
+                    print(f"批量插入店铺失败，尝试逐条插入：{e}")
+                    for item in batch:
+                        try:
+                            Store.create(**item)
+                            inserted_count += 1
+                        except Exception as create_error:
+                            print(f"插入单条店铺记录失败：{create_error}")
+                            continue
+            print(f"店铺记录插入完成，总计 {inserted_count} 条")
+
+
         # 统计处理结果
         processed_count = len(stores_dict)
+        print(f"店铺数据处理完成，共 {processed_count} 条记录")
         
         # 根据是否指定了同步日期返回不同的消息
         if sync_date:

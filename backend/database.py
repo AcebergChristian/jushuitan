@@ -18,17 +18,20 @@ DATABASE_USER = os.getenv("DB_USER", "pdd")
 DATABASE_PASSWORD = os.getenv("DB_PASSWORD", "PzNPetJFEwWkdzGD")
 
 
-# ✅ 全局唯一数据库实例 - 使用更短的超时时间
+# ✅ 全局唯一数据库实例 - 针对长时间批量操作优化
 database = PooledMySQLDatabase(
     DATABASE_NAME,
     host=DATABASE_HOST,
     port=DATABASE_PORT,
     user=DATABASE_USER,
     password=DATABASE_PASSWORD,
-    max_connections=20,  # 增加到 20 个连接
-    stale_timeout=60,  # 减少到 60 秒，更快检测过期连接
+    max_connections=30,  # 增加到 30 个连接，支持更多并发
+    stale_timeout=600,  # 10 分钟，适应长时间批量操作
     charset="utf8mb4",
     autocommit=True,
+    connect_timeout=300,  # 增加连接超时时间
+    read_timeout=300,  # 5 分钟读取超时，适应大数据量查询
+    write_timeout=300, # 5 分钟写入超时，适应批量插入
 )
 
 
@@ -76,8 +79,11 @@ def get_db():
         # 使用 Peewee 提供的 connection_context：
         # - 进入时自动获取/建立连接
         # - 退出时自动将连接归还到连接池并关闭底层连接
-        with database.connection_context():
+        with database.connection_context() as conn:
             yield database
+    except OperationalError as e:
+        logger.error(f"Database operational error: {e}", exc_info=True)
+        raise
     except Exception as e:
         logger.error(f"Database error in context: {e}", exc_info=True)
         raise
