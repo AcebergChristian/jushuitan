@@ -10,6 +10,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import sys
 import os
+import logging
 
 # 添加父目录到路径以导入数据库模型
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -19,6 +20,13 @@ import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from backend.models.database import PddTable, PddBillRecord, database
+
+
+
+# 关闭 selenium-wire 的日志
+logging.getLogger('seleniumwire').setLevel(logging.WARNING)
+logging.getLogger('seleniumwire.handler').setLevel(logging.WARNING)
+
 
 
 # ===============================
@@ -1065,6 +1073,14 @@ if __name__ == "__main__":
     
     # 店铺配置
     SHOP_PROFILES = [
+
+        {
+            "shopid": "17180291",
+            "shopname": "乘风破浪",
+            "username": "17679296042",
+            "password": "pdd17679296042."
+        },
+
         # {
         #     "shopid": "19250015",
         #     "shopname": "万鑫如意的大店",
@@ -1077,12 +1093,12 @@ if __name__ == "__main__":
         #     "username": "19536515001",
         #     "password": "Aa123456"
         # },
-        {
-            "shopid": "18386894",
-            "shopname": "飞流直上三千尺",
-            "username": "14797898071",
-            "password": "Aa556678900."
-        },
+        # {
+        #     "shopid": "18386894",
+        #     "shopname": "飞流直上三千尺",
+        #     "username": "14797898071",
+        #     "password": "Aa556678900."
+        # },
         # {
         #     "shopid": "17215795",
         #     "shopname": "扶摇直上百货铺",
